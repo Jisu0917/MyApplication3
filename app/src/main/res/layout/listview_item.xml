@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:id="@+id/container"
+    android:descendantFocusability="blocksDescendants"
+    android:background="#fff">
+
+    <!--선택하기 누르면 체크박스가 나온다. 다중 선택 가능. 선택한 항목 모두 지우기 옵션
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:visibility="gone"/>-->
+
+    <!--분석 완료 표시-->
+    <ImageView
+        android:id="@+id/imageView_CBox"
+        android:layout_marginStart="15dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:scaleX="0.85"
+        android:scaleY="0.85"
+        android:layout_weight="1"
+        android:src="@drawable/ic_unchecked"/>
+
+    <!--연습 제목-->
+    <LinearLayout
+        android:layout_gravity="center_vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="10.8"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="15dp">
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:text="연습 제목"
+            android:id="@+id/textView_content"
+            android:textSize="18sp"
+            android:textColor="#000000"/>
+            <!--android:fontFamily="@font/nanum_barun_gothic_light"-->
+
+        <!--날짜 및 시간-->
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:text="날짜 및 시간"
+            android:id="@+id/textView_dateTime"
+            android:textSize="14sp"
+            android:textColor="#a7b1b8"/>
+            <!--android:fontFamily="@font/nanum_barun_gothic_light"-->
+    </LinearLayout>
+
+    <!--공개 여부 표시(채워진 별 또는 빈 별)-->
+    <ImageView
+        android:adjustViewBounds="true"
+        android:layout_marginEnd="15dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleX="0.70"
+        android:scaleY="0.70"
+        android:id="@+id/imageView_star"
+        android:layout_weight="1"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>

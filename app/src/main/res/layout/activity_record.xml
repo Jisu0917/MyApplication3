@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context="com.example.myapplication2.RecordActivity1">
+
+    <com.example.myapplication2.CameraPreview
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/imageview_analysis_start"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_analysis_start"/>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_btns"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="25dp"
+        android:baselineAligned="true">
+
+        <ImageView
+            android:id="@+id/recentRecFile"
+            android:layout_height="40dp"
+            android:layout_width="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="25dp"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/recStartBtn"
+            android:layout_height="57dp"
+            android:layout_width="57dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/record"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/recStopBtn"
+            android:layout_height="57dp"
+            android:layout_width="57dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/stop"
+            android:visibility="gone"/>
+
+
+        <ImageView
+            android:id="@+id/recFileList"
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/rec_list"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/guide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:layout_margin="50dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageview_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_guideline_man_white"/>
+
+        <TextView
+            android:id="@+id/tv_guidetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageview_guideline"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:text="몸을 가이드라인에 맞추세요." />
+    </RelativeLayout>
+
+
+</RelativeLayout>
