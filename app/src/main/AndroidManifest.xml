@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.intent.action.MEDIA_MOUNTED" />
 
     <application
         android:allowBackup="true"
@@ -56,6 +57,12 @@
         <activity
             android:name=".PlayActivity"
             android:theme="@style/AppThemeNoActionBar" />
+        <activity
+            android:name=".ShowAnalysisActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".EditPracticeActivity"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

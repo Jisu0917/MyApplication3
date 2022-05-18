@@ -34,6 +34,7 @@
             android:paddingRight="10dp"
             android:background="@drawable/shape_edittext"
             android:hint="제목을 입력하세요."
+            android:editable="true"
             android:maxLength="20"
             android:textColorHint="#d5dae3"
             android:textColor="#2d3b57"/>
@@ -93,14 +94,13 @@
             android:background="@null"
             android:text="취소"/>
         <Button
-            android:id="@+id/btn_record"
+            android:id="@+id/btn_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="20dp"
             android:background="@null"
-            android:text="촬영하기"
-            android:onClick="insert"/>
+            android:text="수정하기"/>
     </LinearLayout>
 
 <!--    <Button-->

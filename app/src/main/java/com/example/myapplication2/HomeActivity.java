@@ -196,7 +196,7 @@ public class HomeActivity extends AppCompatActivity {
                 startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
                 cursor.moveToPosition(index);  // position에 해당하는 row로 가서
 
-                int isFinished = cursor.getInt(8);  // finished 값을 읽어라. (0 또는 1)
+                int isFinished = cursor.getInt(9);  // finished 값을 읽어라. (0 또는 1)
                 if (isFinished == 0) {
                     String sql = " UPDATE tableName SET finished = " + 1 + " WHERE mid = " + (index + 1);
                     db.execSQL(sql);
@@ -208,8 +208,8 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_edit:
-                Intent intent = new Intent(HomeActivity.this, AddPracticeActivity.class);
-                intent.putExtra("TODO", "EDIT");
+                Intent intent = new Intent(HomeActivity.this, EditPracticeActivity.class);
+                //intent.putExtra("TODO", "EDIT");
                 intent.putExtra("INDEX", index);
                 startActivity(intent);
                 break;

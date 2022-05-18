@@ -18,9 +18,14 @@
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication2/app/src/main/res/menu/actionbar_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication2/app/src/main/res/menu/context_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/drawable-v24/background_rounding.xml" value="0.1" />
+        <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/drawable-v24/background_rounding_white.xml" value="0.1" />
+        <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/layout/activity_addpractice.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/layout/activity_editpractice.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/layout/activity_play.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/layout/activity_record.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/layout/activity_showanalysis.xml" value="0.264" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/layout/activity_showpractice.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/MyApplication3/app/src/main/res/layout/listview_item.xml" value="0.25364583333333335" />
       </map>
     </option>
   </component>

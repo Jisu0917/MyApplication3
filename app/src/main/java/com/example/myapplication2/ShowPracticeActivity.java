@@ -70,7 +70,7 @@ public class ShowPracticeActivity extends AppCompatActivity {
         btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ShowPracticeActivity.this, "play 버튼 클릭", Toast.LENGTH_SHORT).show(); //임시, 확인용
+                //Toast.makeText(ShowPracticeActivity.this, "play 버튼 클릭", Toast.LENGTH_SHORT).show(); //임시, 확인용
                 Intent intent = new Intent(ShowPracticeActivity.this, PlayActivity.class);
                 intent.putExtra("PRACTICE_INDEX", practice_index);
                 startActivity(intent);
@@ -80,7 +80,14 @@ public class ShowPracticeActivity extends AppCompatActivity {
         btn_showAnalysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ShowPracticeActivity.this, "분석결과 버튼 클릭", Toast.LENGTH_SHORT).show(); //임시, 확인용
+                int finished = cursor.getInt(9);
+                if (finished == 1) {
+                    Intent intent = new Intent(ShowPracticeActivity.this, ShowAnalysisActivity.class);
+                    intent.putExtra("PRACTICE_INDEX", practice_index);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(ShowPracticeActivity.this, "분석이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -49,6 +49,7 @@
         android:layout_margin="5dp"
         android:layout_gravity="center_horizontal"
         android:text="분석 결과 확인하기"
+        android:clickable="true"
         />
 
 
