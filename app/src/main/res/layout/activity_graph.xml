@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layout01"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:tag="01"
+                android:id="@+id/btn_sample1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:clickable="true"
+                android:onClick="displaySample"
+                android:text="전체 항목 총점 (원형)"/>
+
+            <TextView
+                android:tag="001"
+                android:id="@+id/txt_sample1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="20dp"
+                android:textSize="6pt"
+                android:textAlignment="center"
+                android:clickable="true"
+                android:onClick="showExcelFile"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout02"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:tag="02"
+                android:id="@+id/btn_sample2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:clickable="true"
+                android:onClick="displaySample"
+                android:text="전체 항목 총점 (막대)"/>
+
+            <TextView
+                android:tag="002"
+                android:id="@+id/txt_sample2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="20dp"
+                android:textSize="6pt"
+                android:textAlignment="center"
+                android:clickable="true"
+                android:onClick="showExcelFile"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layout03"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:tag="03"
+                android:id="@+id/btn_sample3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:clickable="true"
+                android:onClick="displaySample"
+                android:text="전체 항목 구간별 점수"/>
+
+            <TextView
+                android:tag="003"
+                android:id="@+id/txt_sample3"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="20dp"
+                android:textSize="6pt"
+                android:textAlignment="center"
+                android:clickable="true"
+                android:onClick="showExcelFile"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout04"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:tag="04"
+                android:id="@+id/btn_sample4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8"
+                android:clickable="true"
+                android:onClick="displaySample"
+                android:text="산점도 그래프 예시"/>
+
+            <TextView
+                android:tag="004"
+                android:id="@+id/txt_sample4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="20dp"
+                android:textSize="6pt"
+                android:textAlignment="center"
+                android:clickable="true"
+                android:onClick="showExcelFile"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

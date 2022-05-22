@@ -63,6 +63,11 @@
         <activity
             android:name=".EditPracticeActivity"
             android:screenOrientation="fullSensor" />
+        <activity android:name=".GraphActivity"/>
+        <activity android:name=".PieChart"/>
+        <activity android:name=".LineChart"/>
+        <activity android:name=".BarChart"/>
+        <activity android:name=".ScatterPlot" />
     </application>
 
 </manifest>

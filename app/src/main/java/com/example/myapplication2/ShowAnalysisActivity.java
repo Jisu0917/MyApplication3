@@ -106,4 +106,9 @@ public class ShowAnalysisActivity extends AppCompatActivity {
         return bitmap;
     }
 
+    public void show_graph(View v) {
+        Intent intent = new Intent(ShowAnalysisActivity.this, GraphActivity.class);
+        startActivity(intent);
+    }
+
 }
