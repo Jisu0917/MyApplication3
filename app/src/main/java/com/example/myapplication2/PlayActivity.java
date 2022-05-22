@@ -118,23 +118,23 @@ public class PlayActivity extends AppCompatActivity implements MediaController.M
         //captureIcon.setVisibility(View.GONE);
         screenLock = false;
 
-        if (isMyRecFile()) {
-            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  // 화면 세로 고정
-        } else {
-            // 화면 가로/세로 고정
-            retriever = new MediaMetadataRetriever();
-            retriever.setDataSource(fileUrl);
-
-            int width = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
-            int height = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
-            retriever.release();
-            if (width > height) {
-                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);  // 화면 가로 고정
-            }
-            else {
-                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  // 화면 세로 고정
-            }
-        }
+//        if (isMyRecFile()) {
+//            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  // 화면 세로 고정
+//        } else {
+//            // 화면 가로/세로 고정
+//            retriever = new MediaMetadataRetriever();
+//            retriever.setDataSource(fileUrl);
+//
+//            int width = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+//            int height = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+//            retriever.release();
+//            if (width > height) {
+//                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);  // 화면 가로 고정
+//            }
+//            else {
+//                this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  // 화면 세로 고정
+//            }
+//        }
 
         createHolder();
 

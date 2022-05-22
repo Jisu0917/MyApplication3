@@ -49,6 +49,7 @@ public class ShowPracticeActivity extends AppCompatActivity {
 
         cursor = db.rawQuery(" SELECT * FROM tableName ", null);
         startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+        cursor.moveToFirst();
         cursor.moveToPosition(practice_index);  // position에 해당하는 row로 가서
         String practiceTitle = cursor.getString(1);
         String practiceFilename = cursor.getString(10);

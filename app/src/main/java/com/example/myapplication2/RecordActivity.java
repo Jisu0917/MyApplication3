@@ -127,11 +127,20 @@ public class RecordActivity extends AppCompatActivity {
                     recorder.setCamera(mCamera);
                     recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                     recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-                    recorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+                    //recorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+                    recorder.setProfile(CamcorderProfile.get(Camera.CameraInfo.CAMERA_FACING_FRONT, CamcorderProfile.QUALITY_HIGH));
+
+
                     recorder.setMaxDuration(1800000);  // 1800sec = 30min
                     recorder.setMaxFileSize(500000000);  // 500Mb
                     recorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
-                    recorder.setOrientationHint(270);
+                    recorder.setOrientationHint(90);
+
+
+
+//                    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+//                    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+
 
                     filename = createFilename();
                     Log.d(TAG, "current filename : " + filename);
