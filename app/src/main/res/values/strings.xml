@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Sook-Peech</string>
+    <string name="server_client_id">606586417283-4m266cgls2542mopqnoniklt3f71bsqa.apps.googleusercontent.com</string>
     <string name="example_total">분석 결과, 전반적으로 미흡한 수준입니다. 4개의 항목 중 말하기 속도, 맺음말, —- 항목에서 불안정한 결과를 보이고 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.</string>
     <string name="example_gesture">영상의 총 길이는 3분 10초이며, 김눈송님의 분석 결과입니다.\n3초동안 얼굴 위로 손 감지되었습니다.\n2초동안 팔짱 끼기 감지되었습니다.\n0초동안 허리에 손 감지되었습니다.\n감지된 제스처는 일반적으로 권장하지 않는 제스처이므로 다른 제스처를 추천합니다.</string>
     <string name="example_gaze">영상의 총 길이는 3분 10초이며, 김눈송님의 분석 결과 15초동안 시선 분산이 감지되었습니다.\n온라인 발표시에는 화면을 응시하는 것이 좋습니다.</string>

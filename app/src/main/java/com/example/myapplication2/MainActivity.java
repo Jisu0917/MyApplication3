@@ -1,19 +1,41 @@
 package com.example.myapplication2;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.Toast;
+
+import com.example.myapplication2.api.RetrofitAPI;
+import com.example.myapplication2.api.dto.Post;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends TabActivity {
     static String EXTERNAL_STORAGE_PATH = "";
@@ -23,9 +45,25 @@ public class MainActivity extends TabActivity {
     TabHost.TabSpec spec;
 
     static TabWidget tabWidget;
+    static Button login_btn;
 
+    private final int RC_SIGN_IN = 123;
+    GoogleSignInClient mGoogleSignInClient;
+
+    static String personName;
+    static String personGivenName;
+    static String personFamilyName;
+    static String personEmail;
+    static String personId;
+    static Uri personPhoto;
+    static String idToken;
+
+    static RetrofitAPI retrofitAPI;
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -43,6 +81,7 @@ public class MainActivity extends TabActivity {
 
 
         tabWidget = (TabWidget)findViewById(android.R.id.tabs);
+        login_btn = (Button)findViewById(R.id.login_button);
 
         myTabHost = getTabHost();
 
@@ -70,8 +109,93 @@ public class MainActivity extends TabActivity {
 
         myTabHost.setCurrentTab(1);  //메인 Tab 지정
 
+        //set Retrofit for Login POST
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080") //배포 전 local 주소
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitAPI = retrofit.create(RetrofitAPI.class);
+
+        //로그인 옵션 설정
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(MainActivity.this, gso);
+
+        //로그인 한 적 있을 경우 silentSignIn 실행
+        mGoogleSignInClient.silentSignIn().addOnCompleteListener(
+                this,
+                new OnCompleteListener<GoogleSignInAccount>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+                        Log.d("LOGIN", "silentSignIn");
+                        handleSignInResult(task);
+                    }
+                }
+        );
+
+        // 로그인 버튼 클릭 시
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
 
     }  // end of onCreate
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            Log.d("LOGIN", "OnClickSignIn");
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
+        try{
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // 성공적으로 로그인 한 경우, UI 업데이트
+            if (account!=null){
+                Log.d("LOGIN", "success");
+                idToken = account.getIdToken();
+                personName = account.getDisplayName();
+                Log.d("idToken=", idToken);
+                Log.d("personName=", personName);
+
+                //send ID Token to server and validate
+                retrofitAPI.postData(new Post(idToken, -1L)).enqueue(new Callback<Post>() {
+                    @Override
+                    public void onResponse(Call<Post> call, Response<Post> response) {
+                        Log.d("POST", "not successful yet");
+                        if (response.isSuccessful()){
+                            Log.d("POST", "POST Success!");
+                            Log.d("POST", ">>>user_id="+response.body().getUser_id().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Post> call, Throwable t) {
+                        Log.d("POST", "POST Failed");
+                        Log.d("POST", t.getMessage());
+                    }
+                });
+
+            }
+        } catch (ApiException e){
+            String TAG = "MainActivity";
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            //TODO: 로그인 되어 있지 않은 경우 UI
+        }
+    }
 
 //    //-- 권한 요청 --//
 //    private void checkDangerousPermissions() {
@@ -111,6 +235,7 @@ public class MainActivity extends TabActivity {
 //            }
 //        }
 //    }
+
 
     private void checkDangerousPermissions() {
         String[] permissions = {
