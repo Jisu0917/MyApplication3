@@ -86,7 +86,8 @@ public class MainActivity extends TabActivity {
         myTabHost = getTabHost();
 
 //        Intent intent1 = new Intent(MainActivity.this, RecordActivity.class);
-        Intent intent2 = new Intent(MainActivity.this, CommunityActivity.class);
+//        Intent intent2 = new Intent(MainActivity.this, CommunityActivity.class);
+        Intent intent2 = new Intent(MainActivity.this, ListActivity.class);
         Intent intent3 = new Intent(MainActivity.this, HomeActivity.class);
         Intent intent4 = new Intent(MainActivity.this, FriendActivity.class);
         Intent intent5 = new Intent(MainActivity.this, SettingsActivity.class);

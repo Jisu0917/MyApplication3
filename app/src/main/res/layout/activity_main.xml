@@ -18,7 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
-            android:text="Google Login" />
+            android:text="Google Login"
+            android:visibility="invisible"/>
 
         <FrameLayout
             android:id="@android:id/tabcontent"

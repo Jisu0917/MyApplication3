@@ -70,6 +70,10 @@
         <activity android:name=".LineChart"/>
         <activity android:name=".BarChart"/>
         <activity android:name=".ScatterPlot" />
+
+        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".ListActivity"></activity>
     </application>
 
 </manifest>
