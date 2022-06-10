@@ -51,11 +51,6 @@ public class MainActivity extends TabActivity {
     GoogleSignInClient mGoogleSignInClient;
 
     static String personName;
-    static String personGivenName;
-    static String personFamilyName;
-    static String personEmail;
-    static String personId;
-    static Uri personPhoto;
     static String idToken;
 
     static RetrofitAPI retrofitAPI;
@@ -164,13 +159,14 @@ public class MainActivity extends TabActivity {
         try{
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-            // 성공적으로 로그인 한 경우, UI 업데이트
+            // TODO: 성공적으로 로그인 한 경우, UI 업데이트
             if (account!=null){
                 Log.d("LOGIN", "success");
                 idToken = account.getIdToken();
                 personName = account.getDisplayName();
                 Log.d("idToken=", idToken);
                 Log.d("personName=", personName);
+                login_btn.setVisibility(View.GONE);
 
                 //send ID Token to server and validate
                 retrofitAPI.postData(new Post(idToken, -1L)).enqueue(new Callback<Post>() {
@@ -195,6 +191,7 @@ public class MainActivity extends TabActivity {
             String TAG = "MainActivity";
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             //TODO: 로그인 되어 있지 않은 경우 UI
+            login_btn.setVisibility(View.VISIBLE);
         }
     }
 
