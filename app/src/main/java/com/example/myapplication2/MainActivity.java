@@ -10,7 +10,6 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -21,7 +20,7 @@ import android.widget.TabWidget;
 import android.widget.Toast;
 
 import com.example.myapplication2.api.RetrofitAPI;
-import com.example.myapplication2.api.dto.Post;
+import com.example.myapplication2.api.dto.LoginRequestDto;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,7 +29,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -169,9 +167,9 @@ public class MainActivity extends TabActivity {
                 login_btn.setVisibility(View.GONE);
 
                 //send ID Token to server and validate
-                retrofitAPI.postData(new Post(idToken, -1L)).enqueue(new Callback<Post>() {
+                retrofitAPI.postData(new LoginRequestDto(idToken, -1L)).enqueue(new Callback<LoginRequestDto>() {
                     @Override
-                    public void onResponse(Call<Post> call, Response<Post> response) {
+                    public void onResponse(Call<LoginRequestDto> call, Response<LoginRequestDto> response) {
                         Log.d("POST", "not successful yet");
                         if (response.isSuccessful()){
                             Log.d("POST", "POST Success!");
@@ -180,7 +178,7 @@ public class MainActivity extends TabActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<Post> call, Throwable t) {
+                    public void onFailure(Call<LoginRequestDto> call, Throwable t) {
                         Log.d("POST", "POST Failed");
                         Log.d("POST", t.getMessage());
                     }

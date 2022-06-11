@@ -1,10 +1,10 @@
 package com.example.myapplication2.api.dto;
 
-public class Post {
+public class LoginRequestDto {
     String idToken;
     Long user_id;
 
-    public Post(String idToken, Long user_id){
+    public LoginRequestDto(String idToken, Long user_id){
         this.idToken = idToken;
         this.user_id = user_id;
     }
