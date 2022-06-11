@@ -10,18 +10,21 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.Toast;
 
 import com.example.myapplication2.api.RetrofitAPI;
-import com.example.myapplication2.api.dto.Post;
+import com.example.myapplication2.api.RetrofitClient;
+import com.example.myapplication2.api.dto.LoginRequestDto;
+import com.example.myapplication2.api.dto.UserInfoData;
+import com.example.myapplication2.api.objects.UserIdObject;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,7 +33,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,14 +53,12 @@ public class MainActivity extends TabActivity {
     GoogleSignInClient mGoogleSignInClient;
 
     static String personName;
-    static String personGivenName;
-    static String personFamilyName;
-    static String personEmail;
-    static String personId;
-    static Uri personPhoto;
     static String idToken;
 
     static RetrofitAPI retrofitAPI;
+    static UserIdObject userIdObject;
+
+    static Intent intent2, intent3, intent4, intent5;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -79,45 +79,6 @@ public class MainActivity extends TabActivity {
 
         checkDangerousPermissions();
 
-
-        tabWidget = (TabWidget)findViewById(android.R.id.tabs);
-        login_btn = (Button)findViewById(R.id.login_button);
-
-        myTabHost = getTabHost();
-
-//        Intent intent1 = new Intent(MainActivity.this, RecordActivity.class);
-//        Intent intent2 = new Intent(MainActivity.this, CommunityActivity.class);
-        Intent intent2 = new Intent(MainActivity.this, ListActivity.class);
-        Intent intent3 = new Intent(MainActivity.this, HomeActivity.class);
-        Intent intent4 = new Intent(MainActivity.this, FriendActivity.class);
-        Intent intent5 = new Intent(MainActivity.this, SettingsActivity.class);
-
-        //Tab 추가
-//        spec = myTabHost.newTabSpec("Record").setIndicator("RECORD").setContent(intent1);
-//        myTabHost.addTab(spec);
-
-        spec = myTabHost.newTabSpec("Community").setIndicator("COMMUNITY").setContent(intent2);
-        myTabHost.addTab(spec);
-
-        spec = myTabHost.newTabSpec("Home").setIndicator("HOME").setContent(intent3);
-        myTabHost.addTab(spec);
-
-        spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
-        myTabHost.addTab(spec);
-
-        spec = myTabHost.newTabSpec("Settings").setIndicator("SETTINGS").setContent(intent5);
-        myTabHost.addTab(spec);
-
-        myTabHost.setCurrentTab(1);  //메인 Tab 지정
-
-        //set Retrofit for Login POST
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080") //배포 전 local 주소
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        retrofitAPI = retrofit.create(RetrofitAPI.class);
-
         //로그인 옵션 설정
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -137,6 +98,37 @@ public class MainActivity extends TabActivity {
                     }
                 }
         );
+
+
+        tabWidget = (TabWidget)findViewById(android.R.id.tabs);
+        login_btn = (Button)findViewById(R.id.login_button);
+
+        myTabHost = getTabHost();
+
+//        Intent intent1 = new Intent(MainActivity.this, RecordActivity.class);
+//        Intent intent2 = new Intent(MainActivity.this, CommunityActivity.class);
+        intent2 = new Intent(MainActivity.this, ListActivity.class);
+        intent3 = new Intent(MainActivity.this, HomeActivity.class);
+        intent4 = new Intent(MainActivity.this, FriendActivity.class);
+        intent5 = new Intent(MainActivity.this, SettingsActivity.class);
+
+        //Tab 추가
+//        spec = myTabHost.newTabSpec("Record").setIndicator("RECORD").setContent(intent1);
+//        myTabHost.addTab(spec);
+
+        spec = myTabHost.newTabSpec("Community").setIndicator("COMMUNITY").setContent(intent2);
+        myTabHost.addTab(spec);
+
+        spec = myTabHost.newTabSpec("Home").setIndicator("HOME").setContent(intent3);
+        myTabHost.addTab(spec);
+
+        spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
+        myTabHost.addTab(spec);
+
+        spec = myTabHost.newTabSpec("Settings").setIndicator("SETTINGS").setContent(intent5);
+        myTabHost.addTab(spec);
+
+        myTabHost.setCurrentTab(1);  //메인 Tab 지정
 
         // 로그인 버튼 클릭 시
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -164,37 +156,24 @@ public class MainActivity extends TabActivity {
         try{
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-            // 성공적으로 로그인 한 경우, UI 업데이트
+            // TODO: 성공적으로 로그인 한 경우, UI 업데이트
             if (account!=null){
                 Log.d("LOGIN", "success");
                 idToken = account.getIdToken();
                 personName = account.getDisplayName();
                 Log.d("idToken=", idToken);
                 Log.d("personName=", personName);
+                login_btn.setVisibility(View.GONE);
 
-                //send ID Token to server and validate
-                retrofitAPI.postData(new Post(idToken, -1L)).enqueue(new Callback<Post>() {
-                    @Override
-                    public void onResponse(Call<Post> call, Response<Post> response) {
-                        Log.d("POST", "not successful yet");
-                        if (response.isSuccessful()){
-                            Log.d("POST", "POST Success!");
-                            Log.d("POST", ">>>user_id="+response.body().getUser_id().toString());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Post> call, Throwable t) {
-                        Log.d("POST", "POST Failed");
-                        Log.d("POST", t.getMessage());
-                    }
-                });
+                postUserLogin(idToken);
 
             }
         } catch (ApiException e){
             String TAG = "MainActivity";
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             //TODO: 로그인 되어 있지 않은 경우 UI
+            login_btn.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -261,6 +240,73 @@ public class MainActivity extends TabActivity {
         } else {
             ActivityCompat.requestPermissions(this, permissions, 1);
         }
+    }
+
+    //send ID Token to server and validate
+    private void postUserLogin(String idToken){
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.postLoginToken(new LoginRequestDto(idToken, -1L)).enqueue(new Callback<LoginRequestDto>() {
+                @Override
+                public void onResponse(Call<LoginRequestDto> call, Response<LoginRequestDto> response) {
+                    Log.d("POST", "not success yet");
+                    if (response.isSuccessful()){
+                        Log.d("POST", "POST Success!");
+                        Log.d("POST", ">>>user_id="+response.body().getUser_id().toString());
+                        userIdObject = new UserIdObject(response.body().getUser_id());
+                        getUserInfo(userIdObject);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<LoginRequestDto> call, Throwable t) {
+                    Log.d("POST", "POST Failed");
+                    Log.d("POST", t.getMessage());
+                }
+            });
+        }
+    }
+
+    //get user info by user_id
+    private void getUserInfo(UserIdObject userIdObject){
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.getUserInfo(userIdObject.getId()).enqueue(new Callback<UserInfoData>() {
+                @Override
+                public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
+                    UserInfoData userInfoData = response.body();
+                    if (userInfoData!=null){
+                        Log.d("GET_USERINFO", "GET SUCCESS");
+                        Log.d("GET_USERINFO", response.body().getEmail());
+
+                        putInfoToIntents(response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserInfoData> call, Throwable t) {
+                    Log.d("GET_USERINFO", "GET FAILED");
+                }
+            });
+        }
+    }
+
+    private void putInfoToIntents(UserInfoData userInfoData){
+        Log.d("PUT_INTENTS", userInfoData.getEmail());
+        // TODO: intent3 - HomeActivity <- Practices
+        intent3.putExtra("practices", userInfoData.getPractices());
+
+        // TODO: intent4 - FriendActivity <- Friends
+
+        // intent5 - SettingsActivity <- basic Userinfo
+        intent5.putExtra("name", userInfoData.getName());
+        intent5.putExtra("email", userInfoData.getEmail());
+        intent5.putExtra("picture", userInfoData.getPicture());
+        intent5.putExtra("point", String.valueOf(userInfoData.getPoint()));
     }
 
 }

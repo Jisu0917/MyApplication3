@@ -1,16 +1,18 @@
 package com.example.myapplication2.api;
 
-import com.example.myapplication2.api.dto.Post;
-
-import java.util.HashMap;
+import com.example.myapplication2.api.dto.LoginRequestDto;
+import com.example.myapplication2.api.dto.UserInfoData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface RetrofitAPI {
     @POST("/api/login")
-    Call<Post> postData(@Body Post param);
+    Call<LoginRequestDto> postLoginToken(@Body LoginRequestDto param);
+
+    @GET("/api/users/{id}")
+    Call<UserInfoData> getUserInfo(@Path("id") Long id);
 }
