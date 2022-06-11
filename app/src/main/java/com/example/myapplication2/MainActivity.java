@@ -57,6 +57,8 @@ public class MainActivity extends TabActivity {
     static RetrofitAPI retrofitAPI;
     static UserIdObject userIdObject;
 
+    static Intent intent2, intent3, intent4, intent5;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +106,10 @@ public class MainActivity extends TabActivity {
 
 //        Intent intent1 = new Intent(MainActivity.this, RecordActivity.class);
 //        Intent intent2 = new Intent(MainActivity.this, CommunityActivity.class);
-        Intent intent2 = new Intent(MainActivity.this, ListActivity.class);
-        Intent intent3 = new Intent(MainActivity.this, HomeActivity.class);
-        Intent intent4 = new Intent(MainActivity.this, FriendActivity.class);
-        Intent intent5 = new Intent(MainActivity.this, SettingsActivity.class);
+        intent2 = new Intent(MainActivity.this, ListActivity.class);
+        intent3 = new Intent(MainActivity.this, HomeActivity.class);
+        intent4 = new Intent(MainActivity.this, FriendActivity.class);
+        intent5 = new Intent(MainActivity.this, SettingsActivity.class);
 
         //Tab 추가
 //        spec = myTabHost.newTabSpec("Record").setIndicator("RECORD").setContent(intent1);
@@ -238,12 +240,12 @@ public class MainActivity extends TabActivity {
         }
     }
 
+    //send ID Token to server and validate
     private void postUserLogin(String idToken){
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
         if (retrofitClient!=null){
             retrofitAPI = RetrofitClient.getRetrofitAPI();
-            //send ID Token to server and validate
             retrofitAPI.postLoginToken(new LoginRequestDto(idToken, -1L)).enqueue(new Callback<LoginRequestDto>() {
                 @Override
                 public void onResponse(Call<LoginRequestDto> call, Response<LoginRequestDto> response) {
@@ -265,6 +267,7 @@ public class MainActivity extends TabActivity {
         }
     }
 
+    //get user info by user_id
     private void getUserInfo(UserIdObject userIdObject){
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
@@ -276,7 +279,9 @@ public class MainActivity extends TabActivity {
                     UserInfoData userInfoData = response.body();
                     if (userInfoData!=null){
                         Log.d("GET_USERINFO", "GET SUCCESS");
-                        Log.d("GET_USERINFO", response.body().getEmail().toString());
+                        Log.d("GET_USERINFO", response.body().getEmail());
+
+                        putInfoToIntents(response.body());
                     }
                 }
 
@@ -286,6 +291,19 @@ public class MainActivity extends TabActivity {
                 }
             });
         }
+    }
+
+    private void putInfoToIntents(UserInfoData userInfoData){
+        Log.d("PUT_INTENTS", userInfoData.getEmail());
+        // TODO: intent3 - HomeActivity <- Practices
+
+        // TODO: intent4 - FriendActivity <- Friends
+
+        // intent5 - SettingsActivity <- basic Userinfo
+        intent5.putExtra("name", userInfoData.getName());
+        intent5.putExtra("email", userInfoData.getEmail());
+        intent5.putExtra("picture", userInfoData.getPicture());
+        intent5.putExtra("point", String.valueOf(userInfoData.getPoint()));
     }
 
 }
