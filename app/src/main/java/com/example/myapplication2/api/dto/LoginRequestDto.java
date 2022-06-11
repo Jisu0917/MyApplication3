@@ -1,5 +1,7 @@
 package com.example.myapplication2.api.dto;
 
+import java.io.Serializable;
+
 public class LoginRequestDto {
     String idToken;
     Long user_id;
