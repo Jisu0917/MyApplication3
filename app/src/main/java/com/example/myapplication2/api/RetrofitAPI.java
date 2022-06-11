@@ -1,6 +1,7 @@
 package com.example.myapplication2.api;
 
 import com.example.myapplication2.api.dto.LoginRequestDto;
+import com.example.myapplication2.api.dto.UserInfoData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,5 +14,5 @@ public interface RetrofitAPI {
     Call<LoginRequestDto> postLoginToken(@Body LoginRequestDto param);
 
     @GET("/api/users/{id}")
-    Call getUserInfo(@Path("id") Long id);
+    Call<UserInfoData> getUserInfo(@Path("id") Long id);
 }
