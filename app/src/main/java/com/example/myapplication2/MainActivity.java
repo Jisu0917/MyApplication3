@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.Toast;
@@ -172,6 +173,7 @@ public class MainActivity extends TabActivity {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             //TODO: 로그인 되어 있지 않은 경우 UI
             login_btn.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -296,6 +298,7 @@ public class MainActivity extends TabActivity {
     private void putInfoToIntents(UserInfoData userInfoData){
         Log.d("PUT_INTENTS", userInfoData.getEmail());
         // TODO: intent3 - HomeActivity <- Practices
+        intent3.putExtra("practices", userInfoData.getPractices());
 
         // TODO: intent4 - FriendActivity <- Friends
 

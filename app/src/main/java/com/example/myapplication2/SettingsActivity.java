@@ -31,6 +31,8 @@ public class SettingsActivity extends AppCompatActivity {
         if (name!=null) name_text.setText("name: "+name);
         if (email!=null) email_text.setText("email: "+email);
         if (point!=null) point_text.setText("point: "+point);
-        if (picture!=null) Glide.with(this).load(picture).into(picture_image);
+        if (picture!=null) Glide.with(this).load(picture)
+                .placeholder(R.drawable.ic_bulb_off)
+                .into(picture_image);
     }
 }
