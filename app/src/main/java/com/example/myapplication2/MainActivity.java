@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.dto.LoginRequestDto;
+import com.example.myapplication2.api.dto.UserInfoData;
 import com.example.myapplication2.api.objects.UserIdObject;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -246,11 +247,12 @@ public class MainActivity extends TabActivity {
             retrofitAPI.postLoginToken(new LoginRequestDto(idToken, -1L)).enqueue(new Callback<LoginRequestDto>() {
                 @Override
                 public void onResponse(Call<LoginRequestDto> call, Response<LoginRequestDto> response) {
-                    Log.d("POST", "not successful yet");
+                    Log.d("POST", "not success yet");
                     if (response.isSuccessful()){
                         Log.d("POST", "POST Success!");
                         Log.d("POST", ">>>user_id="+response.body().getUser_id().toString());
                         userIdObject = new UserIdObject(response.body().getUser_id());
+                        getUserInfo(userIdObject);
                     }
                 }
 
@@ -258,6 +260,29 @@ public class MainActivity extends TabActivity {
                 public void onFailure(Call<LoginRequestDto> call, Throwable t) {
                     Log.d("POST", "POST Failed");
                     Log.d("POST", t.getMessage());
+                }
+            });
+        }
+    }
+
+    private void getUserInfo(UserIdObject userIdObject){
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.getUserInfo(userIdObject.getId()).enqueue(new Callback<UserInfoData>() {
+                @Override
+                public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
+                    UserInfoData userInfoData = response.body();
+                    if (userInfoData!=null){
+                        Log.d("GET_USERINFO", "GET SUCCESS");
+                        Log.d("GET_USERINFO", response.body().getEmail().toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserInfoData> call, Throwable t) {
+                    Log.d("GET_USERINFO", "GET FAILED");
                 }
             });
         }
