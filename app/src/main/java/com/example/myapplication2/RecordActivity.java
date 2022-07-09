@@ -109,6 +109,7 @@ public class RecordActivity extends AppCompatActivity {
         recentRecImg.setClipToOutline(true);
 
         f = new File(EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR);
+        System.out.println(f);
         setThumbnail();
 
         recStartBtn.setOnClickListener(new View.OnClickListener() {
