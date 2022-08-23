@@ -90,4 +90,31 @@ public class FeedbacksData {
     public void setClosing_comment(String closing_comment) {
         this.closing_comment = closing_comment;
     }
+
+
+    ////
+    @SerializedName("practice_id")
+    private Long practice_id;
+
+    @SerializedName("user_id")
+    private Long user_id;
+
+
+    public Long getPraticeId() {
+        return practice_id;
+    }
+
+    public void setPracticeId(Long practice_id) {
+        this.practice_id = practice_id;
+    }
+
+    public Long getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    ////
 }

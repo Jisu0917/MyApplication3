@@ -12,6 +12,14 @@ public class PostsData {
     @SerializedName("content")
     private String content;
 
+    ////
+    @SerializedName("practice_id")
+    private Long practice_id;
+
+    @SerializedName("user_id")
+    private Long user_id;
+    ////
+
     @SerializedName("practices")
     private PracticesData practices;
 
@@ -38,6 +46,24 @@ public class PostsData {
     public void setContent(String content) {
         this.content = content;
     }
+
+    ////
+    public Long getPracticeId() {
+        return practice_id;
+    }
+
+    public void setPracticeId(Long practice_id) {
+        this.practice_id = practice_id;
+    }
+
+    public Long getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(Long user_id) {
+        this.user_id = user_id;
+    }
+    ////
 
     public PracticesData getPractices() {
         return practices;

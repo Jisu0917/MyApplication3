@@ -46,7 +46,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="작성일"/>
+                    android:text="게시물 번호"/>
 
                 <TextView
                     android:id="@+id/date_tv"
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="제목입니다."
+                    android:text="게시물 번호입니다."
                     />
             </LinearLayout>
             <TextView
@@ -93,19 +93,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/comment_et"
-            android:layout_width="match_parent"
-            android:padding="8dp"
-            android:layout_height="wrap_content"
-            android:background="#eeeeee"
-            android:layout_weight="1"
-            android:hint="댓글 내용을 입력하세요"/>
+<!--        <EditText-->
+<!--            android:id="@+id/comment_et"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:padding="8dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#eeeeee"-->
+<!--            android:layout_weight="1"-->
+<!--            android:hint="댓글 내용을 입력하세요"-->
+<!--            />-->
         <Button
             android:id="@+id/reg_button"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:padding="8dp"
-            android:text="등록하기"/>
+            android:text="피드백 등록하기"
+
+            android:onClick="showCmtDialog"/>
     </LinearLayout>
 </LinearLayout>

@@ -6,10 +6,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
+import android.icu.text.SymbolTable;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
@@ -24,11 +26,11 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -37,6 +39,18 @@ import java.io.File;
 import java.util.Date;
 
 import static com.example.myapplication2.MainActivity.EXTERNAL_STORAGE_PATH;
+
+import com.example.myapplication2.api.RetrofitAPI;
+import com.example.myapplication2.api.RetrofitClient;
+import com.example.myapplication2.api.RetrofitClient2;
+import com.example.myapplication2.api.dto.AnalysisData;
+import com.example.myapplication2.api.dto.LoginRequestDto;
+import com.example.myapplication2.api.dto.PracticesData;
+import com.example.myapplication2.api.objects.UserIdObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RecordActivity extends AppCompatActivity {
     public static final String TAG = "RecordActivity";
@@ -66,6 +80,14 @@ public class RecordActivity extends AppCompatActivity {
     DBHelper dbHelper;
     SQLiteDatabase db = null;
 
+
+    static String personName;
+    static String idToken;
+    static Long userId = MainActivity.userId;
+
+    static RetrofitAPI retrofitAPI;
+    static UserIdObject userIdObject;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,10 +109,26 @@ public class RecordActivity extends AppCompatActivity {
         // 안드로이드 6.0 이상 버전에서는 CAMERA 권한 허가를 요청한다.
         requestPermissionCamera();
 
-        File directory = new File(Environment.getExternalStorageDirectory() + File.separator+RECORDED_DIR);
-        if (!directory.exists()) { // 원하는 경로에 폴더가 있는지 확인
-            directory.mkdirs();
-            Log.d(TAG, "Directory Created");
+        if (Build.VERSION.SDK_INT >= 30){
+            System.out.println("android version >= 30");
+
+            File destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+            if (!destination.exists()) { // 원하는 경로에 폴더가 있는지 확인
+                destination.mkdirs();
+                Log.d(TAG, "destination Created");
+            }
+
+            File directory = new File(destination + File.separator+RECORDED_DIR);
+            if (!directory.exists()) { // 원하는 경로에 폴더가 있는지 확인
+                directory.mkdirs();
+                Log.d(TAG, "Directory Created");
+            }
+        } else{
+            File directory = new File(Environment.getExternalStorageDirectory() + File.separator+RECORDED_DIR);
+            if (!directory.exists()) { // 원하는 경로에 폴더가 있는지 확인
+                directory.mkdirs();
+                Log.d(TAG, "Directory Created");
+            }
         }
 
 
@@ -110,9 +148,10 @@ public class RecordActivity extends AppCompatActivity {
 
         f = new File(EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR);
         System.out.println(f);
-        setThumbnail();
+        //setThumbnail();
 
         recStartBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.S)
             @Override
             public void onClick(View v) {
 
@@ -143,10 +182,22 @@ public class RecordActivity extends AppCompatActivity {
 //                    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
 
-                    filename = createFilename();
-                    Log.d(TAG, "current filename : " + filename);
-                    recorder.setOutputFile(filename);
+                    if (Build.VERSION.SDK_INT >= 30){
+                        System.out.println("android version >= 30");
+
+                        filename = createFilename30();
+                        Log.d(TAG, "current filename (30) : " + filename);
+                        recorder.setOutputFile(filename);
+
+                        //recorder.setOutputFile(destination + "/myRecordingFile01.mp4");
+                    } else {
+                        filename = createFilename();
+                        Log.d(TAG, "current filename : " + filename);
+                        recorder.setOutputFile(filename);
+                    }
+
                     recorder.setPreviewDisplay(holder.getSurface());
+
                     recorder.prepare();
                     recorder.start();
                     recStartBtn.setVisibility(View.INVISIBLE);
@@ -201,11 +252,13 @@ public class RecordActivity extends AppCompatActivity {
                 }
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
 
-                setThumbnail();
+                //setThumbnail();
 
 
                 // DB에 파일명 저장
                 db.execSQL("UPDATE tableName SET filename = '" + filename + "' WHERE mid = " + practice_index);
+                System.out.println("DB에 파일명 저장 완료");
+
             }
         });
 
@@ -219,6 +272,9 @@ public class RecordActivity extends AppCompatActivity {
         analysisBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // 서버에 업로드
+                postNewPractice(Long.valueOf(practice_index));
+
                 finish();
                 Toast.makeText(RecordActivity.this, "분석을 시작합니다. 이 작업은 시간이 걸립니다.", Toast.LENGTH_SHORT).show();
             }
@@ -306,6 +362,15 @@ public class RecordActivity extends AppCompatActivity {
         return newFilename;
     }
 
+    private String createFilename30() {
+        String newFilename = "";
+        File destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+
+        newFilename = destination.getAbsolutePath() + "/" + RECORDED_DIR + "/" + getNowTime() + ".mp4";
+
+        return newFilename;
+    }
+
     private String getNowTime() {
         String nowTime = "";
         Date date = new Date();
@@ -388,6 +453,133 @@ public class RecordActivity extends AppCompatActivity {
             }
         }
         return cameraId;
+    }
+
+
+    private void postNewPractice(Long practice_index) {
+        System.out.println("서버에 업로드 시작");
+
+
+        dbHelper = new DBHelper(context, 4);
+        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
+
+
+        Cursor cursor = db.rawQuery(" SELECT * FROM tableName ", null);
+        startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+        //cursor.move(practice_index.intValue());
+        cursor.moveToLast();
+
+
+        String title = cursor.getString(1);  // 1 : content
+
+        String audioPath = cursor.getString(10);  // 10 : filename(url)
+
+        //this.scope = cursor.getInt(8);  // 8 : starfill. 0 = PUBLIC, 1 = PRIVATE
+
+        String scope = "";
+
+        int starfill = cursor.getInt(8);  // 8 : starfill. 0 = PUBLIC, 1 = PRIVATE
+        if (starfill == 0) {
+            scope = "PUBLIC";
+        } else {
+            scope = "PRIVATE";
+        }
+
+        AnalysisData analysisData = new AnalysisData();
+        int finished = cursor.getInt(9); // 9 : finished. 0 (unfinished), 1 (finished)
+        if (finished == 0) {
+            analysisData.setState("INCOMPLETE");
+        } else {
+            analysisData.setState("COMPLETE");
+        }
+
+        String sort = "ONLINE";  // 임시, 확인용 - 온라인, 오프라인 설정하는 거 addpracticeactivity에 추가해야함
+        String gender = "WOMEN";    // 임시, 확인용 - gender 설정??? 추가해야함
+
+        PracticesData practice = new PracticesData();
+        practice.setUserId(userId);
+        practice.setTitle(title);
+        practice.setScope(scope);
+        practice.setSort(sort);
+        practice.setGender(gender);
+        practice.setMoveSensitivity(3);  // 임시, 확인용
+        practice.setEyesSensitivity(3);  // 임시, 확인용
+
+//        // 임시, 확인용
+//        PracticesData practice = new PracticesData();
+//        practice.setUserId(3L);
+//        practice.setTitle("title000");
+//        practice.setScope("PRIVATE");
+//        practice.setSort("ONLINE");
+//        practice.setGender("MEN");
+//        practice.setMoveSensitivity(2);  // 임시, 확인용
+//        practice.setEyesSensitivity(2);  // 임시, 확인용
+
+
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.postNewPractice(practice).enqueue(new Callback<PracticesData>() {
+                @Override
+                public void onResponse(Call<PracticesData> call, Response<PracticesData> response) {
+                    Log.d("POST", "not success yet");
+                    if (response.isSuccessful()){
+                        Log.d("POST", "POST Success!");
+                        Log.d("POST", ">>>mid="+response.body().getId().toString());
+                        Log.d("POST", ">>>title(content)="+response.body().getTitle());
+//
+//                        getPresignedURL();
+                    }
+                    else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PracticesData> call, Throwable t) {
+                    Log.d("POST", "POST Failed");
+                    Log.d("POST", t.getMessage());
+
+                    getPresignedURL();
+                }
+            });
+        }
+    }
+
+    private void getPresignedURL() {
+
+        System.out.println("getPresignedURL 시작");
+
+
+        RetrofitClient2 retrofitClient = RetrofitClient2.getInstance();
+
+        Integer[] ids = {Math.toIntExact(userId), practice_index};
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient2.getRetrofitAPI();
+            retrofitAPI.getPresignedURL(ids).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Log.d("POST", "not success yet");
+                    if (response.isSuccessful()){
+                        Log.d("POST", "POST Success!");
+                        Log.d("POST", ">>>url="+response.body());
+                    }
+                    else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.d("POST", "POST Failed");
+                    Log.d("POST", t.getMessage());
+                }
+            });
+        }
     }
 
 }

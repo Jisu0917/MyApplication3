@@ -54,6 +54,7 @@ public class MainActivity extends TabActivity {
 
     static String personName;
     static String idToken;
+    static Long userId;
 
     static RetrofitAPI retrofitAPI;
     static UserIdObject userIdObject;
@@ -257,6 +258,9 @@ public class MainActivity extends TabActivity {
                         Log.d("POST", ">>>user_id="+response.body().getUser_id().toString());
                         userIdObject = new UserIdObject(response.body().getUser_id());
                         getUserInfo(userIdObject);
+
+                        /////
+                        userId = response.body().getUser_id();
                     }
                 }
 

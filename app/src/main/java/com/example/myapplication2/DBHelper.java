@@ -31,7 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * */
 
     /*
-     * starFill : 0 (empty), 1 (fill)
+     * starFill : 0 (empty = PUBLIC), 1 (fill = PRIVATE)
      * finished : 0 (unfinished), 1 (finished)
      * alarmBefore : 0 (none), 1 (minute), 2 (hour), 3 (day)
      * */

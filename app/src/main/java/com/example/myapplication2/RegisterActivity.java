@@ -1,9 +1,9 @@
 package com.example.myapplication2;
 
+import static com.example.myapplication2.MainActivity.userId;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,15 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
+import com.example.myapplication2.api.RetrofitAPI;
+import com.example.myapplication2.api.RetrofitClient;
+import com.example.myapplication2.api.dto.PostsData;
+import com.example.myapplication2.api.dto.PracticesData;
+import com.example.myapplication2.api.objects.UserIdObject;
+
 import java.net.URL;
 
-import javax.net.ssl.HttpsURLConnection;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -32,7 +34,18 @@ public class RegisterActivity extends AppCompatActivity {
     Button reg_button;
 
     // 유저아이디 변수
-    String userid = "";
+    String useridToken = "";
+
+
+
+    static String personName;
+    static String idToken;
+    static Long userId = MainActivity.userId;
+
+    static RetrofitAPI retrofitAPI;
+    static UserIdObject userIdObject;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
 // ListActivity 에서 넘긴 userid 를 변수로 받음
-        userid = getIntent().getStringExtra("userid");
+        useridToken = getIntent().getStringExtra("userid");
 
 // 컴포넌트 초기화
         title_et = findViewById(R.id.title_et);
@@ -53,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
 // 게시물 등록 함수
                 RegBoard regBoard = new RegBoard();
-                regBoard.execute(userid, title_et.getText().toString(), content_et.getText().toString());
+                regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
             }
         });
 
@@ -95,14 +108,23 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String userid = params[0];
+            //String userid = params[0];
             String title = params[1];
             String content = params[2];
 
-            String server_url = "http://15.164.252.136/reg_board.php";
+            //////
 
 
-            URL url;
+
+            makeNewPost(title, content);
+
+            //////
+
+
+            //String server_url = "http://15.164.252.136/reg_board.php";
+
+
+            //URL url;
             String response = "";
 //            try {
 //                url = new URL(server_url);
@@ -146,6 +168,47 @@ public class RegisterActivity extends AppCompatActivity {
 //            }
 
             return response;
+        }
+    }
+
+    private void makeNewPost(String title, String content) {
+        System.out.println("서버에 게시물 업로드 시작");
+
+        PostsData newpostdata = new PostsData();
+        newpostdata.setUserId(userId);
+        newpostdata.setPracticeId(8L);  // 임시, 확인용 - register activity에 어떤 연습인지 선택하는 기능 추가해야함!
+        newpostdata.setTitle(title);
+        newpostdata.setContent(content);
+        //newpostdata.setPractices();
+
+
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.makeNewPost(newpostdata).enqueue(new Callback<PostsData>() {
+                @Override
+                public void onResponse(Call<PostsData> call, Response<PostsData> response) {
+                    Log.d("POST", "not success yet");
+                    if (response.isSuccessful()){
+                        Log.d("POST", "POST Success!");
+                        Log.d("POST", ">>>user id="+response.body().getUserId().toString());
+                        Log.d("POST", ">>>practice id="+response.body().getPracticeId().toString());
+                        Log.d("POST", ">>>title="+response.body().getTitle());
+                        Log.d("POST", ">>>content="+response.body().getContent());
+                    }
+                    else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());  //500
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PostsData> call, Throwable t) {
+                    Log.d("POST", "POST Failed");
+                    Log.d("POST", t.getMessage());
+                }
+            });
         }
     }
 }

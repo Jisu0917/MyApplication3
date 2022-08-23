@@ -1,11 +1,8 @@
 package com.example.myapplication2;
 
-import static com.example.myapplication2.MainActivity.idToken;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,22 +13,22 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.myapplication2.api.RetrofitAPI;
+import com.example.myapplication2.api.RetrofitClient;
+import com.example.myapplication2.api.dto.PostsData;
+import com.example.myapplication2.api.dto.PracticesData;
+import com.example.myapplication2.api.objects.UserIdObject;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
-import javax.net.ssl.HttpsURLConnection;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/*
+* 게시물 리스트 자동 새로고침 기능 구현해야 함
+* */
 
 public class ListActivity extends AppCompatActivity {
 
@@ -45,11 +42,24 @@ public class ListActivity extends AppCompatActivity {
 
     String userid = "";
 
+    ArrayList<PostsData> postsDataList = new ArrayList<>();
+
     // 리스트뷰에 사용할 제목 배열
     ArrayList<String> titleList = new ArrayList<>();
+    ArrayList<String> contentList = new ArrayList<>();
+    ArrayList<Long> postIdList = new ArrayList<>();
+    ArrayList<Long> practiceIdList = new ArrayList<>();
 
-    // 클릭했을 때 어떤 게시물을 클릭했는지 게시물 번호를 담기 위한 배열
-    ArrayList<String> seqList = new ArrayList<>();
+    // 클릭했을 때 어떤 게시물을 클릭했는지 게시물 번호를 담기 위한 배열  -- 변수 seq -> practice_id로 변경
+//    ArrayList<String> seqList = new ArrayList<>();
+
+
+    static String personName;
+    static String idToken;
+
+    static RetrofitAPI retrofitAPI;
+    static UserIdObject userIdObject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +82,16 @@ public class ListActivity extends AppCompatActivity {
                 Toast.makeText(ListActivity.this, adapterView.getItemAtPosition(i)+ " 클릭", Toast.LENGTH_SHORT).show();
 
 // 게시물의 번호와 userid를 가지고 DetailActivity 로 이동
+                // 게시물 제목과 내용, practice id를 가지고 DetailActivity로 이동
                 Intent intent = new Intent(ListActivity.this, DetailActivity.class);
-                intent.putExtra("board_seq", seqList.get(i));
-                intent.putExtra("userid", userid);
+//                intent.putExtra("board_seq", seqList.get(i));
+//                intent.putExtra("userid", userid);
+
+                intent.putExtra("title", titleList.get(i));
+                intent.putExtra("content", contentList.get(i));
+                intent.putExtra("postId", postIdList.get(i));
+                intent.putExtra("practiceId", practiceIdList.get(i));
+
                 startActivity(intent);
 
             }
@@ -137,35 +154,60 @@ public class ListActivity extends AppCompatActivity {
 
 // 배열들 초기화
             titleList.clear();
-            seqList.clear();
+            contentList.clear();
+            postIdList.clear();
+            practiceIdList.clear();
+//            seqList.clear();
 
-            try {
+            if (postsDataList != null) {
+                // PostsData 형태로 넘어온 데이터를 title 리스트와 practice_id 리스트로 변환
+                for (int i=0; i<postsDataList.size(); i++) {
+                    PostsData post = postsDataList.get(i);
 
-// 결과물이 JSONArray 형태로 넘어오기 때문에 파싱
-                JSONArray jsonArray = new JSONArray(result);
+                    String title = post.getTitle();
+                    String content = post.getContent();
+                    Long postId = post.getId();
+//                    PracticesData practicesData = post.getPractices();
+//                    Long practiceId = practicesData.getId();
+                    Long practiceId = post.getPracticeId();
 
-                for(int i=0;i<jsonArray.length();i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                    String title = jsonObject.optString("title");
-                    String seq = jsonObject.optString("seq");
-
-// title, seq 값을 변수로 받아서 배열에 추가
                     titleList.add(title);
-                    seqList.add(seq);
-
+                    contentList.add(content);
+                    postIdList.add(postId);
+                    practiceIdList.add(practiceId);
                 }
+            } else {
+                System.out.println("postsDataList is null...");
+            }
+//
+//// 결과물이 JSONArray 형태로 넘어오기 때문에 파싱
+//                JSONArray jsonArray = new JSONArray(result);
+//
+//                for(int i=0;i<jsonArray.length();i++){
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//
+//                    String title = jsonObject.optString("title");
+//                    //String seq = jsonObject.optString("seq");
+//                    String seq = jsonObject.optString("practice_id");
+//
+//// title, seq 값을 변수로 받아서 배열에 추가
+//                    titleList.add(title);
+////                    seqList.add(seq);
+//
+////                    // 임시, 확인용
+////                    String tmp_title1 = "게시글 제목1";
+////                    String tmp_title2 = "게시글 제목2";
+////                    titleList.add(tmp_title1);
+////                    titleList.add(tmp_title2);
+//
+//                }
 
 // ListView 에서 사용할 arrayAdapter를 생성하고, ListView 와 연결
-                ArrayAdapter arrayAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, titleList);
-                listView.setAdapter(arrayAdapter);
+            ArrayAdapter arrayAdapter = new ArrayAdapter<String>(ListActivity.this, android.R.layout.simple_list_item_1, titleList);
+            listView.setAdapter(arrayAdapter);
 
 // arrayAdapter의 데이터가 변경되었을때 새로고침
-                arrayAdapter.notifyDataSetChanged();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            arrayAdapter.notifyDataSetChanged();
 
 
         }
@@ -173,14 +215,20 @@ public class ListActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+
+            /////
+            getAllPosts();
+            /////
+
+
 //
 // String userid = params[0];
 // String passwd = params[1];
 
-            String server_url = "http://15.164.252.136/load_board.php";
+            //String server_url = "http://15.164.252.136/load_board.php";
 
 
-            URL url;
+            //URL url;
             String response = "";
 //            try {
 //                url = new URL(server_url);
@@ -224,9 +272,45 @@ public class ListActivity extends AppCompatActivity {
 
             // 임시, 확인용
 //            response = "{\"id\":id1,\n\"password\":pw1}";
-            response = "[{\"id\":\"id1\",\"password\":\"pw1\"}]";
+//            response = "[{\"id\":\"id1\",\"password\":\"pw1\"}]";
+//            response = "[{\"title\":\"title001\",\"seq\":\"1\"},{\"title\":\"title002\",\"seq\":\"2\"}]";
+//            response = "[{\"title\":\"title001\",\"practice_id\":\"1\"},{\"title\":\"title002\",\"practice_id\":\"2\"}]";
 
             return response;
+        }
+    }
+
+    private void getAllPosts() {
+
+        System.out.println("서버에서 전체 게시물 가져오기 시작");
+
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.getAllPosts().enqueue(new Callback<ArrayList<PostsData>>() {
+                @Override
+                public void onResponse(Call<ArrayList<PostsData>> call, Response<ArrayList<PostsData>> response) {
+                    if (response.isSuccessful()){
+                        postsDataList = response.body();
+                        if (postsDataList !=null){
+                            Log.d("GET_ALLPOSTS", "GET SUCCESS");
+                            Log.d("GET_ALLPOSTS", postsDataList.toString());
+                        } else {
+                            System.out.println("GET_ALLPOSTS : postsDataList is null...");
+                        }
+                    }
+                    else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<PostsData>> call, Throwable throwable) {
+                    Log.d("GET_ALLPOSTS", "GET FAILED");
+                }
+            });
         }
     }
 }

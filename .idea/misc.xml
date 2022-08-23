@@ -36,6 +36,14 @@
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication4/app/src/main/res/layout/content_list.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication4/app/src/main/res/layout/custom_comment.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication4/app/src/main/res/layout/listview_item.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_addpractice.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_detail.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_list.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_record.xml" value="0.1125" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_register.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_showanalysis.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/custom_comment.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/dialog_cmt.xml" value="0.2047008547008547" />
         <entry key="..\:/Users/user/Desktop/SMWU/4-1/grad_project/MyApplication4/app/src/main/res/layout/activity_editpractice.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/user/Desktop/SMWU/4-1/grad_project/MyApplication4/app/src/main/res/layout/activity_graph.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/user/Desktop/SMWU/4-1/grad_project/MyApplication4/app/src/main/res/layout/activity_home.xml" value="0.264" />
@@ -50,7 +58,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
