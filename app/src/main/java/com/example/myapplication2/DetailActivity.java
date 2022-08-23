@@ -628,13 +628,13 @@ public class DetailActivity extends AppCompatActivity {
 
         if (retrofitClient!=null){
             retrofitAPI = RetrofitClient.getRetrofitAPI();
-            retrofitAPI.makeNewFeedback(feedback).enqueue(new Callback<FeedbacksData>() {
+            retrofitAPI.makeNewFeedback(feedback).enqueue(new Callback<Long>() {
                 @Override
-                public void onResponse(Call<FeedbacksData> call, Response<FeedbacksData> response) {
+                public void onResponse(Call<Long> call, Response<Long> response) {
                     Log.d("POST", "not success yet");
                     if (response.isSuccessful()){
                         Log.d("POST", "POST Success!");
-                        Log.d("POST", ">>>feedback speed comment="+response.body().getSpeed_comment().toString());
+                        Log.d("POST", ">>>response.body()="+response.body());
                     }
                     else {
                         System.out.println("@@@@ feedback post : response is not successful...");
@@ -643,7 +643,7 @@ public class DetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<FeedbacksData> call, Throwable t) {
+                public void onFailure(Call<Long> call, Throwable t) {
                     Log.d("POST", "POST Failed");
                     Log.d("POST", t.getMessage());
                 }

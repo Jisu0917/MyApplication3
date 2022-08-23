@@ -186,16 +186,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (retrofitClient!=null){
             retrofitAPI = RetrofitClient.getRetrofitAPI();
-            retrofitAPI.makeNewPost(newpostdata).enqueue(new Callback<PostsData>() {
+            retrofitAPI.makeNewPost(newpostdata).enqueue(new Callback<Long>() {
                 @Override
-                public void onResponse(Call<PostsData> call, Response<PostsData> response) {
+                public void onResponse(Call<Long> call, Response<Long> response) {
                     Log.d("POST", "not success yet");
                     if (response.isSuccessful()){
                         Log.d("POST", "POST Success!");
-                        Log.d("POST", ">>>user id="+response.body().getUserId().toString());
-                        Log.d("POST", ">>>practice id="+response.body().getPracticeId().toString());
-                        Log.d("POST", ">>>title="+response.body().getTitle());
-                        Log.d("POST", ">>>content="+response.body().getContent());
+                        Log.d("POST", ">>>response.body()="+response.body());
                     }
                     else {
                         System.out.println("@@@@ response is not successful...");
@@ -204,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<PostsData> call, Throwable t) {
+                public void onFailure(Call<Long> call, Throwable t) {
                     Log.d("POST", "POST Failed");
                     Log.d("POST", t.getMessage());
                 }

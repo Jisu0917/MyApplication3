@@ -47,6 +47,7 @@ import com.example.myapplication2.api.dto.AnalysisData;
 import com.example.myapplication2.api.dto.LoginRequestDto;
 import com.example.myapplication2.api.dto.PracticesData;
 import com.example.myapplication2.api.objects.UserIdObject;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -520,16 +521,15 @@ public class RecordActivity extends AppCompatActivity {
 
         if (retrofitClient!=null){
             retrofitAPI = RetrofitClient.getRetrofitAPI();
-            retrofitAPI.postNewPractice(practice).enqueue(new Callback<PracticesData>() {
+            retrofitAPI.postNewPractice(practice).enqueue(new Callback<Long>() {
                 @Override
-                public void onResponse(Call<PracticesData> call, Response<PracticesData> response) {
+                public void onResponse(Call<Long> call, Response<Long> response) {
                     Log.d("POST", "not success yet");
                     if (response.isSuccessful()){
                         Log.d("POST", "POST Success!");
-                        Log.d("POST", ">>>mid="+response.body().getId().toString());
-                        Log.d("POST", ">>>title(content)="+response.body().getTitle());
-//
-//                        getPresignedURL();
+                        Log.d("POST", ">>>response.body()="+response.body());
+
+                        getPresignedURL();
                     }
                     else {
                         System.out.println("@@@@ response is not successful...");
@@ -538,11 +538,9 @@ public class RecordActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<PracticesData> call, Throwable t) {
+                public void onFailure(Call<Long> call, Throwable t) {
                     Log.d("POST", "POST Failed");
                     Log.d("POST", t.getMessage());
-
-                    getPresignedURL();
                 }
             });
         }
@@ -559,9 +557,9 @@ public class RecordActivity extends AppCompatActivity {
 
         if (retrofitClient!=null){
             retrofitAPI = RetrofitClient2.getRetrofitAPI();
-            retrofitAPI.getPresignedURL(ids).enqueue(new Callback<String>() {
+            retrofitAPI.getPresignedURL(ids).enqueue(new Callback<JsonObject>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     Log.d("POST", "not success yet");
                     if (response.isSuccessful()){
                         Log.d("POST", "POST Success!");
@@ -574,7 +572,7 @@ public class RecordActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<String> call, Throwable t) {
+                public void onFailure(Call<JsonObject> call, Throwable t) {
                     Log.d("POST", "POST Failed");
                     Log.d("POST", t.getMessage());
                 }

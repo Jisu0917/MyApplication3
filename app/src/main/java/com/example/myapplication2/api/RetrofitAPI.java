@@ -7,6 +7,7 @@ import com.example.myapplication2.api.dto.PostsData;
 import com.example.myapplication2.api.dto.PracticesData;
 import com.example.myapplication2.api.dto.UserInfoData;
 import com.google.android.gms.common.api.internal.StatusCallback;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ public interface RetrofitAPI {
     // 연습
     // 새 연습 만들기
     @POST("/api/practices")
-    Call<PracticesData> postNewPractice(@Body PracticesData param);
+    Call<Long> postNewPractice(@Body PracticesData param);
 
     // 연습 수정하기
     @POST("/api/practices/{practice_id}")
@@ -59,7 +60,7 @@ public interface RetrofitAPI {
     // 커뮤니티 게시글
     // 게시글 작성하기
     @POST("/api/posts")
-    Call<PostsData> makeNewPost(@Body PostsData param);
+    Call<Long> makeNewPost(@Body PostsData param);
 
     // 전체 게시글 가져오기
     @GET("/api/posts")
@@ -76,7 +77,7 @@ public interface RetrofitAPI {
     // 피드백
     // 피드백 작성하기
     @POST("/api/feedbacks")
-    Call<FeedbacksData> makeNewFeedback(@Body FeedbacksData param);
+    Call<Long> makeNewFeedback(@Body FeedbacksData param);
 
     // 특정 피드백 정보 가져오기
     @GET("/api/feedbacks/{feedback_id}")
@@ -95,7 +96,7 @@ public interface RetrofitAPI {
     // 영상/음성 분석 요청
     // 임시 URL 발급 받기
     @POST("https://fo5by90j34.execute-api.ap-northeast-2.amazonaws.com/default/getPresignedURL")
-    Call<String> getPresignedURL(@Body Integer[] ids);
+    Call<JsonObject> getPresignedURL(@Body Integer[] ids);
 
     //@PUT("")
 
