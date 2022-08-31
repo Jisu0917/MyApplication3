@@ -106,7 +106,7 @@ public class AddPracticeActivity extends AppCompatActivity {
             content = content.replaceAll("'", "\'\'");
         }
         if (!content.equals("")) {
-            String sql = "INSERT INTO tableName (content,year,month,date,hour,minute,ampm,starfill,finished,filename) VALUES ('" + content + "', " + curYear + ", " + curMonth +", " + curDate + ", " + curHour + ", " + curMinute + ", '" + AmPm + "', " + isStarFilled +", " + 0 + ", '');";
+            String sql = "INSERT INTO tableName (content,year,month,date,hour,minute,ampm,starfill,finished,filename,practice_id) VALUES ('" + content + "', " + curYear + ", " + curMonth +", " + curDate + ", " + curHour + ", " + curMinute + ", '" + AmPm + "', " + isStarFilled +", " + 0 + ", '', 0);";
             db.execSQL(sql);
 
             //finish();

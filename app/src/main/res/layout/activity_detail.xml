@@ -104,11 +104,22 @@
 <!--            />-->
         <Button
             android:id="@+id/reg_button"
-            android:layout_width="300dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:padding="8dp"
-            android:text="피드백 등록하기"
+            android:layout_margin="5dp"
+            android:text="피드백 등록"
 
             android:onClick="showCmtDialog"/>
+
+        <Button
+            android:id="@+id/del_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:layout_margin="5dp"
+            android:text="게시글 삭제"/>
     </LinearLayout>
 </LinearLayout>

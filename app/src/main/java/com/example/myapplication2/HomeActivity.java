@@ -22,11 +22,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.myapplication2.api.RetrofitAPI;
+import com.example.myapplication2.api.RetrofitClient;
+import com.example.myapplication2.api.RetrofitClient2;
 import com.example.myapplication2.api.objects.UserIdObject;
+import com.google.android.gms.common.api.internal.StatusCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
     final String TAG = "MainActivity";
@@ -45,6 +54,10 @@ public class HomeActivity extends AppCompatActivity {
     CustomChoiceListViewAdapter adapter;
     CustomListViewAdapter2 adapter2;
     TextView tvHello;
+
+    static Long userId = MainActivity.userId;
+
+    static RetrofitAPI retrofitAPI;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -193,6 +206,7 @@ public class HomeActivity extends AppCompatActivity {
 
         switch( item.getItemId() ){
             case R.id.menu_done:
+
                 cursor = db.rawQuery(" SELECT * FROM tableName ", null);
                 startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
                 cursor.moveToPosition(index);  // position에 해당하는 row로 가서
@@ -216,25 +230,31 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.menu_delete:
-                int exAlarmID = NO_INPUT;
+                //int exAlarmID = NO_INPUT;
                 cursor = db.rawQuery(" SELECT * FROM tableName ", null);
                 startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
-                while (cursor.moveToNext()) {
-                    if (cursor.getInt(0) == (index + 1)) {  // mid
-                        exAlarmID = cursor.getInt(11);
-                        break;
-                    }
-                }
-                delExAlarm(exAlarmID);
+//                while (cursor.moveToNext()) {
+//                    if (cursor.getInt(0) == (index + 1)) {  // mid
+//                        exAlarmID = cursor.getInt(11);
+//                        break;
+//                    }
+//                }
+//                delExAlarm(exAlarmID);
+
+                cursor.moveToPosition(index);  // position에 해당하는 row로 가서
+                int practice_id = cursor.getInt(11);
+
                 String sql = " DELETE FROM tableName WHERE mid = " + (index + 1);
                 db.execSQL(sql);
+
+                deletePractice(new Long(practice_id));
+
                 listUpdate();
                 listView2.setVisibility(View.GONE);
                 break;
         }
         return true;
     };
-
 
     public void listUpdate() {
         deleteDuplicate();
@@ -370,6 +390,8 @@ public class HomeActivity extends AppCompatActivity {
         ArrayList<Integer> checkedIndexList = adapter2.getCheckedIndexList();
         for (int i = 0; i < checkedIndexList.size(); i++) {
             int exAlarmID = NO_INPUT;
+            int practice_id = 0;
+
             cursor = db.rawQuery(" SELECT * FROM tableName ", null);
             startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
 
@@ -385,12 +407,13 @@ public class HomeActivity extends AppCompatActivity {
             * cursor.getString(10)에서 Index n requested, with a size of n 이라는 에러가 뜬다..
             * */
 
+            practice_id = cursor.getInt(11);
 
 
             String sql = " DELETE FROM tableName WHERE mid = " + (checkedIndexList.get(i) + 1);
             db.execSQL(sql);
 
-
+            deletePractice(new Long(practice_id));
         }
         adapter2.resetCheckedIndexList();
 
@@ -420,7 +443,7 @@ public class HomeActivity extends AppCompatActivity {
 //        }
     }
 
-    // db 테이블 전체 출력 함수 (확인용)
+//    // db 테이블 전체 출력 함수 (확인용)
 //    public String getTableAsString(SQLiteDatabase db, String tableName) {
 //        Log.d(TAG, "getTableAsString called");
 //        String tableString = String.format("Table %s:\n", tableName);
@@ -449,4 +472,33 @@ public class HomeActivity extends AppCompatActivity {
         db.execSQL(sql);
     }
 
+    private void deletePractice(Long practice_id) {
+        System.out.println("서버에서 선택한 연습 삭제 시작");
+
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient != null) {
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.deletePractice(practice_id).enqueue(new Callback<Long>() {
+                @Override
+                public void onResponse(Call<Long> call, Response<Long> response) {
+                    Log.d("DELETE", "not success yet");
+                    if (response.isSuccessful()) {
+                        Log.d("DELETE", "DELETE Success!");
+                        Log.d("DELETE", ">>>response.body()=" + response.body());
+                    } else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Long> call, Throwable t) {
+                    Log.d("DELETE", "POST Failed");
+                    Log.d("DELETE", t.getMessage());
+                }
+            });
+        }
+
+    }
 }

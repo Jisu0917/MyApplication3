@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView title_tv, content_tv, date_tv;
     LinearLayout comment_layout;
 //    EditText comment_et;
-    Button reg_button;
+    Button reg_button, del_button;
 
 //    // 선택한 게시물의 번호
 //    String board_seq = "";
@@ -106,6 +106,15 @@ public class DetailActivity extends AppCompatActivity {
         comment_layout = findViewById(R.id.comment_layout);
 //        comment_et = findViewById(R.id.comment_et);
         reg_button = findViewById(R.id.reg_button);
+        del_button = findViewById(R.id.del_button);
+        
+        del_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletePost();
+                finish();
+            }
+        });
 
 // 등록하기 버튼을 눌렀을 때 댓글 등록 함수 호출
 //        reg_button.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +136,35 @@ public class DetailActivity extends AppCompatActivity {
         LoadBoard loadBoard = new LoadBoard();
         //loadBoard.execute(board_seq);
         loadBoard.execute(postId.toString());
+    }
+
+    private void deletePost() {
+        System.out.println("서버에서 선택한 게시글 삭제 시작");
+
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient != null) {
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.deletePostId(postId).enqueue(new Callback<Long>() {
+                @Override
+                public void onResponse(Call<Long> call, Response<Long> response) {
+                    Log.d("DELETE", "not success yet");
+                    if (response.isSuccessful()) {
+                        Log.d("DELETE", "DELETE Success!");
+                        Log.d("DELETE", ">>>response.body()=" + response.body());
+                    } else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Long> call, Throwable t) {
+                    Log.d("DELETE", "POST Failed");
+                    Log.d("DELETE", t.getMessage());
+                }
+            });
+        }
     }
 
 

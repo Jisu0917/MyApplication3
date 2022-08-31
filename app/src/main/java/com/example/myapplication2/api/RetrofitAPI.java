@@ -1,5 +1,7 @@
 package com.example.myapplication2.api;
 
+import android.net.Uri;
+
 import com.example.myapplication2.api.dto.FeedbacksData;
 import com.example.myapplication2.api.dto.FriendsData;
 import com.example.myapplication2.api.dto.LoginRequestDto;
@@ -9,12 +11,14 @@ import com.example.myapplication2.api.dto.UserInfoData;
 import com.google.android.gms.common.api.internal.StatusCallback;
 import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -43,7 +47,7 @@ public interface RetrofitAPI {
 
     // 연습 수정하기
     @POST("/api/practices/{practice_id}")
-    Call<PracticesData> updatePractice(@Body PracticesData param);
+    Call<Long> updatePractice(@Path("practice_id") Long id, @Body PracticesData param);
 
     // 특정 연습 정보 가져오기
     @GET("/api/practices/{practice_id}")
@@ -55,7 +59,7 @@ public interface RetrofitAPI {
 
     // 연습 삭제하기
     @DELETE("/api/practices/{practice_id}")
-    Call<PracticesData> deletePractice(@Path("practice_id") Long id);
+    Call<Long> deletePractice(@Path("practice_id") Long id);
 
     // 커뮤니티 게시글
     // 게시글 작성하기
@@ -72,7 +76,7 @@ public interface RetrofitAPI {
 
     // 게시글 삭제하기
     @DELETE("/api/posts/{post_id}")
-    Call<PostsData> deletePostId(@Path("post_id") Long id);
+    Call<Long> deletePostId(@Path("post_id") Long id);
 
     // 피드백
     // 피드백 작성하기
@@ -96,10 +100,11 @@ public interface RetrofitAPI {
     // 영상/음성 분석 요청
     // 임시 URL 발급 받기
     @POST("https://fo5by90j34.execute-api.ap-northeast-2.amazonaws.com/default/getPresignedURL")
-    Call<JsonObject> getPresignedURL(@Body Integer[] ids);
+    Call<JsonObject> getPresignedURL(@Body Integer[] ids, @Header("x-amz-meta-userid") Long user_id, @Header("x-amz-meta-practiceid") Long practice_id);
 
-    //@PUT("")
+    @PUT("/{presignedUrl}")
+    Call<StatusCallback> uploadVideo(@Path("presignedUrl") String presignedUrl, @Body File file);
 
-    @POST("http://13.125.254.29:8080/analysis/{user_id}/{practice_id}/{gender}/{pose_sensitivity}/{eyes_sensitivity}")
-    Call<StatusCallback> askAnalysis();
+    @GET("http://13.125.254.29:8080/analysis/{user_id}/{practice_id}/{gender}/{pose_sensitivity}/{eyes_sensitivity}")
+    Call<StatusCallback> askAnalysis(@Path("user_id") int user_id, @Path("practice_id") int practice_id, @Path("gender") String gender, @Path("pose_sensitivity") int pose_sensitivity, @Path("eyes_sensitivity") int eyes_sensitivity);
 }

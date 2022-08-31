@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
-import android.icu.text.SymbolTable;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
@@ -36,6 +35,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 
 import static com.example.myapplication2.MainActivity.EXTERNAL_STORAGE_PATH;
@@ -43,12 +45,18 @@ import static com.example.myapplication2.MainActivity.EXTERNAL_STORAGE_PATH;
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.RetrofitClient2;
+import com.example.myapplication2.api.RetrofitClient3;
 import com.example.myapplication2.api.dto.AnalysisData;
-import com.example.myapplication2.api.dto.LoginRequestDto;
 import com.example.myapplication2.api.dto.PracticesData;
 import com.example.myapplication2.api.objects.UserIdObject;
+import com.google.android.gms.common.api.internal.StatusCallback;
 import com.google.gson.JsonObject;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,6 +96,8 @@ public class RecordActivity extends AppCompatActivity {
 
     static RetrofitAPI retrofitAPI;
     static UserIdObject userIdObject;
+
+    static String presignedUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -460,16 +470,21 @@ public class RecordActivity extends AppCompatActivity {
     private void postNewPractice(Long practice_index) {
         System.out.println("서버에 업로드 시작");
 
-
         dbHelper = new DBHelper(context, 4);
         db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
 
-
         Cursor cursor = db.rawQuery(" SELECT * FROM tableName ", null);
         startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+
+        printDBPracticeId();  // 임시, 확인용
+
         //cursor.move(practice_index.intValue());
         cursor.moveToLast();
 
+        //int mid = cursor.getInt(0);  // 내장 db mid
+        int mid = getLastMid() + 1;
+        
+        System.out.println("#####mid: "+mid);  // 임시, 확인용
 
         String title = cursor.getString(1);  // 1 : content
 
@@ -529,7 +544,11 @@ public class RecordActivity extends AppCompatActivity {
                         Log.d("POST", "POST Success!");
                         Log.d("POST", ">>>response.body()="+response.body());
 
-                        getPresignedURL();
+                        Long practice_id = response.body();
+
+                        updatePracticeIdOnDB(mid, practice_id);  // 내장db에 practice_id 저장하기
+
+                        getPresignedURL(practice_id, practice);  // 영상 업로드 할 url 받아오기
                     }
                     else {
                         System.out.println("@@@@ response is not successful...");
@@ -546,10 +565,9 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-    private void getPresignedURL() {
+    private void getPresignedURL(Long practice_id, PracticesData practice) {
 
         System.out.println("getPresignedURL 시작");
-
 
         RetrofitClient2 retrofitClient = RetrofitClient2.getInstance();
 
@@ -557,13 +575,25 @@ public class RecordActivity extends AppCompatActivity {
 
         if (retrofitClient!=null){
             retrofitAPI = RetrofitClient2.getRetrofitAPI();
-            retrofitAPI.getPresignedURL(ids).enqueue(new Callback<JsonObject>() {
+            retrofitAPI.getPresignedURL(ids, userId, practice_id).enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     Log.d("POST", "not success yet");
                     if (response.isSuccessful()){
                         Log.d("POST", "POST Success!");
                         Log.d("POST", ">>>url="+response.body());
+
+                        JsonObject resbody = response.body();
+
+                        presignedUrl = String.valueOf(resbody.get("uploadURL"));
+
+                        System.out.println("presignedUrl = " + presignedUrl);
+
+                        try {
+                            uploadVideoOkhttp(practice_id, practice);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                     }
                     else {
                         System.out.println("@@@@ response is not successful...");
@@ -580,4 +610,217 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
+    private void uploadVideoOkhttp(Long practice_id, PracticesData practice) throws MalformedURLException {
+        System.out.println("uploadVideoOkhttp 시작");
+
+        // 임시, 확인용
+        String testFilename = "";
+        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
+            testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
+        } else {
+            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+        }
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("video/mp4");
+//        RequestBody body = RequestBody.create(mediaType, new File(filename));
+        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
+
+//        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+//                .addFormDataPart("video",filename,
+//                        RequestBody.create(MediaType.parse("application/octet-stream"),
+//                                new File(filename)))
+//                .build();
+
+        System.out.println("presignedUrl : " + presignedUrl);  // 임시, 확인용
+
+        String url_arr[] = presignedUrl.split(":");
+        url_arr[1] = url_arr[1].replace("\"", "");
+
+        Request request = new Request.Builder()
+                //.url("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/video_undefined_undefined.mp4?Content-Type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQ7FPEYTJT23I2HET%2F20220831%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20220831T060603Z&X-Amz-Expires=900&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEM7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgM25swCMz1n9Mqqcjt5Yq0J5wTNtLGfZY7ajPE3BQGjoCIHOY%2Fg8nnHi6UnXlca54ouHjkuTmyj95m%2F0x7o7ErxLaKvcCCFcQARoMMDY2OTM5MzA3MjE5IgxTmIDDB%2B4uzqlzCHUq1AJJcN%2FOJT25oR7DI%2BvhcSjUgvdu4ndkcm3Ze8cgXheJCgIbpMyRsZhOjAtiFfLE0%2BRTWfRQBWCHTTVCNQqAeMRoNhoQs6R5vJbu5zo%2F%2FjB7cVAZY%2FP9OOKOuAVtKLyn8Wp0m5XNXx4OzrzA%2BwgiK%2FDNEvKmgVwZoqxa%2Fuj%2Fim16JT4UdiEMNhMd3RX8n%2BLSr0%2BGk7goD8pmRChhy4ygRI6EZB2GUbUDPdFVwHEMfvo88PhWt8JKhScosBDyqktsiPN1BPYf1rM781xwN3qgeRyq9wuRBrdpSS7KStITsSZFOl0ETMe8sgPZXvPazhC9REHXzw1h7Yk7%2BDjv6NUAka7EFKJ2Z4fhpBGFuAf%2Ba0WUXbEBuVTrOgaGgwGAO%2B2f9SbmROjjYYb1TmdPyXDP14m1ThOFhXTgRRLt0oOY435YUYJ3hG6nCYdt%2Fe86xweXZ9c%2BIkzmMMn0u5gGOp8B70jC8Yv2d7u8Anc%2BpvdGpHOSu%2BeI3vd2V%2B7PZ0RxqkN8cM7OeCRMH1xup8oYBvQ70cnjKkyhMMhrTlpyXRIBRtcUECxuUaNj%2B5n57il%2FLSjwiXikrwSjgrLa9Nk79GyoQumMU75%2By%2FD7UHYItHiWr%2BxfIZb9VlLcaLdlUIdC8y7xGnCUvDdNchBqNqvrE68nMUS%2BrRbQ83su8bF8iKF%2F&X-Amz-Signature=b4e765a42f0c063afea1d9777eaa5b8220b706337f86af1c1bdab063116a5579&X-Amz-SignedHeaders=host%3Bx-amz-acl&x-amz-acl=public-read")
+                //.url(new URL(presignedUrl))
+                //.url(presignedUrl)
+                .url("https:" + url_arr[1])
+                .method("PUT", body)
+//                .addHeader("x-amz-meta-userid", "12")
+//                .addHeader("x-amz-meta-practiceid", "13")
+                .addHeader("Content-Type", "video/mp4")
+                .build();
+
+        new Thread(() -> {
+            okhttp3.Response response = null;
+            try {
+                response = client.newCall(request).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (response.isSuccessful()){
+                Log.d("PUT", ">>>response.body()="+response.body());
+
+                askAnalysis(practice_id, practice);  // 분석 요청하기
+            }
+            else {
+                System.out.println("@@@@ response is not successful...");
+                System.out.println("@@@@ response code : " + response.code());  //404 403
+                System.out.println("@@@@ response : " + response);
+            }
+        }).start();
+
+
+    }
+
+    private void uploadVideo() {
+        System.out.println("uploadVideo 시작");
+
+        //Uri videoUri = Uri.fromFile(new File(filename));
+        File file = new File(filename);
+
+        System.out.println("file:" + file);  // 임시, 확인용
+
+        RetrofitClient2 retrofitClient = RetrofitClient2.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient2.getRetrofitAPI();
+            retrofitAPI.uploadVideo(presignedUrl, file).enqueue(new Callback<StatusCallback>() {
+                @Override
+                public void onResponse(Call<StatusCallback> call, Response<StatusCallback> response) {
+                    Log.d("PUT", "not success yet");
+                    if (response.isSuccessful()){
+                        Log.d("PUT", "POST Success!");
+                        Log.d("PUT", ">>>response.body()="+response.body());
+                    }
+                    else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());  //404
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<StatusCallback> call, Throwable t) {
+                    Log.d("PUT", "PUT Failed");
+                    Log.d("PUT", t.getMessage());
+                }
+            });
+        }
+    }
+
+    private void updatePracticeIdOnDB(int mid, Long practice_id) {
+
+        dbHelper = new DBHelper(this, 4);
+        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
+
+        db.execSQL("UPDATE tableName SET practice_id = '" + practice_id + "' WHERE mid = " + mid);
+        
+        System.out.println("practice_id: "+practice_id.intValue() + "mid: "+mid);  // 임시, 확인용
+
+        printDBPracticeId();
+    }
+
+    public void printDBPracticeId() {
+        dbHelper = new DBHelper(context, 4);
+        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
+
+        Cursor cursor = db.rawQuery(" SELECT * FROM tableName ", null);
+        startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+
+        String tableString = "";
+
+        if (cursor.moveToFirst() ){
+            do {
+                tableString += "mid: " + cursor.getInt(0) + ", practice_id: " + cursor.getInt(11);
+                tableString += "\n";
+
+            } while (cursor.moveToNext());
+        }
+        System.out.println("@@@ print table :\n" + tableString);
+    }
+
+    public int getLastMid() {
+        dbHelper = new DBHelper(context, 4);
+        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
+
+        Cursor cursor = db.rawQuery(" SELECT * FROM tableName ", null);
+        startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+
+        int last_mid = -1;
+
+        if (cursor.moveToFirst() ){
+            do {
+                if(cursor.getInt(0) != 0) {
+                    last_mid = cursor.getInt(0);
+                } else {
+                    return last_mid;
+                }
+            } while (cursor.moveToNext());
+        }
+        return last_mid;
+    }
+
+    private void askAnalysis(Long practice_id, PracticesData practice) {
+        System.out.println("분석 요청 시작");
+
+        // Gender - W, M 으로 변경
+        String gender = "X";
+        if (practice.getGender().equals("WOMEN")) {
+            gender = "W";
+        } else if (practice.getGender().equals("MEN")) {
+            gender = "M";
+        }
+
+
+        // 임시, 확인용
+        System.out.println("userId : " + userId);
+        System.out.println("practice_id : " + practice_id);
+        System.out.println("gender : " + gender);
+        System.out.println("practice.getMoveSensitivity() : " + practice.getMoveSensitivity());
+        System.out.println("practice.getEyesSensitivity() : " + practice.getEyesSensitivity());
+
+
+        RetrofitClient3 retrofitClient = RetrofitClient3.getInstance();
+
+        if (retrofitClient!=null) {
+            retrofitAPI = RetrofitClient3.getRetrofitAPI();
+            retrofitAPI.askAnalysis(userId.intValue(), practice_id.intValue(), gender, practice.getMoveSensitivity(), practice.getEyesSensitivity()).enqueue(new Callback<StatusCallback>() {
+                @Override
+                public void onResponse(Call<StatusCallback> call, Response<StatusCallback> response) {
+                    Log.d("GET", "not success yet");
+                    if (response.isSuccessful()) {
+                        Log.d("GET", "GET Success!");
+                        Log.d("GET", ">>>response.body()=" + response.body());
+                    } else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());  //500
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<StatusCallback> call, Throwable t) {
+                    Log.d("GET", "GET Failed");
+                    Log.d("GET", t.getMessage());
+                }
+            });
+
+//            retrofitAPI.askAnalysis(1L, 1L, "W", 9, 9).enqueue(new Callback<StatusCallback>() {
+//                @Override
+//                public void onResponse(Call<StatusCallback> call, Response<StatusCallback> response) {
+//                    Log.d("GET", "not success yet");
+//                    if (response.isSuccessful()) {
+//                        Log.d("GET", "GET Success!");
+//                        Log.d("GET", ">>>response.body()=" + response.body());
+//                    } else {
+//                        System.out.println("@@@@ response is not successful...");
+//                        System.out.println("@@@@ response code : " + response.code());  //500
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<StatusCallback> call, Throwable t) {
+//                    Log.d("GET", "GET Failed");
+//                    Log.d("GET", t.getMessage());
+//                }
+//            });
+        }
+    }
 }
