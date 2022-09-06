@@ -166,21 +166,21 @@ public class ShowAnalysisActivity extends AppCompatActivity {
                 "영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초이고,\n회원님의 분석 결과 "+
                 analysisContentData.getScriptDuration()+"초 동안 대본을 보는 시선 분산이 감지되었습니다.\n"+
                 "또한 "+analysisContentData.getAroundDuration()+"초 동안 주변을 보는 시선 분산이 감지되었습니다.\n"+
-                "발표시에는 화면을 응시하는 것이 좋습니다.");  // 온라인, 오프라인 ?
+                "발표시에는 화면을 응시하는 것이 좋습니다.");  // 온라인, 오프라인 ?  //임시, 확인용
         tv_analysis_pose.setText("회원님이 선택하신 자세 민감도는 "+practicesData.getMoveSensitivity()+"이며, 총 영상 길이 "+
                 analysisContentData.getTotalDuration()+"초 중 "+analysisContentData.getInclinedDuration()+"초 동안 자세가 기울어졌습니다."+
                 "\n두 어깨의 수평을 맞추는 자세를 권장합니다.");
         tv_analysis_speed.setText("평균적인 말하기 속도는 1분당 96단어 이상 124 단어 미만이며, 현재 회원님의 말하기 속도는 1분당 "+
                 analysisContentData.getSpeed()+"단어입니다.\n"
-                + "현재 회원님의 말하기 속도는 청중들의 이해도를 높일 수 있는 적정한 말하기 속도 범위에 위치하고 있습니다.");  // speed 값에 따라 다른 평가 제시
+                + evaluateSpeed(analysisContentData.getSpeed()));  // speed 값에 따라 다른 평가 제시
         tv_analysis_volume.setText("평균적인 목소리의 크기 변화율은 **00.00%**이며, 현재 회원님의 목소리 크기 변화율은 "+
                 analysisContentData.getShimmer()+"%입니다.\n"
-                + "목소리 크기 변화가 다소 단조로운 것으로 측정되었으며, 단조로운 목소리 크기 변화는 청중들을 쉽게 지루하게 만들 수 있습니다.\n" +
-                "중요한 부분에서 힘 있는 목소리로 연습하시기 바랍니다.");  // shimmer 값에 따라 다른 평가 제시
+                + evaluateShimmer(analysisContentData.getShimmer()) +
+                "\n중요한 부분에서 힘 있는 목소리로 연습하시기 바랍니다.");  // shimmer 값에 따라 다른 평가 제시
         tv_analysis_pitch.setText("평균적인 목소리의 높낮이 변화율은 **00.00%**이며, 현재 회원님의 목소리 높낮이 변화율은 "+
                 analysisContentData.getJitter()+"%입니다.\n"
-                + "목소리 높낮이 변화가 다소 단조로운 편으로 측정되었습니다. 목소리 높낮이가 단조로울 경우 좋은 내용이더라도 지루하게 느껴질 수 있습니다.\n" +
-                "내용에 따라 목소리 높낮이를 다양하게 사용하며 내용을 효과적으로 전달하시기 바랍니다.");  // jitter 값에 따라 다른 평가 제시
+                + evaluateJitter(analysisContentData.getJitter()) +
+                "\n내용에 따라 목소리 높낮이를 다양하게 사용하며 내용을 효과적으로 전달하시기 바랍니다.");  // jitter 값에 따라 다른 평가 제시
         tv_analysis_conclusion.setText("전체 ??개의 문장 중 "+analysisContentData.getClosingRemarks()+"%의 문장에서 맺음말이 인식되었습니다.\n"+
                 "맺음말이 인식되지 않은 경우, 말 끝을 흐리는 등 발음이 부정확하였거나 문장이 끝난 이후 충분한 공백을 두지 않았을 수 있습니다.\n" +
                 "맺음말이 부정확한 경우 청중들의 이해도와 발표의 전달력을 떨어트릴 수 있으므로, 유의하여 연습하시기 바랍니다.");
@@ -312,6 +312,48 @@ public class ShowAnalysisActivity extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    private String evaluateSpeed(float speed) {
+        String res = "";
+
+        if (speed < 96) {  //느림
+            res = "말하기 속도가 느린 경우 오히려 청중들의 집중도를 떨어트릴 우려가 있으므로, 조금 더 빨리 말할 수 있도록 연습하시기 바랍니다.";
+        } else if (speed < 124) {  //적정
+            res = "현재 회원님의 말하기 속도는 청중들의 이해도를 높일 수 있는 적정한 말하기 속도 범위에 위치하고 있습니다.";
+        } else {  //빠름
+            res = "말하기 속도가 빠른 경우 청중들의 이해도와 집중도를 떨어트릴 우려가 있으므로, 조금 호흡을 길게 가질 수 있도록 연습하시기 바랍니다.";
+        }
+
+        return res;
+    }
+
+    private String evaluateShimmer(float shimmer) {
+        String res = "";
+
+        float avg = 20f; //음성데이터 평균  //임시, 확인용
+
+        if (shimmer < avg*0.95) {  //단조로움
+            res = "목소리의 크기 변화가 다소 단조로운 것으로 측정되었으며, 단조로운 목소리 크기 변화는 청중들을 쉽게 지루하게 만들 수 있습니다. 중요한 부분에서 힘 있는 목소리로 연습하시기 바랍니다.";
+        } else {  //적정
+            res = "회원님의 음성은 적정한 목소리의 크기 변화를 보이고 있으며, 강조할 내용에서의 충분한 목소리 크기 변화는 청중들의 집중도와 흥미를 높일 수 있습니다.";
+        }
+
+        return res;
+    }
+
+    private String evaluateJitter(float jitter) {
+        String res = "";
+
+        float avg = 20f; //음성데이터 평균  //임시, 확인용
+
+        if (jitter < avg*0.95) {  //단조로움
+            res = "목소리의 높낮이 변화가 다소 단조로운 편으로 측정되었습니다. 목소리 높낮이가 단조로울 경우 좋은 내용이더라도 지루하게 느껴질 수 있습니다. 내용에 따라 목소리 높낮이를 다양하게 사용하며 내용을 효과적으로 전달하시기 바랍니다.";
+        } else {  //적정
+            res = "회원님의 음성은 적정한 목소리의 높낮이 변화를 보이고 있으며, 강조할 내용에서의 충분한 목소리 높낮이 강조는 청중들의 몰입감을 높일 수 있습니다.";
+        }
+
+        return res;
     }
 
     /* 이미지 스크롤 저장 */
