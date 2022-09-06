@@ -53,6 +53,7 @@ public class ShowPracticeActivity extends AppCompatActivity {
         cursor.moveToPosition(practice_index);  // position에 해당하는 row로 가서
         String practiceTitle = cursor.getString(1);
         String practiceFilename = cursor.getString(10);
+        int finished = cursor.getInt(9);
 
         tv_practiceTitle.setText(practiceTitle);
 
@@ -81,7 +82,6 @@ public class ShowPracticeActivity extends AppCompatActivity {
         btn_showAnalysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int finished = cursor.getInt(9);
                 if (finished == 1) {
                     Intent intent = new Intent(ShowPracticeActivity.this, ShowAnalysisActivity.class);
                     intent.putExtra("PRACTICE_INDEX", practice_index);

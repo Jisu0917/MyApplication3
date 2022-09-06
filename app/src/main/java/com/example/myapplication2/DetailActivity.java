@@ -488,11 +488,11 @@ public class DetailActivity extends AppCompatActivity {
                 System.out.println("tone : "+tone_score + ", " + tone_comment);
                 System.out.println("closing : "+closing_score + ", " + closing_comment);
 
-                ((TextView)customView.findViewById(R.id.cmt_speedscore_tv)).setText(String.valueOf(speed_score));
+                ((TextView)customView.findViewById(R.id.cmt_speedscore_tv)).setText(numberToStars(speed_score));
                 ((TextView)customView.findViewById(R.id.cmt_speedcmt_tv)).setText(speed_comment);
-                ((TextView)customView.findViewById(R.id.cmt_tonescore_tv)).setText(String.valueOf(tone_score));
+                ((TextView)customView.findViewById(R.id.cmt_tonescore_tv)).setText(numberToStars(tone_score));
                 ((TextView)customView.findViewById(R.id.cmt_tonecmt_tv)).setText(tone_comment);
-                ((TextView)customView.findViewById(R.id.cmt_closingscore_tv)).setText(String.valueOf(closing_score));
+                ((TextView)customView.findViewById(R.id.cmt_closingscore_tv)).setText(numberToStars(closing_score));
                 ((TextView)customView.findViewById(R.id.cmt_closingcmt_tv)).setText(closing_comment);
 
                 // 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
@@ -504,6 +504,29 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             System.out.println("LoadCmt : onPostExecute : feedbacksDataList is null...");
         }
+    }
+
+    // (댓글) 숫자 to 별점 변환
+    private String numberToStars(int num) {
+        if (num >= 0 && num <= 5) {
+            switch (num) {
+                case 0:
+                    return "☆☆☆☆☆";
+                case 1:
+                    return "★☆☆☆☆";
+                case 2:
+                    return "★★☆☆☆";
+                case 3:
+                    return "★★★☆☆";
+                case 4:
+                    return "★★★★☆";
+                case 5:
+                    return "★★★★★";
+                default:
+                    return "";
+            }
+        } else
+            return "";
     }
 
 
@@ -573,26 +596,12 @@ public class DetailActivity extends AppCompatActivity {
             super.onPostExecute(result);
             Log.d(TAG, "RegCmt : onPostExecute, " + result);
 
-// 결과값이 성공으로 나오면
-            if(result.equals("success")){
+            // 댓글 새로고침
+            LoadCmt loadCmt = new LoadCmt();
+            loadCmt.execute(postId.toString());
 
-//댓글 입력창의 글자는 공백으로 만듦
-//                comment_et.setText("");
+            Toast.makeText(DetailActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
 
-// 소프트 키보드 숨김처리
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(comment_et.getWindowToken(), 0);
-
-// 토스트메시지 출력
-                Toast.makeText(DetailActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
-
-// 댓글 불러오는 함수 호출
-                LoadCmt loadCmt = new LoadCmt();
-                loadCmt.execute(postId.toString());
-            }else
-            {
-                Toast.makeText(DetailActivity.this, result, Toast.LENGTH_SHORT).show();
-            }
         }
 
 

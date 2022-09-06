@@ -1,6 +1,11 @@
 <menu  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/action_btn_reload"
+        android:title="Reload"
+        android:icon="@drawable/ic_reload"
+        app:showAsAction="always" />
+
     <item android:id="@+id/action_btn_select"
         android:title="Select"
         android:icon="@drawable/ic_select"

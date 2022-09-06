@@ -87,20 +87,17 @@ public class RegisterActivity extends AppCompatActivity {
             super.onPostExecute(result);
             Log.d(TAG, "onPostExecute, " + result);
 
-            //임시, 확인용
-            result = "success";
-
-            if(result.equals("success")){
-// 결과값이 success 이면
-// 토스트 메시지를 뿌리고
-// 이전 액티비티(ListActivity)로 이동,
-// 이때 ListActivity 의 onResume() 함수 가 호출되며, 데이터를 새로 고침
-                Toast.makeText(RegisterActivity.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
-                finish();
-            }else
-            {
-                Toast.makeText(RegisterActivity.this, result, Toast.LENGTH_SHORT).show();
-            }
+//            if(result.equals("success")){
+//// 결과값이 success 이면
+//// 토스트 메시지를 뿌리고
+//// 이전 액티비티(ListActivity)로 이동,
+//// 이때 ListActivity 의 onResume() 함수 가 호출되며, 데이터를 새로 고침
+//                Toast.makeText(RegisterActivity.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
+//                finish();
+//            } else
+//            {
+//                Toast.makeText(RegisterActivity.this, result, Toast.LENGTH_SHORT).show();
+//            }
 
         }
 
@@ -116,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-            makeNewPost(title, content);
+            String response = makeNewPost(title, content);
 
             //////
 
@@ -125,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
             //URL url;
-            String response = "";
+//            String response = "";
 //            try {
 //                url = new URL(server_url);
 //
@@ -171,8 +168,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void makeNewPost(String title, String content) {
+    private String makeNewPost(String title, String content) {
         System.out.println("서버에 게시물 업로드 시작");
+
+        final String[] res = {"fail"};
 
         PostsData newpostdata = new PostsData();
         newpostdata.setUserId(userId);
@@ -193,10 +192,17 @@ public class RegisterActivity extends AppCompatActivity {
                     if (response.isSuccessful()){
                         Log.d("POST", "POST Success!");
                         Log.d("POST", ">>>response.body()="+response.body());
+
+                        res[0] = "success";
+
+                        Toast.makeText(RegisterActivity.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                     else {
                         System.out.println("@@@@ response is not successful...");
                         System.out.println("@@@@ response code : " + response.code());  //500
+
+                        res[0] = "fail";
                     }
                 }
 
@@ -204,8 +210,12 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onFailure(Call<Long> call, Throwable t) {
                     Log.d("POST", "POST Failed");
                     Log.d("POST", t.getMessage());
+
+                    res[0] = "fail";
                 }
             });
         }
+
+        return res[0];
     }
 }

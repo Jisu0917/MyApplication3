@@ -60,8 +60,8 @@ public class PracticesData {
     @SerializedName("title")
     private String title;
 
-    @SerializedName("audioPath")
-    private String audioPath;
+//    @SerializedName("audioPath")
+//    private String audioPath;
 
     @SerializedName("move_sensitivity")
     private int move_sensitivity;
@@ -100,13 +100,13 @@ public class PracticesData {
         this.title = title;
     }
 
-    public String getAudioPath() {
-        return audioPath;
-    }
-
-    public void setAudioPath(String audioPath) {
-        this.audioPath = audioPath;
-    }
+//    public String getAudioPath() {
+//        return audioPath;
+//    }
+//
+//    public void setAudioPath(String audioPath) {
+//        this.audioPath = audioPath;
+//    }
 
     public int getMoveSensitivity() {
         return move_sensitivity;

@@ -205,22 +205,22 @@ public class HomeActivity extends AppCompatActivity {
         ListView listView2 = (ListView)findViewById(R.id.listview2);
 
         switch( item.getItemId() ){
-            case R.id.menu_done:
-
-                cursor = db.rawQuery(" SELECT * FROM tableName ", null);
-                startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
-                cursor.moveToPosition(index);  // position에 해당하는 row로 가서
-
-                int isFinished = cursor.getInt(9);  // finished 값을 읽어라. (0 또는 1)
-                if (isFinished == 0) {
-                    String sql = " UPDATE tableName SET finished = " + 1 + " WHERE mid = " + (index + 1);
-                    db.execSQL(sql);
-                } else if (isFinished == 1) {
-                    String sql = " UPDATE tableName SET finished = " + 0 + " WHERE mid = " + (index + 1);
-                    db.execSQL(sql);
-                }
-                listUpdate();
-                break;
+//            case R.id.menu_done:
+//
+//                cursor = db.rawQuery(" SELECT * FROM tableName ", null);
+//                startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+//                cursor.moveToPosition(index);  // position에 해당하는 row로 가서
+//
+//                int isFinished = cursor.getInt(9);  // finished 값을 읽어라. (0 또는 1)
+//                if (isFinished == 0) {
+//                    String sql = " UPDATE tableName SET finished = " + 1 + " WHERE mid = " + (index + 1);
+//                    db.execSQL(sql);
+//                } else if (isFinished == 1) {
+//                    String sql = " UPDATE tableName SET finished = " + 0 + " WHERE mid = " + (index + 1);
+//                    db.execSQL(sql);
+//                }
+//                listUpdate();
+//                break;
 
             case R.id.menu_edit:
                 Intent intent = new Intent(HomeActivity.this, EditPracticeActivity.class);
@@ -338,6 +338,14 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
+            case R.id.action_btn_reload:
+                listUpdate();
+                
+                System.out.println("리스트를 업데이트 합니다.");  //임시, 확인용
+                
+                return true;
+            
+            
             case R.id.action_btn_select:
                 if (adapter.getCount() != 0) {
                     adapter2 = new CustomListViewAdapter2();

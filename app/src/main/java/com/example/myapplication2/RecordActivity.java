@@ -548,7 +548,7 @@ public class RecordActivity extends AppCompatActivity {
 
                         updatePracticeIdOnDB(mid, practice_id);  // 내장db에 practice_id 저장하기
 
-                        getPresignedURL(practice_id, practice);  // 영상 업로드 할 url 받아오기
+                        getPresignedURL(practice_id, practice, mid);  // 영상 업로드 할 url 받아오기
                     }
                     else {
                         System.out.println("@@@@ response is not successful...");
@@ -565,7 +565,7 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-    private void getPresignedURL(Long practice_id, PracticesData practice) {
+    private void getPresignedURL(Long practice_id, PracticesData practice, int mid) {
 
         System.out.println("getPresignedURL 시작");
 
@@ -590,7 +590,7 @@ public class RecordActivity extends AppCompatActivity {
                         System.out.println("presignedUrl = " + presignedUrl);
 
                         try {
-                            uploadVideoOkhttp(practice_id, practice);
+                            uploadVideoOkhttp(practice_id, practice, mid);
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         }
@@ -610,22 +610,22 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadVideoOkhttp(Long practice_id, PracticesData practice) throws MalformedURLException {
+    private void uploadVideoOkhttp(Long practice_id, PracticesData practice, int mid) throws MalformedURLException {
         System.out.println("uploadVideoOkhttp 시작");
 
-        // 임시, 확인용
-        String testFilename = "";
-        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
-            testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
-        } else {
-            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
-        }
+//        // 임시, 확인용
+//        String testFilename = "";
+//        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
+//            testFilename = RECORDED_DIR + "/test02.mp4";
+//        } else {
+//            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+//        }
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("video/mp4");
-//        RequestBody body = RequestBody.create(mediaType, new File(filename));
-        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
+        RequestBody body = RequestBody.create(mediaType, new File(filename));
+//        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
 
 //        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
 //                .addFormDataPart("video",filename,
@@ -659,7 +659,7 @@ public class RecordActivity extends AppCompatActivity {
             if (response.isSuccessful()){
                 Log.d("PUT", ">>>response.body()="+response.body());
 
-                askAnalysis(practice_id, practice);  // 분석 요청하기
+                askAnalysis(practice_id, practice, mid);  // 분석 요청하기
             }
             else {
                 System.out.println("@@@@ response is not successful...");
@@ -729,7 +729,7 @@ public class RecordActivity extends AppCompatActivity {
 
         if (cursor.moveToFirst() ){
             do {
-                tableString += "mid: " + cursor.getInt(0) + ", practice_id: " + cursor.getInt(11);
+                tableString += "mid: " + cursor.getInt(0) + ", practice_id: " + cursor.getInt(11) + ", finished: " + cursor.getInt(9);
                 tableString += "\n";
 
             } while (cursor.moveToNext());
@@ -758,7 +758,7 @@ public class RecordActivity extends AppCompatActivity {
         return last_mid;
     }
 
-    private void askAnalysis(Long practice_id, PracticesData practice) {
+    private void askAnalysis(Long practice_id, PracticesData practice, int mid) {
         System.out.println("분석 요청 시작");
 
         // Gender - W, M 으로 변경
@@ -789,6 +789,9 @@ public class RecordActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Log.d("GET", "GET Success!");
                         Log.d("GET", ">>>response.body()=" + response.body());
+
+                        // 내장 DB에 finished = 1 로 바꾸기
+                        updateFinishedOnDB(mid);
                     } else {
                         System.out.println("@@@@ response is not successful...");
                         System.out.println("@@@@ response code : " + response.code());  //500
@@ -801,26 +804,15 @@ public class RecordActivity extends AppCompatActivity {
                     Log.d("GET", t.getMessage());
                 }
             });
-
-//            retrofitAPI.askAnalysis(1L, 1L, "W", 9, 9).enqueue(new Callback<StatusCallback>() {
-//                @Override
-//                public void onResponse(Call<StatusCallback> call, Response<StatusCallback> response) {
-//                    Log.d("GET", "not success yet");
-//                    if (response.isSuccessful()) {
-//                        Log.d("GET", "GET Success!");
-//                        Log.d("GET", ">>>response.body()=" + response.body());
-//                    } else {
-//                        System.out.println("@@@@ response is not successful...");
-//                        System.out.println("@@@@ response code : " + response.code());  //500
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<StatusCallback> call, Throwable t) {
-//                    Log.d("GET", "GET Failed");
-//                    Log.d("GET", t.getMessage());
-//                }
-//            });
         }
+    }
+
+    private void updateFinishedOnDB(int mid) {
+        dbHelper = new DBHelper(this, 4);
+        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
+
+        db.execSQL("UPDATE tableName SET finished = 1 WHERE mid = " + mid);
+
+        printDBPracticeId();
     }
 }

@@ -123,6 +123,10 @@ public class ListActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
+
+
+        GetBoard getBoard = new GetBoard();
+        getBoard.execute();
     }
 
 
@@ -130,10 +134,23 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // 임시, 확인용
+        System.out.println("onResume() 실행");
+
 // 해당 액티비티가 활성화 될 때, 게시물 리스트를 불러오는 함수를 호출
         GetBoard getBoard = new GetBoard();
         getBoard.execute();
     }
+
+//    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//
+//        GetBoard getBoard = new GetBoard();
+//        getBoard.execute();
+//    }
+
 
 
     // 게시물 리스트를 읽어오는 함수
