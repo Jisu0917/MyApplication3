@@ -4,12 +4,17 @@ import static com.example.myapplication2.MainActivity.userId;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.myapplication2.api.RetrofitAPI;
@@ -19,6 +24,7 @@ import com.example.myapplication2.api.dto.PracticesData;
 import com.example.myapplication2.api.objects.UserIdObject;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,20 +38,24 @@ public class RegisterActivity extends AppCompatActivity {
     // 사용할 컴포넌트 선언
     EditText title_et, content_et;
     Button reg_button;
+    Spinner spinner;
 
     // 유저아이디 변수
     String useridToken = "";
 
 
-
     static String personName;
     static String idToken;
     static Long userId = MainActivity.userId;
+    static int selected_practice_mid;
+    static int selected_practice_id;
 
     static RetrofitAPI retrofitAPI;
     static UserIdObject userIdObject;
 
-
+    DBHelper dbHelper;
+    SQLiteDatabase db = null;
+    Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +69,43 @@ public class RegisterActivity extends AppCompatActivity {
         title_et = findViewById(R.id.title_et);
         content_et = findViewById(R.id.content_et);
         reg_button = findViewById(R.id.reg_button);
+        spinner = findViewById(R.id.spinner);
+
+        // Spinner 설정
+        dbHelper = new DBHelper(this, 4);
+        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
+        cursor = db.rawQuery("SELECT * FROM tableName", null);
+        startManagingCursor(cursor);    //엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+        cursor.moveToFirst();
+
+        //String[] items = {};  //연습 제목 리스트
+        ArrayList<String> itemList = new ArrayList<>();  //연습 제목 리스트
+        do {
+            itemList.add(cursor.getString(1));  //연습 제목
+        } while (cursor.moveToNext());
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, itemList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selected_practice_mid = i;
+                cursor.moveToPosition(i);
+                selected_practice_id = cursor.getInt(11);
+
+                Toast.makeText(RegisterActivity.this, itemList.get(i) + ", " + selected_practice_id, Toast.LENGTH_SHORT).show();  //임시, 확인용
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
 // 버튼 이벤트 추가
         reg_button.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         PostsData newpostdata = new PostsData();
         newpostdata.setUserId(userId);
-        newpostdata.setPracticeId(8L);  // 임시, 확인용 - register activity에 어떤 연습인지 선택하는 기능 추가해야함!
+        newpostdata.setPracticeId((long) selected_practice_id);
         newpostdata.setTitle(title);
         newpostdata.setContent(content);
         //newpostdata.setPractices();

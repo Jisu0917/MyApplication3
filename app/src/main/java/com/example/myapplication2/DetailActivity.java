@@ -55,7 +55,7 @@ public class DetailActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
 
     // 사용할 컴포넌트 선언
-    TextView title_tv, content_tv, date_tv;
+    TextView title_tv, content_tv, date_tv, practiceId_tv;
     LinearLayout comment_layout;
 //    EditText comment_et;
     Button reg_button, del_button;
@@ -97,10 +97,12 @@ public class DetailActivity extends AppCompatActivity {
         title_tv = findViewById(R.id.title_tv);
         content_tv = findViewById(R.id.content_tv);
         date_tv = findViewById(R.id.date_tv);
+        practiceId_tv = findViewById(R.id.practiceId_tv);
 
         title_tv.setText(title);
         content_tv.setText(content);
         date_tv.setText(postId.toString());
+        practiceId_tv.setText(practiceId.intValue() + "");
 
 
         comment_layout = findViewById(R.id.comment_layout);

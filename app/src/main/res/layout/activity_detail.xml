@@ -42,21 +42,49 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="게시물 번호"/>
-
-                <TextView
-                    android:id="@+id/date_tv"
-                    android:padding="16dp"
-                    android:background="#eeeeee"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="게시물 번호입니다."
-                    />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="게시물 ID"/>
+
+                    <TextView
+                        android:id="@+id/date_tv"
+                        android:padding="16dp"
+                        android:background="#eeeeee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="00"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:text="연습 ID"/>
+
+                    <TextView
+                        android:id="@+id/practiceId_tv"
+                        android:padding="16dp"
+                        android:background="#eeeeee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="00"
+                        />
+                </LinearLayout>
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
@@ -77,7 +105,7 @@
                 android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="댓글"
+                android:text="피드백"
                 />
 
             <LinearLayout
