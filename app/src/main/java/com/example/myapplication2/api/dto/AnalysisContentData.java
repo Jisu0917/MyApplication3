@@ -57,6 +57,12 @@ public class AnalysisContentData {
     @SerializedName("jitter")
     private float jitter;
 
+    @SerializedName("createdDate")
+    private String createdDate;
+
+    @SerializedName("modifiedDate")
+    private String modifiedDate;
+
     public Long getId() {
         return id;
     }
@@ -161,7 +167,21 @@ public class AnalysisContentData {
         this.jitter = jitter;
     }
 
+    public String getCreatedDate() {
+        return createdDate;
+    }
 
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 
 //
 //    @SerializedName("integration")

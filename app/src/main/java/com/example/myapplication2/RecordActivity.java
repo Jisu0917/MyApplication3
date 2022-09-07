@@ -518,8 +518,8 @@ public class RecordActivity extends AppCompatActivity {
         practice.setScope(scope);
         practice.setSort(sort);
         practice.setGender(gender);
-        practice.setMoveSensitivity(3);  // 임시, 확인용
-        practice.setEyesSensitivity(3);  // 임시, 확인용
+        practice.setMoveSensitivity(10);  // 임시, 확인용
+        practice.setEyesSensitivity(10);  // 임시, 확인용
 
 //        // 임시, 확인용
 //        PracticesData practice = new PracticesData();
@@ -613,19 +613,19 @@ public class RecordActivity extends AppCompatActivity {
     private void uploadVideoOkhttp(Long practice_id, PracticesData practice, int mid) throws MalformedURLException {
         System.out.println("uploadVideoOkhttp 시작");
 
-//        // 임시, 확인용
-//        String testFilename = "";
-//        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
-//            testFilename = RECORDED_DIR + "/test02.mp4";
-//        } else {
-//            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
-//        }
+        // 임시, 확인용
+        String testFilename = "";
+        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
+            testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
+        } else {
+            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+        }
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("video/mp4");
-        RequestBody body = RequestBody.create(mediaType, new File(filename));
-//        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
+//        RequestBody body = RequestBody.create(mediaType, new File(filename));
+        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
 
 //        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
 //                .addFormDataPart("video",filename,

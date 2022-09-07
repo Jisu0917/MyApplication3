@@ -109,27 +109,27 @@ public class MainActivity extends TabActivity {
 //        Intent intent1 = new Intent(MainActivity.this, RecordActivity.class);
 //        Intent intent2 = new Intent(MainActivity.this, CommunityActivity.class);
         intent2 = new Intent(MainActivity.this, ListActivity.class);
-        intent3 = new Intent(MainActivity.this, HomeActivity.class);
+        intent3 = new Intent(MainActivity.this, HomeActivity1.class);
         intent4 = new Intent(MainActivity.this, FriendActivity.class);
         intent5 = new Intent(MainActivity.this, SettingsActivity.class);
 
         //Tab 추가
 //        spec = myTabHost.newTabSpec("Record").setIndicator("RECORD").setContent(intent1);
 //        myTabHost.addTab(spec);
-
-        spec = myTabHost.newTabSpec("Community").setIndicator("COMMUNITY").setContent(intent2);
-        myTabHost.addTab(spec);
-
-        spec = myTabHost.newTabSpec("Home").setIndicator("HOME").setContent(intent3);
-        myTabHost.addTab(spec);
-
-        spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
-        myTabHost.addTab(spec);
-
-        spec = myTabHost.newTabSpec("Settings").setIndicator("SETTINGS").setContent(intent5);
-        myTabHost.addTab(spec);
-
-        myTabHost.setCurrentTab(1);  //메인 Tab 지정
+//
+//        spec = myTabHost.newTabSpec("Community").setIndicator("COMMUNITY").setContent(intent2);
+//        myTabHost.addTab(spec);
+//
+//        spec = myTabHost.newTabSpec("Home").setIndicator("HOME").setContent(intent3);
+//        myTabHost.addTab(spec);
+//
+//        spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
+//        myTabHost.addTab(spec);
+//
+//        spec = myTabHost.newTabSpec("Settings").setIndicator("SETTINGS").setContent(intent5);
+//        myTabHost.addTab(spec);
+//
+//        myTabHost.setCurrentTab(1);  //메인 Tab 지정
 
         // 로그인 버튼 클릭 시
         login_btn.setOnClickListener(new View.OnClickListener() {
@@ -261,6 +261,21 @@ public class MainActivity extends TabActivity {
 
                         /////
                         userId = response.body().getUser_id();
+
+
+                        spec = myTabHost.newTabSpec("Community").setIndicator("COMMUNITY").setContent(intent2);
+                        myTabHost.addTab(spec);
+
+                        spec = myTabHost.newTabSpec("Home").setIndicator("HOME").setContent(intent3);
+                        myTabHost.addTab(spec);
+
+                        spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
+                        myTabHost.addTab(spec);
+
+                        spec = myTabHost.newTabSpec("Settings").setIndicator("SETTINGS").setContent(intent5);
+                        myTabHost.addTab(spec);
+
+                        myTabHost.setCurrentTab(1);  //메인 Tab 지정
                     }
                 }
 

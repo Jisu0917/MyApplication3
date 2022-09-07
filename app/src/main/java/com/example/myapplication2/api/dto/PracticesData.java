@@ -9,51 +9,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class PracticesData {
 
-    DBHelper dbHelper;
-    SQLiteDatabase db = null;
-
-//    public PracticesData(Context context, Long id) {
-//        this.id = id;
-//
-//        this.title = "임시 제목 (확인용)";
-//
-////        dbHelper = new DBHelper(context, 4);
-////        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
-////
-////
-////        Cursor cursor = db.rawQuery(" SELECT * FROM tableName ", null);
-////        //startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
-////        //cursor.move(id.intValue());
-////
-////        System.out.println("111111111111111111");  // 임시, 확인용
-////        cursor.moveToLast();
-////        System.out.println("222222222222222222");  // 임시, 확인용
-////
-////        this.title = cursor.getString(1);  // 1 : content
-////
-////        this.audioPath = cursor.getString(10);  // 10 : filename(url)
-////
-////        //this.scope = cursor.getInt(8);  // 8 : starfill. 0 = PUBLIC, 1 = PRIVATE
-////
-////        int starfill = cursor.getInt(8);  // 8 : starfill. 0 = PUBLIC, 1 = PRIVATE
-////        if (starfill == 0) {
-////            this.scope = "PUBLIC";
-////        } else {
-////            this.scope = "PRIVATE";
-////        }
-////
-////        AnalysisData analysisData = new AnalysisData();
-////        int finished = cursor.getInt(9); // 9 : finished. 0 (unfinished), 1 (finished)
-////        if (finished == 0) {
-////            analysisData.setState("INCOMPLETE");
-////        } else {
-////            analysisData.setState("COMPLETE");
-////        }
-//
-//
-//    }
-//
-
     @SerializedName("id")
     private Long id;
 

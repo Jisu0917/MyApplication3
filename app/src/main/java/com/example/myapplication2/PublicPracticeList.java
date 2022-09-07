@@ -111,7 +111,7 @@ public class PublicPracticeList extends AppCompatActivity {
                     drawable = ContextCompat.getDrawable(this, R.drawable.ic_100percent);
                 else drawable = ContextCompat.getDrawable(this, R.drawable.ic_loading);
 
-                ((LinearLayout)customView.findViewById(R.id.container)).setTag(id+":"+title+":"+sort);
+                ((LinearLayout)customView.findViewById(R.id.container)).setTag(id+":"+title+":"+state);
                 ((TextView)customView.findViewById(R.id.tv_title)).setText(title);
                 ((TextView)customView.findViewById(R.id.tv_id)).setText("id: "+id.intValue());
                 ((TextView)customView.findViewById(R.id.tv_sort)).setText(sort);
@@ -127,6 +127,18 @@ public class PublicPracticeList extends AppCompatActivity {
     }
 
     public void onClickPractice(View view) {
-        Toast.makeText(this, "onClickPractice 실행", Toast.LENGTH_SHORT).show();  //임시, 확인용
+        String tag = (String) view.getTag();
+        String[] tag_split = tag.split(":");
+        Long id = Long.valueOf(tag_split[0]);
+        String title = tag_split[1];
+        String state = tag_split[2];
+
+        Toast.makeText(this, "id: " + id + ", title: " + title, Toast.LENGTH_SHORT).show();  //임시, 확인용
+
+        Intent intent = new Intent(PublicPracticeList.this, ViewPracticeActivity.class);
+        intent.putExtra("practice_id", id);
+        intent.putExtra("practice_title", title);
+        intent.putExtra("practice_state", state);
+        startActivity(intent);
     }
 }

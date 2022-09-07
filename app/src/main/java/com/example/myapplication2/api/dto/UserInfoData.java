@@ -101,4 +101,5 @@ public class UserInfoData {
     public void setFriends(FriendsData[] friends) {
         this.friends = friends;
     }
+
 }

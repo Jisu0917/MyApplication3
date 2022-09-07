@@ -32,11 +32,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RecordActivity1"
+            android:name=".RecordActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".RecordActivity"
+            android:name=".RecordActivity1"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
@@ -58,16 +58,31 @@
             android:name=".AddPracticeActivity"
             android:screenOrientation="fullSensor" />
         <activity
+            android:name=".AddPracticeActivity1"
+            android:screenOrientation="fullSensor" />
+        <activity
             android:name=".ShowPracticeActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ViewPracticeActivity"
             android:screenOrientation="fullSensor" />
         <activity
             android:name=".PlayActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
+            android:name=".PlayPracticeActivity"
+            android:theme="@style/AppThemeNoActionBar" />
+        <activity
             android:name=".ShowAnalysisActivity"
             android:screenOrientation="fullSensor" />
         <activity
+            android:name=".ViewAnalysisActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
             android:name=".EditPracticeActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".EditPracticeActivity1"
             android:screenOrientation="fullSensor" />
         <activity android:name=".GraphActivity"/>
         <activity android:name=".PieChart"/>

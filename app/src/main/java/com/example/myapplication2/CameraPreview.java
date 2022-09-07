@@ -29,7 +29,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public CameraPreview(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        mCamera = RecordActivity.getCamera();
+        mCamera = RecordActivity1.getCamera();
         if(mCamera == null){
             mCamera = Camera.open(findFrontSideCamera());
         }
@@ -62,7 +62,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 parameters.setRotation(0);
             }
 
-            DisplayMetrics dm = RecordActivity.context.getResources().getDisplayMetrics();
+            DisplayMetrics dm = RecordActivity1.context.getResources().getDisplayMetrics();
             int width = dm.widthPixels;
             int height = dm.heightPixels;
 //            Display display = ((WindowManager) MainActivity.this.getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
@@ -128,7 +128,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             Camera.Parameters parameters = mCamera .getParameters();
 
             // 화면 회전시 사진 회전 속성을 맞추기 위해 설정한다.
-            int rotation = RecordActivity.getInstance.getWindowManager().getDefaultDisplay().getRotation();
+            int rotation = RecordActivity1.getInstance.getWindowManager().getDefaultDisplay().getRotation();
             if (rotation == Surface.ROTATION_0) {
                 mCamera .setDisplayOrientation(90);
                 parameters.setRotation(90);

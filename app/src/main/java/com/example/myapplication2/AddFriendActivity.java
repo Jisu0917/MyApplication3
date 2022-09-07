@@ -20,6 +20,12 @@ import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.dto.FriendIdCodeData;
 import com.example.myapplication2.api.dto.UserInfoData;
 
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,7 +69,46 @@ public class AddFriendActivity extends AppCompatActivity {
         
         search_name = editText_name.getText().toString();
 
+
         searchUserInfos(search_name);
+    }
+
+    private void searchUserInfoOkhttp(String name) {
+        System.out.println("서버에 회원 이름 검색 시작");
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"name\" : \""+ name + "\"\r\n}");
+        Request request = new Request.Builder()
+                .url("http://3.36.74.60/api/users/search")
+                .method("GET", body)
+                .addHeader("Content-Type", "application/json")
+                .build();
+//        try {
+//            okhttp3.Response response = client.newCall(request).execute();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        new Thread(() -> {
+            okhttp3.Response response = null;
+            try {
+                response = client.newCall(request).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (response.isSuccessful()){
+                Log.d("PUT", ">>>response.body()="+response.body());
+//                userInfoDataList = response.body();
+                setResultView();
+            }
+            else {
+                System.out.println("@@@@ response is not successful...");
+                System.out.println("@@@@ response code : " + response.code());  //404 403
+                System.out.println("@@@@ response : " + response);
+            }
+        }).start();
     }
 
     private void searchUserInfos(String name) {
@@ -90,6 +135,7 @@ public class AddFriendActivity extends AppCompatActivity {
                     else {
                         System.out.println("@@@@ GET_USER_INFO : response is not successful...");
                         System.out.println("@@@@ GET_USER_INFO : response code : " + response.code());  //400
+                        System.out.println("@@@@ GET_USER_INFO : response : " + response);
                     }
                 }
 

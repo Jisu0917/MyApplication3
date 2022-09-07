@@ -38,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
-    final String TAG = "MainActivity";
+    final String TAG = "HomeActivity";
     final int NO_INPUT = Integer.MAX_VALUE;
 
     FloatingActionButton fab_del, fab_add;

@@ -23,6 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {  //  PRIMARY KEY AUTOINCREMENT
         db.execSQL("CREATE TABLE tableName ( mid INTEGER DEFAULT 0, content TEXT, year INTEGER, month INTEGER, date INTEGER, hour INTEGER, minute INTEGER, ampm TEXT, starfill INTEGER, finished INTEGER, filename TEXT, practice_id INTEGER );");
         db.execSQL("CREATE TABLE alarmTable ( alarmCount INTEGER )");
+        db.execSQL("CREATE TABLE practiceTable ( practice_id INTEGER, file_url TEXT )");
     }
 
     /* index
