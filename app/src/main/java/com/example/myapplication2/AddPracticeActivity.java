@@ -50,6 +50,7 @@ public class AddPracticeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addpractice);
+        setTitle("새 연습 추가");
 
         editText_content = (EditText)findViewById(R.id.editText_practice_title);
         imageView_star = (ImageView)findViewById(R.id.imageVie_star);

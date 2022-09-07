@@ -40,16 +40,27 @@ public class AddFriendActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addfriend);
+        setTitle("회원 검색 및 친구 추가");
 
         editText_name = (EditText) findViewById(R.id.editText_name);
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
         result_layout = (LinearLayout) findViewById(R.id.result_layout);
 
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(111);  //cancel
+                finish();
+            }
+        });
+
     }
 
     // btn_search
     public void search(View view) {
+//        setResult(333);  //임시, 확인용
+        
         search_name = editText_name.getText().toString();
 
         searchUserInfos(search_name);
@@ -159,7 +170,7 @@ public class AddFriendActivity extends AppCompatActivity {
     public void onClickFriend(View view) {
         Toast.makeText(this, "onClickFriend dialog 띄우기 - 친구 추가하시겠습니까?", Toast.LENGTH_SHORT).show();  //임시, 확인용
 
-        //다이얼로그에서 친구 추가 버튼 누르면
+        //다이얼로그에서 친구 추가 (yes) 버튼 누르면
         String tag = (String) view.getTag();
         String[] tag_split = tag.split(":");
         Long id = Long.valueOf(tag_split[0]);
@@ -193,10 +204,13 @@ public class AddFriendActivity extends AppCompatActivity {
                         Log.d("POST", ">>>response.body()="+response.body());
 
                         Toast.makeText(getApplicationContext(), "친구가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                        setResult(999);
+                        finish();
                     }
                     else {
                         System.out.println("@@@@ response is not successful...");
                         System.out.println("@@@@ response code : " + response.code());
+                        setResult(222);
                     }
                 }
 
@@ -204,6 +218,7 @@ public class AddFriendActivity extends AppCompatActivity {
                 public void onFailure(Call<Long> call, Throwable t) {
                     Log.d("POST", "POST Failed");
                     Log.d("POST", t.getMessage());
+                    setResult(222);
                 }
             });
         }

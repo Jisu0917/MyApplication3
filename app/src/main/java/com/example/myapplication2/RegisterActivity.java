@@ -61,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        setTitle("새 게시물 등록");
 
 // ListActivity 에서 넘긴 userid 를 변수로 받음
         useridToken = getIntent().getStringExtra("userid");

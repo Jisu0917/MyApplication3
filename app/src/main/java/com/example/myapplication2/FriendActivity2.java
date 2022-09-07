@@ -1,7 +1,5 @@
 package com.example.myapplication2;
 
-import static java.lang.Thread.sleep;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,7 +29,7 @@ import retrofit2.Response;
 
 //import static com.example.myapplication2.MainActivity.tabWidget;
 
-public class FriendActivity extends AppCompatActivity {
+public class FriendActivity2 extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
 
     static Long userId = MainActivity.userId;
@@ -41,7 +39,7 @@ public class FriendActivity extends AppCompatActivity {
     FloatingActionButton fab_add_friends;
 
     FriendsData[] friends;
-    ArrayList<String> friendStringList = new ArrayList<>();
+    ArrayList<Long> friendIdList = new ArrayList<>();
 
     ArrayList<UserInfoData> userInfoDataList = new ArrayList<>();
 //    UserInfoData[] userInfoDataList;
@@ -61,10 +59,9 @@ public class FriendActivity extends AppCompatActivity {
         fab_add_friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FriendActivity.this, AddFriendActivity.class);
+                Intent intent = new Intent(FriendActivity2.this, AddFriendActivity.class);
                 intent.putExtra("userId", userId);
-                //startActivity(intent);
-                startActivityForResult(intent, 0);
+                startActivity(intent);
             }
         });
 
@@ -83,21 +80,6 @@ public class FriendActivity extends AppCompatActivity {
 
         GetFriends getFriends = new GetFriends();
         getFriends.execute();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode==0) {
-            if (resultCode==333) {  //친구 추가 성공
-                Log.d(TAG, "onActivityResult : list reload");
-                userInfoDataList = new ArrayList<>();
-
-                GetFriends getFriends = new GetFriends();
-                getFriends.execute();
-            }
-        }
     }
 
     class GetFriends extends AsyncTask<String, Void, String> {
@@ -142,20 +124,24 @@ public class FriendActivity extends AppCompatActivity {
 
                             Long friend_id;
                             // ...
+//                            if (friends != null) {
+//                                boolean isLast = false;
+//                                for (int i=0; i<friends.length; i++) {
+//                                    friend_id = friends[i].getFriend_id();
+//
+//                                    if (i == friends.length - 1) {  //마지막 친구일 때
+//                                        isLast = true;
+//                                    }
+//
+//                                    getFriendUserInfo(friend_id, isLast);
+//                                }
+//                                //setFriendListView();
+//                            } else {
+//                                System.out.println("friends is null...");
+//                            }
                             if (friends != null) {
-                                boolean isLast = false;
-                                for (int i=0; i<friends.length; i++) {
-                                    friend_id = friends[i].getFriend_id();
-
-                                    if (i == friends.length - 1) {  //마지막 친구일 때
-                                        isLast = true;
-                                    }
-
-                                    getFriendUserInfo(friend_id, isLast);
-                                }
-                                //setFriendListView();
-                            } else {
-                                System.out.println("friends is null...");
+//                                boolean isLast = false;
+                                getFriendUserInfo(friends[0].getFriend_id(), false, 0, friends.length);
                             }
                         }
                     }
@@ -168,11 +154,14 @@ public class FriendActivity extends AppCompatActivity {
             }
         }
 
-        private void getFriendUserInfo(Long user_id, boolean isLast){
+        private int getFriendUserInfo(Long user_id, boolean isLast, int index, int length){
+            isLast = index == length - 1;
+
             RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
             if (retrofitClient!=null){
                 retrofitAPI = RetrofitClient.getRetrofitAPI();
+                boolean finalIsLast = isLast;
                 retrofitAPI.getUserInfo(user_id).enqueue(new Callback<UserInfoData>() {
                     @Override
                     public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
@@ -195,13 +184,8 @@ public class FriendActivity extends AppCompatActivity {
                                     userInfoDataList.add(userInfoData);
                             }
 
-                            if (isLast) {
-                                if (friends.length == userInfoDataList.size())
-                                    setFriendListView();
-                                else {
-                                    System.out.println("리스트 길이가 다름!!!");  //임시, 확인용
-                                    //Toast.makeText(getApplicationContext(), "리스트 길이가 다름!!!", Toast.LENGTH_SHORT).show();  //임시, 확인용
-                                }
+                            if (finalIsLast) {
+                                setFriendListView();
                             }
                         }
                     }
@@ -212,13 +196,17 @@ public class FriendActivity extends AppCompatActivity {
                     }
                 });
             }
+            if (!isLast)
+                return getFriendUserInfo(friends[index+1].getFriend_id(), false, index+1, length);
+            else
+                return 0;
         }
     }
 
     private void setFriendListView() {
         friendlist_layout.removeAllViews();
 
-        LayoutInflater layoutInflater = LayoutInflater.from(FriendActivity.this);
+        LayoutInflater layoutInflater = LayoutInflater.from(FriendActivity2.this);
         //LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
@@ -233,7 +221,7 @@ public class FriendActivity extends AppCompatActivity {
                 String email = userInfoData.getEmail();
                 String picture = userInfoData.getPicture();
 
-                ((LinearLayout)customView.findViewById(R.id.container)).setTag(id+":"+email+":"+name);
+                ((LinearLayout)customView.findViewById(R.id.container)).setTag(id+":"+email);
                 ((TextView)customView.findViewById(R.id.tv_name)).setText(name);
                 ((TextView)customView.findViewById(R.id.tv_id)).setText("id: "+id.intValue());
                 ((TextView)customView.findViewById(R.id.tv_email)).setText(email);
@@ -247,18 +235,16 @@ public class FriendActivity extends AppCompatActivity {
         }
     }
 
-    // 친구 목록에서 특정 친구를 클릭했을 때
     public void onClickFriend(View view) {
         String tag = (String) view.getTag();
         String[] tag_split = tag.split(":");
         Long id = Long.valueOf(tag_split[0]);
-        String name = tag_split[2];
+        String email = tag_split[1];
 
-        Toast.makeText(this, "id: " + id + ", name: " + name, Toast.LENGTH_SHORT).show();  //임시, 확인용
+        Toast.makeText(this, "id: " + id + ", email: " + email, Toast.LENGTH_SHORT).show();  //임시, 확인용
 
-        Intent intent = new Intent(FriendActivity.this, PublicPracticeList.class);
+        Intent intent = new Intent(FriendActivity2.this, PublicPracticeList.class);
         intent.putExtra("friend_id", id);
-        intent.putExtra("friend_name", name);
         startActivity(intent);
     }
 }
