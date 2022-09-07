@@ -20,8 +20,8 @@ public class PostsData {
     private Long user_id;
     ////
 
-    @SerializedName("practices")
-    private PracticesData practices;
+//    @SerializedName("practices")
+//    private PracticesData practices;
 
     public Long getId() {
         return id;
@@ -65,11 +65,11 @@ public class PostsData {
     }
     ////
 
-    public PracticesData getPractices() {
-        return practices;
-    }
-
-    public void setPractices(PracticesData practices) {
-        this.practices = practices;
-    }
+//    public PracticesData getPractices() {
+//        return practices;
+//    }
+//
+//    public void setPractices(PracticesData practices) {
+//        this.practices = practices;
+//    }
 }

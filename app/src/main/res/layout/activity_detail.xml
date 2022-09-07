@@ -101,6 +101,37 @@
                 android:text="내용입니다."
                 />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_start"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="재생" />
+
+                <Button
+                    android:id="@+id/btn_pause"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="정지" />
+
+                <Button
+                    android:id="@+id/btn_restart"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="재생" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp" />
+            </LinearLayout>
+
             <TextView
                 android:padding="16dp"
                 android:layout_width="match_parent"
@@ -112,8 +143,8 @@
                 android:id="@+id/comment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:orientation="vertical"/>
+                android:orientation="vertical"
+                android:padding="8dp" />
         </LinearLayout>
     </ScrollView>
     <LinearLayout

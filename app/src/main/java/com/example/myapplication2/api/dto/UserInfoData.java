@@ -18,7 +18,7 @@ public class UserInfoData {
     @SerializedName("point")
     private int point;
 
-    @SerializedName("pratices")
+    @SerializedName("practices")
     private PracticesData[] practices;
 
     @SerializedName("posts")

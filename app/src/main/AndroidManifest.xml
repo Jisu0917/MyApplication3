@@ -46,6 +46,9 @@
             android:name=".HomeActivity"
             android:screenOrientation="fullSensor" />
         <activity
+            android:name=".HomeActivity1"
+            android:screenOrientation="fullSensor" />
+        <activity
             android:name=".FriendActivity"
             android:screenOrientation="fullSensor" />
         <activity
@@ -75,6 +78,8 @@
         <activity android:name=".DetailActivity"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".ListActivity"></activity>
+        <activity android:name=".PublicPracticeList"></activity>
+        <activity android:name=".AddFriendActivity"></activity>
     </application>
 
 </manifest>

@@ -3,6 +3,7 @@ package com.example.myapplication2.api;
 import android.net.Uri;
 
 import com.example.myapplication2.api.dto.FeedbacksData;
+import com.example.myapplication2.api.dto.FriendIdCodeData;
 import com.example.myapplication2.api.dto.FriendsData;
 import com.example.myapplication2.api.dto.LoginRequestDto;
 import com.example.myapplication2.api.dto.PostsData;
@@ -22,6 +23,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitAPI {
     @POST("/api/login")
@@ -34,11 +36,13 @@ public interface RetrofitAPI {
 
     // 회원 검색
     @GET("/api/users/search")
-    Call<UserInfoData> searchUserInfo(@Path("name") String name);
+    Call<UserInfoData[]> searchUserInfos(@Query("name") String name);
+    @GET("/api/users/search")
+    Call<UserInfoData> searchUserInfo(@Query("name") String name);
 
     // 친구 맺기
     @POST("/api/friends/{id}")
-    Call<FriendsData> makeFriends(@Body FriendsData param);
+    Call<Long> makeFriend(@Body FriendIdCodeData friendIdCode);
 
     // 연습
     // 새 연습 만들기
@@ -107,4 +111,8 @@ public interface RetrofitAPI {
 
     @GET("http://13.125.254.29:8080/analysis/{user_id}/{practice_id}/{gender}/{pose_sensitivity}/{eyes_sensitivity}")
     Call<StatusCallback> askAnalysis(@Path("user_id") int user_id, @Path("practice_id") int practice_id, @Path("gender") String gender, @Path("pose_sensitivity") int pose_sensitivity, @Path("eyes_sensitivity") int eyes_sensitivity);
+
+    // 음성 파일 받아오기
+    @GET("/{user_id}/{practice_id}.wav")
+    Call<String> getWavFile(@Path("user_id") int user_id, @Path("practice_id") int practice_id);
 }

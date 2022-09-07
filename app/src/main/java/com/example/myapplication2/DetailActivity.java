@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,11 +19,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
+import com.example.myapplication2.api.RetrofitClient4;
 import com.example.myapplication2.api.dto.FeedbacksData;
 import com.example.myapplication2.api.dto.PostsData;
 import com.example.myapplication2.api.dto.PracticesData;
@@ -34,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -79,6 +83,24 @@ public class DetailActivity extends AppCompatActivity {
 
     static RetrofitAPI retrofitAPI;
     static UserIdObject userIdObject;
+
+
+    // 음원 파일 재생
+    MediaPlayer mp;
+    int pos;  //재생 멈춘 시점
+    private Button btn_start, btn_pause, btn_restart, btn_stop;
+    SeekBar sb;  //음악 재생위치를 나타내는 시크바
+    boolean isPlaying = false;
+    String url = "";
+
+    class WavPlayThread extends Thread {
+        @Override
+        public void run() {
+            while(isPlaying) {
+                sb.setProgress(mp.getCurrentPosition());
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +151,144 @@ public class DetailActivity extends AppCompatActivity {
 
 // 해당 게시물의 데이터 불러오기
         InitData();
+
+
+        // wav 파일 재생
+        sb = (SeekBar) findViewById(R.id.seekBar);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (seekBar.getMax() == i) {
+                    btn_start.setVisibility(View.VISIBLE);
+                    btn_pause.setVisibility(View.GONE);
+                    btn_restart.setVisibility(View.GONE);
+                    isPlaying = false;
+                    mp.stop();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                isPlaying = false;
+                mp.pause();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                isPlaying = true;
+                int ttt = seekBar.getProgress();  //사용자가 움직여놓은 위치
+                mp.seekTo(ttt);
+                mp.start();
+                new WavPlayThread().start();
+            }
+        });
+
+        btn_start = (Button) findViewById(R.id.btn_start);
+        btn_pause = (Button) findViewById(R.id.btn_pause);
+        btn_restart = (Button) findViewById(R.id.btn_restart);
+
+        btn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // MediaPlayer 객체 초기화, 재생
+                //mp = MediaPlayer.create(getApplicationContext(), R.raw.test_wav_subway);  //임시, 확인용 - 서버에서 받아온 wav 파일 사용
+                getWavFile();
+                System.out.println("wav file url : " + url);  //임시, 확인용
+                if (!url.equals("")) {
+                    btn_start.setVisibility(View.GONE);
+                    btn_pause.setVisibility(View.VISIBLE);
+                    btn_restart.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        btn_pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pos = mp.getCurrentPosition();
+                mp.pause();
+
+                btn_start.setVisibility(View.GONE);
+                btn_pause.setVisibility(View.GONE);
+                btn_restart.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btn_restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mp.seekTo(pos);
+                mp.start();
+
+                btn_start.setVisibility(View.GONE);
+                btn_pause.setVisibility(View.VISIBLE);
+                btn_restart.setVisibility(View.GONE);
+
+                isPlaying = true;
+                new WavPlayThread().start();
+            }
+        });
+    }  // end of onCreate()
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+//        Toast.makeText(DetailActivity.this, "onPause() 실행", Toast.LENGTH_SHORT).show();
+        isPlaying = false;
+
+        if (mp != null) {
+            mp.release();
+        }
+
+        btn_start.setVisibility(View.VISIBLE);
+        btn_pause.setVisibility(View.GONE);
+        btn_restart.setVisibility(View.GONE);
+    }
+
+    // 서버로부터 wav 파일 받아오기
+    private void getWavFile() {
+        System.out.println("서버로부터 wav 파일 받아오기 시작");
+
+        RetrofitClient4 retrofitClient = RetrofitClient4.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient4.getRetrofitAPI();
+            retrofitAPI.getWavFile(userId.intValue(), practiceId.intValue()).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Log.d("GET", "not success yet");
+                    if (response.isSuccessful()){
+                        url = response.body();
+                        if (!url.equals("")) {
+                            Log.d("GET_WAV_FILE", "GET SUCCESS");
+                            Log.d("GET_WAV_FILE", url);
+
+                            // 미디어플레이어 설정
+                            mp = MediaPlayer.create(getApplicationContext(), Uri.parse(url));
+                            mp.setLooping(false);
+                            mp.start();  //음원 재생 시작
+
+                            int duration = mp.getDuration();  //음원의 재생시간(miliSecond)
+                            sb.setMax(duration);
+                            new WavPlayThread().start();
+                            isPlaying = true;
+                        } else {
+                            System.out.println("GET_WAV_FILE : url is null...");
+                        }
+                    }
+                    else {
+                        System.out.println("@@@@ getWavFile : response is not successful...");
+                        System.out.println("@@@@ getWavFile : response code : " + response.code());  //404
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.d("GET_WAV_FILE", "GET FAILED");
+                }
+            });
+        }
     }
 
 

@@ -26,17 +26,18 @@
             android:textColor="#000000"
             android:textSize="18sp"
             android:text="연습 제목"/>
+
         <EditText
             android:id="@+id/editText_practice_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:background="@drawable/shape_edittext"
             android:hint="제목을 입력하세요."
             android:maxLength="20"
-            android:textColorHint="#d5dae3"
-            android:textColor="#2d3b57"/>
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="#2d3b57"
+            android:textColorHint="#d5dae3" />
     </LinearLayout>
 
     <!--공개 범위 입력-->
