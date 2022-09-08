@@ -49,10 +49,6 @@ public class HomeActivity1 extends AppCompatActivity {
     LinearLayout home_layout;
     TextView tv_loading;
 
-    DBHelper dbHelper;
-    SQLiteDatabase db = null;
-    Cursor cursor;
-
     Long selectedPracticeId;
 
     @Override
@@ -68,9 +64,6 @@ public class HomeActivity1 extends AppCompatActivity {
         tv_loading = (TextView) findViewById(R.id.tv_loading);
 
         getUserInfo();
-
-        dbHelper = new DBHelper(this, 4);
-        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
 
         fab_add = findViewById(R.id.fab_add);
         fab_add.show();
@@ -207,7 +200,7 @@ public class HomeActivity1 extends AppCompatActivity {
         String scope = tag_split[3];
         String sort = tag_split[4];
 
-        Toast.makeText(this, "id: " + id + ", title: " + title, Toast.LENGTH_SHORT).show();  //임시, 확인용
+        //Toast.makeText(this, "id: " + id + ", title: " + title, Toast.LENGTH_SHORT).show();  //임시, 확인용
 
         Intent intent = new Intent(HomeActivity1.this, ViewPracticePlayActivity.class);
         intent.putExtra("practice_id", id);
@@ -246,17 +239,17 @@ public class HomeActivity1 extends AppCompatActivity {
 
             case R.id.menu_delete:
 
-                // 내부저장소에서 동영상 파일 삭제
-                cursor = db.rawQuery(" SELECT * FROM practiceTable WHERE practice_id = " + practice_id, null);
-                startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
-                cursor.moveToFirst();
-
-                File file = new File(cursor.getString(1));  //file_url
-                file.delete();
-                
-                // 내장DB에서 해당 줄 삭제
-                String sql = " DELETE FROM practiceTable WHERE practice_id = " + practice_id;
-                db.execSQL(sql);
+//                // 내부저장소에서 동영상 파일 삭제
+//                cursor = db.rawQuery(" SELECT * FROM practiceTable WHERE practice_id = " + practice_id, null);
+//                startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+//                cursor.moveToFirst();
+//
+//                File file = new File(cursor.getString(1));  //file_url
+//                file.delete();
+//
+//                // 내장DB에서 해당 줄 삭제
+//                String sql = " DELETE FROM practiceTable WHERE practice_id = " + practice_id;
+//                db.execSQL(sql);
 
                 // 서버DB에서 해당 practice 정보 삭제
                 deletePractice(practice_id);

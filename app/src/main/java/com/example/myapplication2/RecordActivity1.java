@@ -92,9 +92,6 @@ public class RecordActivity1 extends AppCompatActivity {
     String title, scope, sort, gender;
     int sensitivity;
 
-    DBHelper dbHelper;
-    SQLiteDatabase db = null;
-
 
     static Long userId = MainActivity.userId;
 
@@ -112,11 +109,6 @@ public class RecordActivity1 extends AppCompatActivity {
         sort = it.getStringExtra("sort");
         gender = it.getStringExtra("gender");
         sensitivity = it.getIntExtra("sensitivity", 0);
-
-
-        dbHelper = new DBHelper(this, 4);
-        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
-
 
         // 카메라 프리뷰를  전체화면으로 보여주기 위해 셋팅한다.
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -274,11 +266,11 @@ public class RecordActivity1 extends AppCompatActivity {
                 //setThumbnail();
 
 
-                // DB에 파일명 저장
-                recordTime = getNowTime();
-                String sql = "INSERT INTO practiceTable (practice_id,file_url,time) VALUES ('" + NO_INPUT + "', '" + filename + "', '" + recordTime + "');";
-                db.execSQL(sql);
-                System.out.println("DB에 파일명 저장 완료");
+//                // DB에 파일명 저장
+//                recordTime = getNowTime();
+//                String sql = "INSERT INTO practiceTable (practice_id,file_url,time) VALUES ('" + NO_INPUT + "', '" + filename + "', '" + recordTime + "');";
+//                db.execSQL(sql);
+//                System.out.println("DB에 파일명 저장 완료");
 
             }
         });
@@ -514,8 +506,8 @@ public class RecordActivity1 extends AppCompatActivity {
 
                         practice.setId(practice_id);
 
-                        // 내장 DB에 practice_id 업데이트
-                        db.execSQL("UPDATE practiceTable SET practice_id = " + practice_id.intValue() + " WHERE time = '" + recordTime + "'");
+//                        // 내장 DB에 practice_id 업데이트
+//                        db.execSQL("UPDATE practiceTable SET practice_id = " + practice_id.intValue() + " WHERE time = '" + recordTime + "'");
 
                         getPresignedURL(practice);  // 영상 업로드 할 url 받아오기
                     }
@@ -585,18 +577,18 @@ public class RecordActivity1 extends AppCompatActivity {
         System.out.println("uploadVideoOkhttp 시작");
 
         // 임시, 확인용
-        String testFilename = "";
-        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
-            testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
-        } else {
-            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
-        }
+//        String testFilename = "";
+//        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
+//            testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
+//        } else {
+//            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+//        }
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("video/mp4");
-//        RequestBody body = RequestBody.create(mediaType, new File(filename));
-        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
+        RequestBody body = RequestBody.create(mediaType, new File(filename));
+//        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
 
 //        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
 //                .addFormDataPart("video",filename,

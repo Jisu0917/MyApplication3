@@ -135,7 +135,7 @@ public class PublicPracticeList extends AppCompatActivity {
         String scope = tag_split[3];
         String sort = tag_split[4];
 
-        Toast.makeText(this, "id: " + id + ", title: " + title, Toast.LENGTH_SHORT).show();  //임시, 확인용
+        //Toast.makeText(this, "id: " + id + ", title: " + title, Toast.LENGTH_SHORT).show();  //임시, 확인용
 
         Intent intent = new Intent(PublicPracticeList.this, ViewPracticePlayActivity.class);
         intent.putExtra("practice_id", id);

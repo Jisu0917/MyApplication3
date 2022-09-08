@@ -50,6 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
     ArrayList<PracticesData> practicesList;
     ArrayList<String> practiceTitleList;
 
+    static int point;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,9 +88,15 @@ public class RegisterActivity extends AppCompatActivity {
         reg_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //포인트 정보 확인 및 차감
+                if (point < 10)
+                    Toast.makeText(RegisterActivity.this, "포인트가 부족하여 게시글을 등록할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                else {
+                    //서버 User 정보에 point 업데이트 (10 차감)
 // 게시물 등록 함수
-                RegBoard regBoard = new RegBoard();
-                regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
+                    RegBoard regBoard = new RegBoard();
+                    regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
+                }
             }
         });
 
@@ -146,6 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
                         Log.d("RegisterActivity: GET_USERINFO", "GET SUCCESS");
                         Log.d("RegisterActivity: GET_USERINFO", ">>>response.body()=" + response.body());
 
+                        point = userInfoData.getPoint();
+
                         practicesDataList = userInfoData.getPractices();
 
                         for (PracticesData practicesData : practicesDataList)
@@ -161,14 +171,14 @@ public class RegisterActivity extends AppCompatActivity {
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                Toast.makeText(RegisterActivity.this, "spinner 선택", Toast.LENGTH_SHORT).show();  //임시, 확인용
+                                //Toast.makeText(RegisterActivity.this, "spinner 선택", Toast.LENGTH_SHORT).show();  //임시, 확인용
                                 selected_practice_id = practicesDataList[i].getId();
 
 //                selected_practice_mid = i;
 //                cursor.moveToPosition(i);
 //                selected_practice_id = cursor.getInt(11);
 
-                                Toast.makeText(RegisterActivity.this, practiceTitleList.get(i) + ", " + selected_practice_id, Toast.LENGTH_SHORT).show();  //임시, 확인용
+                                //Toast.makeText(RegisterActivity.this, practiceTitleList.get(i) + ", " + selected_practice_id, Toast.LENGTH_SHORT).show();  //임시, 확인용
                             }
 
                             @Override

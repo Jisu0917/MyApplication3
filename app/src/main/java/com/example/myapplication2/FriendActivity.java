@@ -254,7 +254,7 @@ public class FriendActivity extends AppCompatActivity {
         Long id = Long.valueOf(tag_split[0]);
         String name = tag_split[2];
 
-        Toast.makeText(this, "id: " + id + ", name: " + name, Toast.LENGTH_SHORT).show();  //임시, 확인용
+        //Toast.makeText(this, "id: " + id + ", name: " + name, Toast.LENGTH_SHORT).show();  //임시, 확인용
 
         Intent intent = new Intent(FriendActivity.this, PublicPracticeList.class);
         intent.putExtra("friend_id", id);

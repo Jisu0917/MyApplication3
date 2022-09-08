@@ -61,6 +61,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/*
+* 이 파일 필요없음!!!!
+* */
 public class RecordActivity extends AppCompatActivity {
     public static final String TAG = "RecordActivity";
     public static String RECORDED_DIR = "myRec";
