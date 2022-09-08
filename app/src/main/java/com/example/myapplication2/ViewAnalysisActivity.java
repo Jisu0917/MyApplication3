@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -29,13 +30,19 @@ import com.example.myapplication2.api.dto.PracticesData;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ViewAnalysisActivity extends AppCompatActivity {
-    String CAPTURE_PATH = "/sookpeech_capture";
+    String CAPTURE_PATH = "/sookpeech_analysis_result";
     Long practice_id;
     String practice_title = "";
 
@@ -53,6 +60,9 @@ public class ViewAnalysisActivity extends AppCompatActivity {
     RatingBar ratingBar;
     static int warnings = 0;
 
+    ImageView iv_chart_gesture, iv_chart_gaze, iv_chart_pose, iv_chart_speed, iv_chart_volume_pitch,
+            iv_chart_conclusion;
+
     static Long userId = MainActivity.userId;
 
     static RetrofitAPI retrofitAPI;
@@ -60,11 +70,13 @@ public class ViewAnalysisActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_showanalysis);
+        setContentView(R.layout.activity_viewanalysis);
 
         final Intent it = getIntent();
         practice_id = it.getLongExtra("practice_id", 0);
         practice_title = it.getStringExtra("practice_title");
+        
+        setTitle(practice_title + "의 분석 결과");
 
         linearLayout = (LinearLayout) findViewById(R.id.linearlayout_analysis);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
@@ -85,6 +97,13 @@ public class ViewAnalysisActivity extends AppCompatActivity {
         good_or_warning_volume = (ImageView) findViewById(R.id.good_or_warning_volume);
         good_or_warning_pitch = (ImageView) findViewById(R.id.good_or_warning_pitch);
         good_or_warning_conclusion = (ImageView) findViewById(R.id.good_or_warning_conclusion);
+
+        iv_chart_gesture = (ImageView) findViewById(R.id.iv_chart_gesture);
+        //iv_chart_gaze = (ImageView) findViewById(R.id.iv_chart_gaze);
+        iv_chart_pose = (ImageView) findViewById(R.id.iv_chart_pose);
+        iv_chart_speed = (ImageView) findViewById(R.id.iv_chart_speed);
+        iv_chart_volume_pitch = (ImageView) findViewById(R.id.iv_chart_pitch);
+        iv_chart_conclusion = (ImageView) findViewById(R.id.iv_chart_conclusion);
 
         ratingBar = (RatingBar) findViewById(R.id.ratingbarStyle);
 
@@ -161,7 +180,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                 analysisContentData.getJitter()+"%입니다.\n"
                 + evaluateJitter(analysisContentData.getJitter()) +
                 "\n내용에 따라 목소리 높낮이를 다양하게 사용하며 내용을 효과적으로 전달하시기 바랍니다.");  // jitter 값에 따라 다른 평가 제시
-        tv_analysis_conclusion.setText("전체 ??개의 문장 중 "+analysisContentData.getClosingRemarks()+"%의 문장에서 맺음말이 인식되었습니다.\n"+
+        tv_analysis_conclusion.setText("전체 문장 중 "+analysisContentData.getClosingRemarks()+"%의 문장에서 맺음말이 인식되었습니다.\n"+
                 "맺음말이 인식되지 않은 경우, 말 끝을 흐리는 등 발음이 부정확하였거나 문장이 끝난 이후 충분한 공백을 두지 않았을 수 있습니다.\n" +
                 "맺음말이 부정확한 경우 청중들의 이해도와 발표의 전달력을 떨어트릴 수 있으므로, 유의하여 연습하시기 바랍니다.");
 
@@ -269,6 +288,105 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                     break;
             }
         }
+
+        /* 차트 이미지 표시하기 */
+        final Bitmap[] bitmap = new Bitmap[5];
+        Thread uThread = new Thread() {
+            @Override
+            public void run(){
+                try{
+                    /* gesture */
+                    // 이미지 URL 경로
+                    URL url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+userId+"/"+practice_id+"/movement.png");
+
+                    // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                    conn.setDoInput(true); // 서버로부터 응답 수신
+                    conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+
+                    InputStream is = conn.getInputStream(); //inputStream 값 가져오기
+                    bitmap[0] = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+
+                    /* pose */
+                    // 이미지 URL 경로
+                    url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+userId+"/"+practice_id+"/movement_detail.png");
+
+                    // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                    conn = (HttpURLConnection)url.openConnection();
+                    conn.setDoInput(true); // 서버로부터 응답 수신
+                    conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+
+                    is = conn.getInputStream(); //inputStream 값 가져오기
+                    bitmap[1] = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+
+                    /* speed */
+                    // 이미지 URL 경로
+                    url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+userId+"/"+practice_id+"/speed.png");
+
+                    // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                    conn = (HttpURLConnection)url.openConnection();
+                    conn.setDoInput(true); // 서버로부터 응답 수신
+                    conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+
+                    is = conn.getInputStream(); //inputStream 값 가져오기
+                    bitmap[2] = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+
+                    /* volume_pitch */
+                    // 이미지 URL 경로
+                    url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+userId+"/"+practice_id+"/shimmer_jitter.png");
+
+                    // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                    conn = (HttpURLConnection)url.openConnection();
+                    conn.setDoInput(true); // 서버로부터 응답 수신
+                    conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+
+                    is = conn.getInputStream(); //inputStream 값 가져오기
+                    bitmap[3] = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+
+                    /* conclusion */
+                    // 이미지 URL 경로
+                    url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+userId+"/"+practice_id+"/closing_remarks.png");
+
+                    // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
+                    conn = (HttpURLConnection)url.openConnection();
+                    conn.setDoInput(true); // 서버로부터 응답 수신
+                    conn.connect(); //연결된 곳에 접속할 때 (connect() 호출해야 실제 통신 가능함)
+
+                    is = conn.getInputStream(); //inputStream 값 가져오기
+                    bitmap[4] = BitmapFactory.decodeStream(is); // Bitmap으로 변환
+
+                }catch (MalformedURLException e){
+                    e.printStackTrace();
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        uThread.start(); // 작업 Thread 실행
+
+        try{
+            //메인 Thread는 별도의 작업 Thread가 작업을 완료할 때까지 대기해야 한다.
+            //join() 호출하여 별도의 작업 Thread가 종료될 때까지 메인 Thread가 기다리도록 한다.
+            //join() 메서드는 InterruptedException을 발생시킨다.
+            uThread.join();
+
+            //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
+            //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
+            iv_chart_gesture.setVisibility(View.VISIBLE);
+            iv_chart_pose.setVisibility(View.VISIBLE);
+            iv_chart_speed.setVisibility(View.VISIBLE);
+            iv_chart_volume_pitch.setVisibility(View.VISIBLE);
+            iv_chart_conclusion.setVisibility(View.VISIBLE);
+
+            iv_chart_gesture.setImageBitmap(bitmap[0]);
+            iv_chart_pose.setImageBitmap(bitmap[1]);
+            iv_chart_speed.setImageBitmap(bitmap[2]);
+            iv_chart_volume_pitch.setImageBitmap(bitmap[3]);
+            iv_chart_conclusion.setImageBitmap(bitmap[4]);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 
     // 평가 함수 (이미지 아이콘 good) - true : good, false : warning
@@ -348,14 +466,16 @@ public class ViewAnalysisActivity extends AppCompatActivity {
             if (!defaultFile.exists())
                 defaultFile.mkdirs();
 
-            String filename = "Sookpeech_"+ practice_title + practice_id +".jpg";
+            String filename = "Sookpeech_"+ practice_id + "_" + practice_title + "_"+ getNowTime() +".jpg";
             File file = new File(defaultFile,filename);
             if (file.exists()) {
                 file.delete();
                 file = new File(defaultFile,filename);
             }
 
-            FileOutputStream output = new FileOutputStream(file);
+            System.out.println("file: " + file);  //임시, 확인용
+
+           FileOutputStream output = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
             output.flush();
             output.close();
@@ -383,9 +503,12 @@ public class ViewAnalysisActivity extends AppCompatActivity {
         return bitmap;
     }
 
-    public void show_graph(View v) {
-        Intent intent = new Intent(ViewAnalysisActivity.this, GraphActivity.class);
-        startActivity(intent);
+    private String getNowTime() {
+        String nowTime = "";
+        Date date = new Date();
+        nowTime += (date.getYear() + 1900) + "" + (date.getMonth() + 1) + "" + date.getDate() + "_" + date.getHours() + "" + date.getMinutes() + "" + date.getSeconds();
+
+        return nowTime;
     }
 
 }

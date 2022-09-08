@@ -67,6 +67,9 @@
             android:name=".ViewPracticeActivity"
             android:screenOrientation="fullSensor" />
         <activity
+            android:name=".ViewPracticePlayActivity"
+            android:screenOrientation="fullSensor" />
+        <activity
             android:name=".PlayActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity

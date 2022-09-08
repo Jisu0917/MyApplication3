@@ -90,12 +90,9 @@ public class RecordActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
 
 
-    static String personName;
-    static String idToken;
     static Long userId = MainActivity.userId;
 
     static RetrofitAPI retrofitAPI;
-    static UserIdObject userIdObject;
 
     static String presignedUrl = "";
 
