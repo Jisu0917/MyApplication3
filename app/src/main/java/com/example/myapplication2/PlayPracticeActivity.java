@@ -84,20 +84,7 @@ public class PlayPracticeActivity extends AppCompatActivity implements MediaCont
 
         final Intent it = getIntent();
         practice_id = it.getLongExtra("practice_id", 0);
-
-        dbHelper = new DBHelper(this, 4);
-        db = dbHelper.getReadableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
-        cursor = db.rawQuery(" SELECT * FROM practiceTable", null);
-        startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
-//        cursor.moveToPosition(practice_index);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            System.out.println("practiceTable - practice_id : " + cursor.getInt(0) + ", file_url: " + cursor.getString(1));
-            if (cursor.getInt(0) == practice_id.intValue())
-                fileUrl = cursor.getString(1);
-        }
-        if (fileUrl.equals(""))
-            Toast.makeText(PlayPracticeActivity.this, "fileUrl is empty..", Toast.LENGTH_SHORT).show();  //임시, 확인용
+        fileUrl = it.getStringExtra("fileUrl");
 
         // 화면 정보 불러오기
         params = getWindow().getAttributes();

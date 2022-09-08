@@ -77,12 +77,7 @@ public class DetailActivity extends AppCompatActivity {
 
     ArrayList<FeedbacksData> feedbacksDataList = new ArrayList<>();
 
-
-    static String personName;
-    static String idToken;
-
     static RetrofitAPI retrofitAPI;
-    static UserIdObject userIdObject;
 
 
     // 음원 파일 재생
@@ -192,7 +187,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // MediaPlayer 객체 초기화, 재생
                 //mp = MediaPlayer.create(getApplicationContext(), R.raw.test_wav_subway);  //임시, 확인용 - 서버에서 받아온 wav 파일 사용
-                getWavFile();
+                playWavFile();
                 System.out.println("wav file url : " + url);  //임시, 확인용
                 if (!url.equals("")) {
                     btn_start.setVisibility(View.GONE);
@@ -246,50 +241,66 @@ public class DetailActivity extends AppCompatActivity {
         btn_restart.setVisibility(View.GONE);
     }
 
-    // 서버로부터 wav 파일 받아오기
-    private void getWavFile() {
-        System.out.println("서버로부터 wav 파일 받아오기 시작");
+    private void playWavFile() {
+        //https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/{practice_id}/{user_id}_{practice_id}.wav
+        url = "https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practiceId+"/"+userId+"_"+practiceId+".wav";
+//        url = "http://mm.sookmyung.ac.kr/~sblim/lec/web-int/data/song.mp3";  //임시, 확인용
 
-        RetrofitClient4 retrofitClient = RetrofitClient4.getInstance();
+        // 미디어플레이어 설정
+        mp = MediaPlayer.create(getApplicationContext(), Uri.parse(url));
+        mp.setLooping(false);
+        mp.start();  //음원 재생 시작
 
-        if (retrofitClient!=null){
-            retrofitAPI = RetrofitClient4.getRetrofitAPI();
-            retrofitAPI.getWavFile(userId.intValue(), practiceId.intValue()).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    Log.d("GET", "not success yet");
-                    if (response.isSuccessful()){
-                        url = response.body();
-                        if (!url.equals("")) {
-                            Log.d("GET_WAV_FILE", "GET SUCCESS");
-                            Log.d("GET_WAV_FILE", url);
-
-                            // 미디어플레이어 설정
-                            mp = MediaPlayer.create(getApplicationContext(), Uri.parse(url));
-                            mp.setLooping(false);
-                            mp.start();  //음원 재생 시작
-
-                            int duration = mp.getDuration();  //음원의 재생시간(miliSecond)
-                            sb.setMax(duration);
-                            new WavPlayThread().start();
-                            isPlaying = true;
-                        } else {
-                            System.out.println("GET_WAV_FILE : url is null...");
-                        }
-                    }
-                    else {
-                        System.out.println("@@@@ getWavFile : response is not successful...");
-                        System.out.println("@@@@ getWavFile : response code : " + response.code());  //404
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Log.d("GET_WAV_FILE", "GET FAILED");
-                }
-            });
-        }
+        int duration = mp.getDuration();  //음원의 재생시간(miliSecond)
+        sb.setMax(duration);
+        new WavPlayThread().start();
+        isPlaying = true;
     }
+
+    // 서버로부터 wav 파일 받아오기
+//    private void getWavFile() {
+//        System.out.println("서버로부터 wav 파일 받아오기 시작");
+//
+//        RetrofitClient4 retrofitClient = RetrofitClient4.getInstance();
+//
+//        if (retrofitClient!=null){
+//            retrofitAPI = RetrofitClient4.getRetrofitAPI();
+//            retrofitAPI.getWavFile(userId.intValue(), practiceId.intValue()).enqueue(new Callback<String>() {
+//                @Override
+//                public void onResponse(Call<String> call, Response<String> response) {
+//                    Log.d("GET", "not success yet");
+//                    if (response.isSuccessful()){
+//                        url = response.body();
+//                        if (!url.equals("")) {
+//                            Log.d("GET_WAV_FILE", "GET SUCCESS");
+//                            Log.d("GET_WAV_FILE", url);
+//
+//                            // 미디어플레이어 설정
+//                            mp = MediaPlayer.create(getApplicationContext(), Uri.parse(url));
+//                            mp.setLooping(false);
+//                            mp.start();  //음원 재생 시작
+//
+//                            int duration = mp.getDuration();  //음원의 재생시간(miliSecond)
+//                            sb.setMax(duration);
+//                            new WavPlayThread().start();
+//                            isPlaying = true;
+//                        } else {
+//                            System.out.println("GET_WAV_FILE : url is null...");
+//                        }
+//                    }
+//                    else {
+//                        System.out.println("@@@@ getWavFile : response is not successful...");
+//                        System.out.println("@@@@ getWavFile : response code : " + response.code());  //404
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<String> call, Throwable t) {
+//                    Log.d("GET_WAV_FILE", "GET FAILED");
+//                }
+//            });
+//        }
+//    }
 
 
     private void InitData(){
@@ -632,6 +643,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
         if (feedbacksDataList != null) {
+            int cmt_count = 1;
             for (int i=0; i<feedbacksDataList.size(); i++) {
                 View customView = layoutInflater.inflate(R.layout.custom_comment, null);
                 FeedbacksData feedback = feedbacksDataList.get(i);
@@ -650,6 +662,7 @@ public class DetailActivity extends AppCompatActivity {
                 System.out.println("tone : "+tone_score + ", " + tone_comment);
                 System.out.println("closing : "+closing_score + ", " + closing_comment);
 
+                ((TextView)customView.findViewById(R.id.cmt_count)).setText("댓글 " + cmt_count);
                 ((TextView)customView.findViewById(R.id.cmt_speedscore_tv)).setText(numberToStars(speed_score));
                 ((TextView)customView.findViewById(R.id.cmt_speedcmt_tv)).setText(speed_comment);
                 ((TextView)customView.findViewById(R.id.cmt_tonescore_tv)).setText(numberToStars(tone_score));
@@ -660,7 +673,7 @@ public class DetailActivity extends AppCompatActivity {
                 // 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
                 comment_layout.addView(customView);
 
-
+                cmt_count++;
             }
 
         } else {
@@ -757,13 +770,6 @@ public class DetailActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.d(TAG, "RegCmt : onPostExecute, " + result);
-
-            // 댓글 새로고침
-            LoadCmt loadCmt = new LoadCmt();
-            loadCmt.execute(postId.toString());
-
-            Toast.makeText(DetailActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
-
         }
 
 
@@ -844,6 +850,13 @@ public class DetailActivity extends AppCompatActivity {
                     if (response.isSuccessful()){
                         Log.d("POST", "POST Success!");
                         Log.d("POST", ">>>response.body()="+response.body());
+
+                        // 댓글 새로고침
+                        LoadCmt loadCmt = new LoadCmt();
+                        loadCmt.execute(postId.toString());
+
+                        Toast.makeText(DetailActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+
                     }
                     else {
                         System.out.println("@@@@ feedback post : response is not successful...");

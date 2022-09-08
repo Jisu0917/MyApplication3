@@ -1,11 +1,7 @@
 package com.example.myapplication2;
 
-import static com.example.myapplication2.MainActivity.userId;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,10 +17,11 @@ import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.dto.PostsData;
 import com.example.myapplication2.api.dto.PracticesData;
+import com.example.myapplication2.api.dto.UserInfoData;
 import com.example.myapplication2.api.objects.UserIdObject;
 
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,19 +40,15 @@ public class RegisterActivity extends AppCompatActivity {
     // 유저아이디 변수
     String useridToken = "";
 
-
-    static String personName;
-    static String idToken;
     static Long userId = MainActivity.userId;
     static int selected_practice_mid;
-    static int selected_practice_id;
+    static Long selected_practice_id;
 
     static RetrofitAPI retrofitAPI;
-    static UserIdObject userIdObject;
 
-    DBHelper dbHelper;
-    SQLiteDatabase db = null;
-    Cursor cursor;
+    PracticesData[] practicesDataList;
+    ArrayList<PracticesData> practicesList;
+    ArrayList<String> practiceTitleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,42 +63,23 @@ public class RegisterActivity extends AppCompatActivity {
         title_et = findViewById(R.id.title_et);
         content_et = findViewById(R.id.content_et);
         reg_button = findViewById(R.id.reg_button);
-        spinner = findViewById(R.id.spinner);
+        spinner = (Spinner) findViewById(R.id.spinner);
 
         // Spinner 설정
-        dbHelper = new DBHelper(this, 4);
-        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
-        cursor = db.rawQuery("SELECT * FROM tableName", null);
-        startManagingCursor(cursor);    //엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
-        cursor.moveToFirst();
+        getUserInfo();
 
-        //String[] items = {};  //연습 제목 리스트
-        ArrayList<String> itemList = new ArrayList<>();  //연습 제목 리스트
-        do {
-            itemList.add(cursor.getString(1));  //연습 제목
-        } while (cursor.moveToNext());
+//        dbHelper = new DBHelper(this, 4);
+//        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
+//        cursor = db.rawQuery("SELECT * FROM tableName", null);
+//        startManagingCursor(cursor);    //엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+//        cursor.moveToFirst();
+//
+//        //String[] items = {};  //연습 제목 리스트
+//        ArrayList<String> itemList = new ArrayList<>();  //연습 제목 리스트
+//        do {
+//            itemList.add(cursor.getString(1));  //연습 제목
+//        } while (cursor.moveToNext());
 
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, itemList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selected_practice_mid = i;
-                cursor.moveToPosition(i);
-                selected_practice_id = cursor.getInt(11);
-
-                Toast.makeText(RegisterActivity.this, itemList.get(i) + ", " + selected_practice_id, Toast.LENGTH_SHORT).show();  //임시, 확인용
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
 
 // 버튼 이벤트 추가
@@ -134,19 +108,6 @@ public class RegisterActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.d(TAG, "onPostExecute, " + result);
-
-//            if(result.equals("success")){
-//// 결과값이 success 이면
-//// 토스트 메시지를 뿌리고
-//// 이전 액티비티(ListActivity)로 이동,
-//// 이때 ListActivity 의 onResume() 함수 가 호출되며, 데이터를 새로 고침
-//                Toast.makeText(RegisterActivity.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
-//                finish();
-//            } else
-//            {
-//                Toast.makeText(RegisterActivity.this, result, Toast.LENGTH_SHORT).show();
-//            }
-
         }
 
 
@@ -160,59 +121,70 @@ public class RegisterActivity extends AppCompatActivity {
             //////
 
 
-
             String response = makeNewPost(title, content);
 
-            //////
-
-
-            //String server_url = "http://15.164.252.136/reg_board.php";
-
-
-            //URL url;
-//            String response = "";
-//            try {
-//                url = new URL(server_url);
-//
-//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//                conn.setReadTimeout(15000);
-//                conn.setConnectTimeout(15000);
-//                conn.setRequestMethod("POST");
-//                conn.setDoInput(true);
-//                conn.setDoOutput(true);
-//                Uri.Builder builder = new Uri.Builder()
-//                        .appendQueryParameter("userid", userid)
-//                        .appendQueryParameter("title", title)
-//                        .appendQueryParameter("content", content);
-//                String query = builder.build().getEncodedQuery();
-//
-//                OutputStream os = conn.getOutputStream();
-//                BufferedWriter writer = new BufferedWriter(
-//                        new OutputStreamWriter(os, "UTF-8"));
-//                writer.write(query);
-//                writer.flush();
-//                writer.close();
-//                os.close();
-//
-//                conn.connect();
-//                int responseCode=conn.getResponseCode();
-//
-//                if (responseCode == HttpsURLConnection.HTTP_OK) {
-//                    String line;
-//                    BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//                    while ((line=br.readLine()) != null) {
-//                        response+=line;
-//                    }
-//                }
-//                else {
-//                    response="";
-//
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-
             return response;
+        }
+    }
+
+    private void getUserInfo(){
+        System.out.println("HomeActivity1: getUserInfo");  //임시, 확인용
+        userId = MainActivity.userId;
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        practicesDataList = null;
+        practiceTitleList = new ArrayList<>();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            System.out.println("userId: " + userId);  //임시, 확인용
+            retrofitAPI.getUserInfo(userId).enqueue(new Callback<UserInfoData>() {
+                @Override
+                public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
+                    UserInfoData userInfoData = response.body();
+                    if (userInfoData!=null){
+                        Log.d("RegisterActivity: GET_USERINFO", "GET SUCCESS");
+                        Log.d("RegisterActivity: GET_USERINFO", ">>>response.body()=" + response.body());
+
+                        practicesDataList = userInfoData.getPractices();
+
+                        for (PracticesData practicesData : practicesDataList)
+                            practiceTitleList.add(practicesData.getTitle());
+
+                        System.out.println("practiceTitleList : " + practiceTitleList);  //임시, 확인용
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                                RegisterActivity.this, android.R.layout.simple_spinner_item, practiceTitleList);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
+
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                Toast.makeText(RegisterActivity.this, "spinner 선택", Toast.LENGTH_SHORT).show();  //임시, 확인용
+                                selected_practice_id = practicesDataList[i].getId();
+
+//                selected_practice_mid = i;
+//                cursor.moveToPosition(i);
+//                selected_practice_id = cursor.getInt(11);
+
+                                Toast.makeText(RegisterActivity.this, practiceTitleList.get(i) + ", " + selected_practice_id, Toast.LENGTH_SHORT).show();  //임시, 확인용
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserInfoData> call, Throwable t) {
+                    Log.d("RegisterActivity: GET_USERINFO", "GET FAILED");
+                }
+            });
         }
     }
 

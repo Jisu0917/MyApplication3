@@ -17,26 +17,62 @@
         android:text="연습 제목"
         />
 
-    <ImageButton
-        android:id="@+id/btn_play"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_play"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageview_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_margin="15dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/tmp_thumbnail"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <ImageButton
+                android:id="@+id/btn_play"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_play"/>
+        </LinearLayout>
+    </FrameLayout>
 
     <Button
         android:id="@+id/btn_show_analysis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
         android:text="분석 결과 확인하기"
         android:clickable="true"
         />
 
+<!--     선 긋기 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:background="#333333"
+        />
+
+    <TextView
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="피드백"
+        />
+
+    <LinearLayout
+        android:id="@+id/comment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
 
 
 </LinearLayout>

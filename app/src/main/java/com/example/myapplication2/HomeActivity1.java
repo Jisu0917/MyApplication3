@@ -105,7 +105,7 @@ public class HomeActivity1 extends AppCompatActivity {
         userId = MainActivity.userId;
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
-        practicesDataList = null;
+//        practicesDataList = null;
         practicesList = new ArrayList<>();
 
         if (retrofitClient!=null){
@@ -119,9 +119,25 @@ public class HomeActivity1 extends AppCompatActivity {
                         Log.d("HomeActivity1: GET_USERINFO", "GET SUCCESS");
                         Log.d("HomeActivity1: GET_USERINFO", ">>>response.body()=" + response.body());
 
-                        practicesDataList = userInfoData.getPractices();
+//                        practicesDataList = userInfoData.getPractices();
+                        PracticesData[] tmpData = userInfoData.getPractices();
+                        // 중복 제거
+                        for (int i=0; i<tmpData.length; i++) {
+                            System.out.println("temData["+i+"].getId() : " + tmpData[i].getId());  //임시, 확인용
+                            
+                            boolean isDuplicated = false;
+                            for (int j=0; j<practicesList.size(); j++) {
+                                if (tmpData[i].getId() == practicesList.get(j).getId()) {
+                                    isDuplicated = true;
+                                    break;
+                                }
+                            }
+                            if (!isDuplicated) {
+                                practicesList.add(tmpData[i]);
+                            }
+                        }
 
-                        Collections.addAll(practicesList, practicesDataList);
+//                        Collections.addAll(practicesList, practicesDataList);
 
                         setPracticeListView();
                     }
@@ -145,7 +161,7 @@ public class HomeActivity1 extends AppCompatActivity {
 
 
         if (practicesList != null) {
-            System.out.println("practicesList : " + practicesList.toString());  //임시, 확인용
+            System.out.println("practicesList : " + practicesList);  //임시, 확인용
             if (practicesList.size() == 0) {  //연습목록이 비어있을 때
                 tv_loading.setText("+ 버튼을 눌러 연습을 추가하세요.");
             }

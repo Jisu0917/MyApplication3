@@ -112,7 +112,9 @@ public interface RetrofitAPI {
     @GET("http://13.125.254.29:8080/analysis/{user_id}/{practice_id}/{gender}/{pose_sensitivity}/{eyes_sensitivity}")
     Call<StatusCallback> askAnalysis(@Path("user_id") int user_id, @Path("practice_id") int practice_id, @Path("gender") String gender, @Path("pose_sensitivity") int pose_sensitivity, @Path("eyes_sensitivity") int eyes_sensitivity);
 
-    // 음성 파일 받아오기
+//    // 음성 파일 받아오기
     @GET("/{user_id}/{practice_id}.wav")
     Call<String> getWavFile(@Path("user_id") int user_id, @Path("practice_id") int practice_id);
+//    @GET("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/{practice_id}/{user_id}_{practice_id}.wav")
+//    Call<String> getWavFile(@Path("user_id") int user_id, @Path("practice_id") int practice_id);
 }
