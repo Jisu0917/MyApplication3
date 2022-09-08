@@ -63,8 +63,8 @@ public class FriendActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(FriendActivity.this, AddFriendActivity.class);
                 intent.putExtra("userId", userId);
-                //startActivity(intent);
-                startActivityForResult(intent, 0);
+                startActivity(intent);
+                //startActivityForResult(intent, 0);
             }
         });
 
@@ -85,20 +85,20 @@ public class FriendActivity extends AppCompatActivity {
         getFriends.execute();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode==0) {
-            if (resultCode==333) {  //친구 추가 성공
-                Log.d(TAG, "onActivityResult : list reload");
-                userInfoDataList = new ArrayList<>();
-
-                GetFriends getFriends = new GetFriends();
-                getFriends.execute();
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode==0) {
+//            if (resultCode==333) {  //친구 추가 성공
+//                Log.d(TAG, "onActivityResult : list reload");
+//                userInfoDataList = new ArrayList<>();
+//
+//                GetFriends getFriends = new GetFriends();
+//                getFriends.execute();
+//            }
+//        }
+//    }
 
     class GetFriends extends AsyncTask<String, Void, String> {
 
@@ -199,7 +199,7 @@ public class FriendActivity extends AppCompatActivity {
                                 if (friends.length == userInfoDataList.size())
                                     setFriendListView();
                                 else {
-                                    System.out.println("리스트 길이가 다름!!!");  //임시, 확인용
+                                    System.out.println("리스트 길이가 다름!!! - friends.length: " + friends.length +", userInfoDataList.size(): " + userInfoDataList.size());  //임시, 확인용
                                     //Toast.makeText(getApplicationContext(), "리스트 길이가 다름!!!", Toast.LENGTH_SHORT).show();  //임시, 확인용
                                 }
                             }

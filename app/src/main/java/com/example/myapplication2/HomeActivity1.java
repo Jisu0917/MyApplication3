@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,6 +47,7 @@ public class HomeActivity1 extends AppCompatActivity {
     ArrayList<PracticesData> practicesList;
 
     LinearLayout home_layout;
+    TextView tv_loading;
 
     DBHelper dbHelper;
     SQLiteDatabase db = null;
@@ -63,6 +65,7 @@ public class HomeActivity1 extends AppCompatActivity {
         tabWidget.setVisibility(View.VISIBLE);
 
         home_layout = (LinearLayout) findViewById(R.id.home_layout);
+        tv_loading = (TextView) findViewById(R.id.tv_loading);
 
         getUserInfo();
 
@@ -143,30 +146,36 @@ public class HomeActivity1 extends AppCompatActivity {
 
         if (practicesList != null) {
             System.out.println("practicesList : " + practicesList.toString());  //임시, 확인용
-            for (int i = 0; i< practicesList.size(); i++) {
-                View customView = layoutInflater.inflate(R.layout.custom_practice_info, null);
-                PracticesData practicesData = practicesList.get(i);
+            if (practicesList.size() == 0) {  //연습목록이 비어있을 때
+                tv_loading.setText("+ 버튼을 눌러 연습을 추가하세요.");
+            }
+            else {  //검색된 연습 목록이 존재할 때
+                tv_loading.setVisibility(View.GONE);
+                for (int i = 0; i< practicesList.size(); i++) {
+                    View customView = layoutInflater.inflate(R.layout.custom_practice_info, null);
+                    PracticesData practicesData = practicesList.get(i);
 
-                Long id = practicesData.getId();
-                String title = practicesData.getTitle();
-                String sort = practicesData.getSort();
-                String scope = practicesData.getScope();
-                String state = practicesData.getAnalysis().getState();  //COMPLETE, INCOMPLETE
-                Drawable drawable;
-                if (state.equals("COMPLETE"))
-                    drawable = ContextCompat.getDrawable(this, R.drawable.ic_100percent);
-                else drawable = ContextCompat.getDrawable(this, R.drawable.ic_loading);
+                    Long id = practicesData.getId();
+                    String title = practicesData.getTitle();
+                    String sort = practicesData.getSort();
+                    String scope = practicesData.getScope();
+                    String state = practicesData.getAnalysis().getState();  //COMPLETE, INCOMPLETE
+                    Drawable drawable;
+                    if (state.equals("COMPLETE"))
+                        drawable = ContextCompat.getDrawable(this, R.drawable.ic_100percent);
+                    else drawable = ContextCompat.getDrawable(this, R.drawable.ic_loading);
 
-                ((LinearLayout)customView.findViewById(R.id.container)).setTag(id+":"+title+":"+state);
-                ((TextView)customView.findViewById(R.id.tv_title)).setText(title);
-                ((TextView)customView.findViewById(R.id.tv_id)).setText("id: "+id.intValue());
-                ((TextView)customView.findViewById(R.id.tv_sort)).setText(sort);
-                ((TextView)customView.findViewById(R.id.tv_scope)).setText(scope);
-                ((ImageView)customView.findViewById(R.id.iv_finished)).setImageDrawable(drawable);
+                    ((LinearLayout)customView.findViewById(R.id.container)).setTag(id+":"+title+":"+state);
+                    ((TextView)customView.findViewById(R.id.tv_title)).setText(title);
+                    ((TextView)customView.findViewById(R.id.tv_id)).setText("id: "+id.intValue());
+                    ((TextView)customView.findViewById(R.id.tv_sort)).setText(sort);
+                    ((TextView)customView.findViewById(R.id.tv_scope)).setText(scope);
+                    ((ImageView)customView.findViewById(R.id.iv_finished)).setImageDrawable(drawable);
 
-                registerForContextMenu((LinearLayout)customView.findViewById(R.id.container));  //register context menu
+                    registerForContextMenu((LinearLayout)customView.findViewById(R.id.container));  //register context menu
 
-                home_layout.addView(customView);
+                    home_layout.addView(customView);
+                }
             }
         } else {
             System.out.println("practicesList is null...");
@@ -265,5 +274,25 @@ public class HomeActivity1 extends AppCompatActivity {
             });
         }
 
+    }
+
+    // 액션 바 아이콘 메뉴
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        if (item.getItemId() == R.id.action_btn_reload) {
+            getUserInfo();  //새로고침
+
+            System.out.println("리스트를 업데이트 합니다.");  //임시, 확인용
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -145,12 +145,12 @@ public class AddPracticeActivity1 extends AppCompatActivity {
 
     // xml에서 호출
     public void setScopeImg(View view) {
-        if (scope.equals("PRIVATE")) {
+        if (scope.equals("PUBLIC")) {
             iv_scope.setImageResource(R.drawable.ic_star_filled);
-            scope = "PUBLIC";
-        } else if (scope.equals("PUBLIC")) {
-            iv_scope.setImageResource(R.drawable.ic_star_empty);
             scope = "PRIVATE";
+        } else if (scope.equals("PRIVATE")) {
+            iv_scope.setImageResource(R.drawable.ic_star_empty);
+            scope = "PUBLIC";
         }
     }
 }

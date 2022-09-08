@@ -68,6 +68,7 @@ public class RecordActivity1 extends AppCompatActivity {
     public static final String TAG = "RecordActivity1";
     public static String RECORDED_DIR = "myRec";
     static String filename = "";
+    static String recordTime = "";
 
     File f;
 
@@ -274,7 +275,8 @@ public class RecordActivity1 extends AppCompatActivity {
 
 
                 // DB에 파일명 저장
-                String sql = "INSERT INTO practiceTable (practice_id,file_url) VALUES ('" + NO_INPUT + "', '" + filename + "');";
+                recordTime = getNowTime();
+                String sql = "INSERT INTO practiceTable (practice_id,file_url,time) VALUES ('" + NO_INPUT + "', '" + filename + "', '" + recordTime + "');";
                 db.execSQL(sql);
                 System.out.println("DB에 파일명 저장 완료");
 
@@ -511,6 +513,9 @@ public class RecordActivity1 extends AppCompatActivity {
                         Long practice_id = response.body();
 
                         practice.setId(practice_id);
+
+                        // 내장 DB에 practice_id 업데이트
+                        db.execSQL("UPDATE practiceTable SET practice_id = " + practice_id.intValue() + " WHERE time = '" + recordTime + "'");
 
                         getPresignedURL(practice);  // 영상 업로드 할 url 받아오기
                     }

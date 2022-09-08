@@ -41,8 +41,8 @@ public interface RetrofitAPI {
     Call<UserInfoData> searchUserInfo(@Query("name") String name);
 
     // 친구 맺기
-    @POST("/api/friends/{id}")
-    Call<Long> makeFriend(@Body FriendIdCodeData friendIdCode);
+    @POST("/api/friends/{user_id}")
+    Call<Long> makeFriend(@Path("user_id") Long user_id, @Body FriendIdCodeData friendIdCode);
 
     // 연습
     // 새 연습 만들기

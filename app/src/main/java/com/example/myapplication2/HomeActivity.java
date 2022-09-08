@@ -346,48 +346,48 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             
             
-            case R.id.action_btn_select:
-                if (adapter.getCount() != 0) {
-                    adapter2 = new CustomListViewAdapter2();
-
-                    if (listView2.getVisibility() != View.VISIBLE) {
-                        listView2.setVisibility(View.VISIBLE);
-                        fab_add.hide();
-                        fab_del.show();
-                    } else {
-                        listView2.setVisibility(View.GONE);
-                        fab_del.hide();
-                        fab_add.show();
-                    }
-
-                    cursor = db.rawQuery("SELECT * FROM tableName", null);
-                    startManagingCursor(cursor);
-                    while (cursor.moveToNext()) {
-                        adapter2.addItem();
-                    }
-                    listView2.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                    listView2.setAdapter(adapter2);
-                }
-                return true;
-
-            case R.id.action_btn_delFinished:  // 완료된 항목 모두 삭제
-                int exAlarmID = NO_INPUT;
-                cursor = db.rawQuery(" SELECT * FROM tableName ", null);
-                startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
-
-
-                String sql = " DELETE FROM tableName WHERE finished = " + 1;
-                db.execSQL(sql);
-
-                if (listView2.getVisibility() == View.VISIBLE) {
-                    listView2.setVisibility(View.GONE);
-                    fab_del.hide();
-                    fab_add.show();
-                }
-
-                listUpdate();
-
-                return true;
+//            case R.id.action_btn_select:
+//                if (adapter.getCount() != 0) {
+//                    adapter2 = new CustomListViewAdapter2();
+//
+//                    if (listView2.getVisibility() != View.VISIBLE) {
+//                        listView2.setVisibility(View.VISIBLE);
+//                        fab_add.hide();
+//                        fab_del.show();
+//                    } else {
+//                        listView2.setVisibility(View.GONE);
+//                        fab_del.hide();
+//                        fab_add.show();
+//                    }
+//
+//                    cursor = db.rawQuery("SELECT * FROM tableName", null);
+//                    startManagingCursor(cursor);
+//                    while (cursor.moveToNext()) {
+//                        adapter2.addItem();
+//                    }
+//                    listView2.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+//                    listView2.setAdapter(adapter2);
+//                }
+//                return true;
+//
+//            case R.id.action_btn_delFinished:  // 완료된 항목 모두 삭제
+//                int exAlarmID = NO_INPUT;
+//                cursor = db.rawQuery(" SELECT * FROM tableName ", null);
+//                startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+//
+//
+//                String sql = " DELETE FROM tableName WHERE finished = " + 1;
+//                db.execSQL(sql);
+//
+//                if (listView2.getVisibility() == View.VISIBLE) {
+//                    listView2.setVisibility(View.GONE);
+//                    fab_del.hide();
+//                    fab_add.show();
+//                }
+//
+//                listUpdate();
+//
+//                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
