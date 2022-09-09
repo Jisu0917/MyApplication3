@@ -161,8 +161,15 @@ public class RegisterActivity extends AppCompatActivity {
 
                         practicesDataList = userInfoData.getPractices();
 
-                        for (PracticesData practicesData : practicesDataList)
+                        // 분석 완료된 연습만 게시글을 올릴 수 있도록
+//                        for (PracticesData practicesData : practicesDataList) {
+//                            if ((practicesData.getAnalysis().getState()).equals("COMPLETE"))
+//                                practiceTitleList.add(practicesData.getTitle());
+//                        }
+
+                        for (PracticesData practicesData : practicesDataList) {
                             practiceTitleList.add(practicesData.getTitle());
+                        }
 
                         System.out.println("practiceTitleList : " + practiceTitleList);  //임시, 확인용
 
