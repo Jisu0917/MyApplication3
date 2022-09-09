@@ -97,17 +97,19 @@ public class SettingsActivity extends AppCompatActivity {
                 history_layout.addView(customView);
             }
 
-            else {  //검색된 회원이 존재할 때
-                for (int i=0; i<history.size(); i++) {
-                    View customView = layoutInflater.inflate(R.layout.custom_textview, null);
+            else {  //히스토리 기록이 있을 때
+                for (int i=history.size()-1; i>=0; i--) {
+                    View customView = layoutInflater.inflate(R.layout.custom_history, null);
                     String s = history.get(i);
+                    String s_split[] = s.split("#");
+                    String time = s_split[0];
+                    String update = s_split[1];
+                    String mypoint = s_split[2];
 
-                    ((TextView)customView.findViewById(R.id.custom_textView)).setText(s);
-                    ((TextView)customView.findViewById(R.id.custom_textView)).setGravity(Gravity.LEFT);
-                    ((TextView)customView.findViewById(R.id.custom_textView)).setTextSize(15f);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(0,0,0,5);
-                    ((TextView)customView.findViewById(R.id.custom_textView)).setLayoutParams(params);
+                    ((TextView)customView.findViewById(R.id.tv_update_point)).setText(update);
+                    ((TextView)customView.findViewById(R.id.tv_date_time)).setText(time);
+                    ((TextView)customView.findViewById(R.id.tv_mypoint)).setText(mypoint);
+
                     history_layout.addView(customView);
                 }
             }

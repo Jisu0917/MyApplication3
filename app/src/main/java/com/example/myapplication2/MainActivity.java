@@ -262,6 +262,7 @@ public class MainActivity extends TabActivity {
 
                         /////
                         userId = response.body().getUser_id();
+                        ((UserPoint)getApplication()).setUserId(userId);
 
                         spec = myTabHost.newTabSpec("Community").setIndicator("COMMUNITY").setContent(intent2);
                         myTabHost.addTab(spec);

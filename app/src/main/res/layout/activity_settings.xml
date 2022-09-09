@@ -18,8 +18,7 @@
             android:layout_height="70dp"
             android:layout_marginTop="10dp"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ex_profile"/>
+            android:scaleType="fitXY"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,8 +33,7 @@
                 android:layout_marginBottom="15dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="25sp"
-                android:text="홍길동" />
+                android:textSize="25sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,7 +56,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/black"
-                    android:text="honggildong@sm.ac.kr"
                     android:singleLine="true"
                     />
             </LinearLayout>
@@ -83,7 +80,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/black"
-                    android:text="00"
                     />
             </LinearLayout>
             <LinearLayout
@@ -106,7 +102,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/black"
-                    android:text="00"
                     />
             </LinearLayout>
         </LinearLayout>
@@ -114,7 +109,7 @@
 
     <!--  포인트 히스토리  -->
     <TextView
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -125,7 +120,7 @@
         android:text="포인트 내역"/>
 
     <ScrollView
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp">
