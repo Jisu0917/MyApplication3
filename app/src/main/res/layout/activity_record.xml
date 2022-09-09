@@ -32,13 +32,13 @@
         android:layout_marginBottom="25dp"
         android:baselineAligned="true">
 
-        <ImageView
-            android:id="@+id/recentRecFile"
-            android:layout_height="40dp"
-            android:layout_width="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="25dp"
-            android:layout_centerVertical="true"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/recentRecFile"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_alignParentStart="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginStart="25dp" />-->
 
         <ImageView
             android:id="@+id/recStartBtn"
@@ -58,14 +58,14 @@
             android:visibility="gone"/>
 
 
-        <ImageView
-            android:id="@+id/recFileList"
-            android:layout_height="30dp"
-            android:layout_width="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="25dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/rec_list"/>
+<!--        <ImageView-->
+<!--            android:id="@+id/recFileList"-->
+<!--            android:layout_width="27dp"-->
+<!--            android:layout_height="28dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginEnd="25dp"-->
+<!--            android:src="@drawable/rec_list" />-->
 
     </RelativeLayout>
 

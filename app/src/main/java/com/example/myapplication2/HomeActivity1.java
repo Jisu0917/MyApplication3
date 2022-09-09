@@ -1,6 +1,8 @@
 package com.example.myapplication2;
 
 import static com.example.myapplication2.MainActivity.tabWidget;
+
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,7 +43,7 @@ public class HomeActivity1 extends AppCompatActivity {
     static Long userId = MainActivity.userId;
     static RetrofitAPI retrofitAPI;
 
-    FloatingActionButton fab_del, fab_add;
+    FloatingActionButton fab_add;
 
     PracticesData[] practicesDataList;
     ArrayList<PracticesData> practicesList;
@@ -51,10 +53,14 @@ public class HomeActivity1 extends AppCompatActivity {
 
     Long selectedPracticeId;
 
+    public static Context context;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home1);
+
+        context = this;
 
         System.out.println("HomeActivity1: onCreate");  //임시, 확인용
 
@@ -75,15 +81,6 @@ public class HomeActivity1 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        fab_del = findViewById(R.id.fab_del);
-        fab_del.hide();
-        fab_del.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HomeActivity1.this, "fab_del click", Toast.LENGTH_SHORT).show();  //임시, 확인용
-            }
-        });
     }
 
     @Override
@@ -93,7 +90,7 @@ public class HomeActivity1 extends AppCompatActivity {
         getUserInfo();
     }
 
-    private void getUserInfo(){
+    public void getUserInfo(){
         System.out.println("HomeActivity1: getUserInfo");  //임시, 확인용
         userId = MainActivity.userId;
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
@@ -253,8 +250,6 @@ public class HomeActivity1 extends AppCompatActivity {
 
                 // 서버DB에서 해당 practice 정보 삭제
                 deletePractice(practice_id);
-
-                getUserInfo();  //새로고침
                 break;
         }
         return true;
@@ -274,6 +269,9 @@ public class HomeActivity1 extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         Log.d("DELETE", "DELETE Success!");
                         Log.d("DELETE", ">>>response.body()=" + response.body());
+
+
+                        getUserInfo();  //새로고침
                     } else {
                         System.out.println("@@@@ response is not successful...");
                         System.out.println("@@@@ response code : " + response.code());

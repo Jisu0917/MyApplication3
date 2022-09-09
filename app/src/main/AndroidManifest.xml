@@ -40,9 +40,6 @@
             android:screenOrientation="fullSensor"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".CommunityActivity"
-            android:screenOrientation="fullSensor" />
-        <activity
             android:name=".HomeActivity"
             android:screenOrientation="fullSensor" />
         <activity
@@ -93,6 +90,7 @@
         <activity android:name=".BarChart"/>
         <activity android:name=".ScatterPlot" />
 
+        <activity android:name=".CommunityActivity"></activity>
         <activity android:name=".DetailActivity"></activity>
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".ListActivity"></activity>

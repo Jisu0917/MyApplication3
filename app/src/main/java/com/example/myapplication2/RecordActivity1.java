@@ -68,7 +68,6 @@ public class RecordActivity1 extends AppCompatActivity {
     public static final String TAG = "RecordActivity1";
     public static String RECORDED_DIR = "myRec";
     static String filename = "";
-    static String recordTime = "";
 
     File f;
 
@@ -81,9 +80,6 @@ public class RecordActivity1 extends AppCompatActivity {
     public static RecordActivity1 getInstance;
 
     RelativeLayout guide;
-    RelativeLayout relativeLayout_btns;
-
-    ImageView recentRecImg;
 
     public static Context context;
 
@@ -148,18 +144,11 @@ public class RecordActivity1 extends AppCompatActivity {
 
         final ImageView recStartBtn = (ImageView) findViewById(R.id.recStartBtn);
         final ImageView recStopBtn = (ImageView) findViewById(R.id.recStopBtn);
-        final ImageView recFileListBtn = (ImageView) findViewById(R.id.recFileList);
         final ImageView analysisBtn = (ImageView) findViewById(R.id.imageview_analysis_start);
         analysisBtn.setVisibility(View.GONE);
 
-        recentRecImg = (ImageView) findViewById(R.id.recentRecFile);
-        GradientDrawable drawable = (GradientDrawable) this.getDrawable(R.drawable.background_rounding);
-        recentRecImg.setBackground(drawable);
-        recentRecImg.setClipToOutline(true);
-
         f = new File(EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR);
         System.out.println(f);
-        //setThumbnail();
 
         recStartBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.S)
@@ -263,22 +252,6 @@ public class RecordActivity1 extends AppCompatActivity {
                 }
                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
 
-                //setThumbnail();
-
-
-//                // DB에 파일명 저장
-//                recordTime = getNowTime();
-//                String sql = "INSERT INTO practiceTable (practice_id,file_url,time) VALUES ('" + NO_INPUT + "', '" + filename + "', '" + recordTime + "');";
-//                db.execSQL(sql);
-//                System.out.println("DB에 파일명 저장 완료");
-
-            }
-        });
-
-        recFileListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
 
@@ -390,68 +363,6 @@ public class RecordActivity1 extends AppCompatActivity {
         nowTime += (date.getYear() + 1900) + "" + (date.getMonth() + 1) + "" + date.getDate() + "_" + date.getHours() + "" + date.getMinutes() + "" + date.getSeconds();
 
         return nowTime;
-    }
-
-    private void setThumbnail() {
-        String recentFilePath = getRecentFilePath();
-        if (!recentFilePath.equals("NONE")) {
-            try {
-                // 썸네일 추출후 리사이즈해서 다시 비트맵 생성
-                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(recentFilePath, MediaStore.Video.Thumbnails.MICRO_KIND);
-                Bitmap thumbnail = ThumbnailUtils.extractThumbnail(bitmap, 300, 300);
-                recentRecImg.setImageBitmap(thumbnail);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private String getRecentFilePath() {
-        File[] files = f.listFiles();
-        if (files.length == 0) {
-            return "NONE";
-        } else {
-            String path = files[0].getPath();
-            Date lastModDate = new Date(files[0].lastModified());
-            for (File file : files) {
-                Date date = new Date(file.lastModified());
-                if (date.compareTo(lastModDate) > 0) {
-                    lastModDate = date;
-                    path = file.getPath();
-                }
-            }
-            return path;
-        }
-    }
-
-    public void setCameraDisplayOrientation(Activity activity,
-                                            int cameraId, Camera camera) {
-        Camera.CameraInfo info =
-                new Camera.CameraInfo();
-
-        Camera.getCameraInfo(cameraId, info);
-
-        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        int degrees = 0;
-
-        switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
-            case Surface.ROTATION_180: degrees = 180; break;
-            case Surface.ROTATION_270: degrees = 270; break;
-        }
-
-        int result;
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            result = (info.orientation + degrees) % 360;
-            result = (360 - result) % 360;  // compensate the mirror
-        } else {  // back-facing
-            result = (info.orientation - degrees + 360) % 360;
-        }
-
-        this.getResources().getConfiguration().orientation = result;
-        camera.setDisplayOrientation(result);
     }
 
     private int findFrontSideCamera() {
@@ -590,25 +501,14 @@ public class RecordActivity1 extends AppCompatActivity {
         RequestBody body = RequestBody.create(mediaType, new File(filename));
 //        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
 
-//        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-//                .addFormDataPart("video",filename,
-//                        RequestBody.create(MediaType.parse("application/octet-stream"),
-//                                new File(filename)))
-//                .build();
-
         System.out.println("presignedUrl : " + presignedUrl);  // 임시, 확인용
 
         String url_arr[] = presignedUrl.split(":");
         url_arr[1] = url_arr[1].replace("\"", "");
 
         Request request = new Request.Builder()
-                //.url("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/video_undefined_undefined.mp4?Content-Type=video%2Fmp4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAQ7FPEYTJT23I2HET%2F20220831%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20220831T060603Z&X-Amz-Expires=900&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEM7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLW5vcnRoZWFzdC0yIkYwRAIgM25swCMz1n9Mqqcjt5Yq0J5wTNtLGfZY7ajPE3BQGjoCIHOY%2Fg8nnHi6UnXlca54ouHjkuTmyj95m%2F0x7o7ErxLaKvcCCFcQARoMMDY2OTM5MzA3MjE5IgxTmIDDB%2B4uzqlzCHUq1AJJcN%2FOJT25oR7DI%2BvhcSjUgvdu4ndkcm3Ze8cgXheJCgIbpMyRsZhOjAtiFfLE0%2BRTWfRQBWCHTTVCNQqAeMRoNhoQs6R5vJbu5zo%2F%2FjB7cVAZY%2FP9OOKOuAVtKLyn8Wp0m5XNXx4OzrzA%2BwgiK%2FDNEvKmgVwZoqxa%2Fuj%2Fim16JT4UdiEMNhMd3RX8n%2BLSr0%2BGk7goD8pmRChhy4ygRI6EZB2GUbUDPdFVwHEMfvo88PhWt8JKhScosBDyqktsiPN1BPYf1rM781xwN3qgeRyq9wuRBrdpSS7KStITsSZFOl0ETMe8sgPZXvPazhC9REHXzw1h7Yk7%2BDjv6NUAka7EFKJ2Z4fhpBGFuAf%2Ba0WUXbEBuVTrOgaGgwGAO%2B2f9SbmROjjYYb1TmdPyXDP14m1ThOFhXTgRRLt0oOY435YUYJ3hG6nCYdt%2Fe86xweXZ9c%2BIkzmMMn0u5gGOp8B70jC8Yv2d7u8Anc%2BpvdGpHOSu%2BeI3vd2V%2B7PZ0RxqkN8cM7OeCRMH1xup8oYBvQ70cnjKkyhMMhrTlpyXRIBRtcUECxuUaNj%2B5n57il%2FLSjwiXikrwSjgrLa9Nk79GyoQumMU75%2By%2FD7UHYItHiWr%2BxfIZb9VlLcaLdlUIdC8y7xGnCUvDdNchBqNqvrE68nMUS%2BrRbQ83su8bF8iKF%2F&X-Amz-Signature=b4e765a42f0c063afea1d9777eaa5b8220b706337f86af1c1bdab063116a5579&X-Amz-SignedHeaders=host%3Bx-amz-acl&x-amz-acl=public-read")
-                //.url(new URL(presignedUrl))
-                //.url(presignedUrl)
                 .url("https:" + url_arr[1])
                 .method("PUT", body)
-//                .addHeader("x-amz-meta-userid", "12")
-//                .addHeader("x-amz-meta-practiceid", "13")
                 .addHeader("Content-Type", "video/mp4")
                 .build();
 
@@ -679,10 +579,24 @@ public class RecordActivity1 extends AppCompatActivity {
                             }
                         }, 0);
 
+                        // 분석(서버에 영상 업로드) 완료 후 내장메모리에서 영상 삭제하기
+                        File file = new File(filename);
+                        file.delete();
+
+                        ((HomeActivity1)HomeActivity1.context).getUserInfo();
+                        System.out.println("HomeActivity1의 리스트 업데이트!");  //임시, 확인용
 
                     } else {
                         System.out.println("@@@@ response is not successful...");
                         System.out.println("@@@@ response code : " + response.code());  //500
+
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                Toast.makeText(getApplicationContext(), practice.getTitle() + "의 분석에 실패하였습니다..", Toast.LENGTH_SHORT).show();
+                            }
+                        }, 0);
                     }
                 }
 
@@ -690,6 +604,14 @@ public class RecordActivity1 extends AppCompatActivity {
                 public void onFailure(Call<StatusCallback> call, Throwable t) {
                     Log.d("GET", "GET Failed");
                     Log.d("GET", t.getMessage());
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run()
+                        {
+                            Toast.makeText(getApplicationContext(), practice.getTitle() + "의 분석에 실패하였습니다..", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 0);
                 }
             });
         }

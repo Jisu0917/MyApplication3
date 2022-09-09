@@ -36,14 +36,21 @@
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication4/app/src/main/res/layout/content_list.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication4/app/src/main/res/layout/custom_comment.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/Public/AndroidProjects/MyApplication4/app/src/main/res/layout/listview_item.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/drawable-v24/ic_add_black_24dp.xml" value="0.1235" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/drawable-v24/ic_delete_black_24dp.xml" value="0.1235" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1235" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/drawable-v24/shape_edittext.xml" value="0.1235" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1235" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_addfriend.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_addpractice.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_addpractice1.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_community.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_detail.xml" value="0.264" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_editpractice.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_editpractice1.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_friend.xml" value="0.189453125" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_friend1.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_graph.xml" value="0.1125" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_home.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_home1.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_list.xml" value="0.25364583333333335" />
@@ -57,6 +64,7 @@
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_viewanalysis.xml" value="0.21848362494392104" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_viewpractice.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/activity_viewpractice_play.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/content_community.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/content_friendlist.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/content_friendlist1.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/content_home.xml" value="0.25364583333333335" />
@@ -65,14 +73,17 @@
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/content_practicelist.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/custom_comment.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/custom_friend_info.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/custom_post_info.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/custom_practice_info.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/custom_search_result.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/custom_textview.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/dialog_cmt.xml" value="0.2047008547008547" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/dialog_friend.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/listview2_item.xml" value="0.1125" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/layout/listview_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/menu/actionbar_menu.xml" value="0.264" />
         <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/menu/context_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Public/AndroidProjects/Sookpeech-App/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1235" />
         <entry key="..\:/Users/user/Desktop/SMWU/4-1/grad_project/MyApplication4/app/src/main/res/layout/activity_editpractice.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/user/Desktop/SMWU/4-1/grad_project/MyApplication4/app/src/main/res/layout/activity_graph.xml" value="0.25271739130434784" />
         <entry key="..\:/Users/user/Desktop/SMWU/4-1/grad_project/MyApplication4/app/src/main/res/layout/activity_home.xml" value="0.264" />

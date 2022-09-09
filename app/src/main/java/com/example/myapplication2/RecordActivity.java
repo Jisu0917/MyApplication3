@@ -148,18 +148,11 @@ public class RecordActivity extends AppCompatActivity {
 
         final ImageView recStartBtn = (ImageView) findViewById(R.id.recStartBtn);
         final ImageView recStopBtn = (ImageView) findViewById(R.id.recStopBtn);
-        final ImageView recFileListBtn = (ImageView) findViewById(R.id.recFileList);
         final ImageView analysisBtn = (ImageView) findViewById(R.id.imageview_analysis_start);
         analysisBtn.setVisibility(View.GONE);
 
-        recentRecImg = (ImageView) findViewById(R.id.recentRecFile);
-        GradientDrawable drawable = (GradientDrawable) this.getDrawable(R.drawable.background_rounding);
-        recentRecImg.setBackground(drawable);
-        recentRecImg.setClipToOutline(true);
-
         f = new File(EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR);
         System.out.println(f);
-        //setThumbnail();
 
         recStartBtn.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.S)
@@ -270,13 +263,6 @@ public class RecordActivity extends AppCompatActivity {
                 db.execSQL("UPDATE tableName SET filename = '" + filename + "' WHERE mid = " + practice_index);
                 System.out.println("DB에 파일명 저장 완료");
 
-            }
-        });
-
-        recFileListBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
 

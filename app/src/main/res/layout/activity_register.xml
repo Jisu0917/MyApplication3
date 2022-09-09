@@ -59,6 +59,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#eeeeee"
+        android:gravity="top"
         android:hint="내용을 입력하세요."
         />
 

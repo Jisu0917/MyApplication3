@@ -29,8 +29,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-//import static com.example.myapplication2.MainActivity.tabWidget;
-
 public class FriendActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
 
