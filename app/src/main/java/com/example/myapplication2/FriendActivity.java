@@ -19,11 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
+import com.example.myapplication2.api.dto.FeedbacksData;
 import com.example.myapplication2.api.dto.FriendsData;
 import com.example.myapplication2.api.dto.UserInfoData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,7 +43,8 @@ public class FriendActivity extends AppCompatActivity {
     FriendsData[] friends;
     ArrayList<String> friendStringList = new ArrayList<>();
 
-    ArrayList<UserInfoData> userInfoDataList = new ArrayList<>();
+    ArrayList<UserInfoData> userInfoDataList;
+    TreeMap<Long, UserInfoData> userInfoDataMap = new TreeMap<Long, UserInfoData>();
 //    UserInfoData[] userInfoDataList;
 
     @Override
@@ -49,9 +52,9 @@ public class FriendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
 
-        userInfoDataList = new ArrayList<>();
-
         friendlist_layout = (LinearLayout) findViewById(R.id.friendlist_layout);
+
+        getUserInfo();
 
         // 친구 추가 버튼
         fab_add_friends = findViewById(R.id.fab_add_friends);
@@ -66,8 +69,6 @@ public class FriendActivity extends AppCompatActivity {
             }
         });
 
-        GetFriends getFriends = new GetFriends();
-        getFriends.execute();
     }
 
     @Override
@@ -77,10 +78,7 @@ public class FriendActivity extends AppCompatActivity {
         // 임시, 확인용
         System.out.println("onResume() 실행");
 
-        userInfoDataList = new ArrayList<>();
-
-        GetFriends getFriends = new GetFriends();
-        getFriends.execute();
+        getUserInfo();
     }
 
 //    @Override
@@ -98,118 +96,96 @@ public class FriendActivity extends AppCompatActivity {
 //        }
 //    }
 
-    class GetFriends extends AsyncTask<String, Void, String> {
+    private void getUserInfo(){
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.d(TAG, "onPreExecute");
-        }
+        userInfoDataList = new ArrayList<>();
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.d(TAG, "onPostExecute, " + result);
+        friends = null;
 
-        }
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.getUserInfo(userId).enqueue(new Callback<UserInfoData>() {
+                @Override
+                public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
+                    UserInfoData userInfoData = response.body();
+                    if (userInfoData!=null){
+                        Log.d("GET_USERINFO", "GET SUCCESS");
+                        Log.d("GET_USERINFO", ">>>response.body()=" + response.body());
 
-        @Override
-        protected String doInBackground(String... strings) {
+                        friends = userInfoData.getFriends();
 
-            getUserInfo();
+                        Long friend_id;
+                        // ...
+                        if (friends != null) {
+                            boolean isLast = false;
+                            for (int i=0; i<friends.length; i++) {
+                                friend_id = friends[i].getFriend_id();
 
-            return null;
-        }
-
-        private void getUserInfo(){
-            RetrofitClient retrofitClient = RetrofitClient.getInstance();
-
-            friends = null;
-
-            if (retrofitClient!=null){
-                retrofitAPI = RetrofitClient.getRetrofitAPI();
-                retrofitAPI.getUserInfo(userId).enqueue(new Callback<UserInfoData>() {
-                    @Override
-                    public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
-                        UserInfoData userInfoData = response.body();
-                        if (userInfoData!=null){
-                            Log.d("GET_USERINFO", "GET SUCCESS");
-                            Log.d("GET_USERINFO", ">>>response.body()=" + response.body());
-
-                            friends = userInfoData.getFriends();
-
-                            Long friend_id;
-                            // ...
-                            if (friends != null) {
-                                boolean isLast = false;
-                                for (int i=0; i<friends.length; i++) {
-                                    friend_id = friends[i].getFriend_id();
-
-                                    if (i == friends.length - 1) {  //마지막 친구일 때
-                                        isLast = true;
-                                    }
-
-                                    getFriendUserInfo(friend_id, isLast);
+                                if (i == friends.length - 1) {  //마지막 친구일 때
+                                    isLast = true;
                                 }
-                                //setFriendListView();
-                            } else {
-                                System.out.println("friends is null...");
+
+                                getFriendUserInfo(friend_id, isLast);
+                            }
+                            //setFriendListView();
+                        } else {
+                            System.out.println("friends is null...");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserInfoData> call, Throwable t) {
+                    Log.d("GET_USERINFO", "GET FAILED");
+                }
+            });
+        }
+    }
+
+    private void getFriendUserInfo(Long user_id, boolean isLast){
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.getUserInfo(user_id).enqueue(new Callback<UserInfoData>() {
+                @Override
+                public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
+                    UserInfoData userInfoData = response.body();
+                    if (userInfoData != null) {
+                        Log.d("GET_FRIEND_USERINFO", "GET SUCCESS");
+                        Log.d("GET_FRIEND_USERINFO", ">>>response.body()=" + response.body());
+
+                        // 중복 추가 X
+                        boolean isDuplicated = false;
+                        Long id = userInfoData.getId();
+                        if (userInfoDataList != null) {
+                            for (int i = 0; i < userInfoDataList.size(); i++) {
+                                if ((userInfoDataList.get(i).getId()).equals(id)) {  //기존 id와 일치하면
+                                    isDuplicated = true;
+                                    break;
+                                }
+                            }
+                            if (!isDuplicated)
+                                userInfoDataList.add(userInfoData);
+                        }
+
+                        if (isLast) {
+                            if (friends.length == userInfoDataList.size())
+                                setFriendListView();
+                            else {
+                                System.out.println("리스트 길이가 다름!!! - friends.length: " + friends.length +", userInfoDataList.size(): " + userInfoDataList.size());  //임시, 확인용
+                                //Toast.makeText(getApplicationContext(), "리스트 길이가 다름!!!", Toast.LENGTH_SHORT).show();  //임시, 확인용
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<UserInfoData> call, Throwable t) {
-                        Log.d("GET_USERINFO", "GET FAILED");
-                    }
-                });
-            }
-        }
-
-        private void getFriendUserInfo(Long user_id, boolean isLast){
-            RetrofitClient retrofitClient = RetrofitClient.getInstance();
-
-            if (retrofitClient!=null){
-                retrofitAPI = RetrofitClient.getRetrofitAPI();
-                retrofitAPI.getUserInfo(user_id).enqueue(new Callback<UserInfoData>() {
-                    @Override
-                    public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
-                        UserInfoData userInfoData = response.body();
-                        if (userInfoData != null) {
-                            Log.d("GET_FRIEND_USERINFO", "GET SUCCESS");
-                            Log.d("GET_FRIEND_USERINFO", ">>>response.body()=" + response.body());
-
-                            // 중복 추가 X
-                            boolean isDuplicated = false;
-                            Long id = userInfoData.getId();
-                            if (userInfoDataList != null) {
-                                for (int i = 0; i < userInfoDataList.size(); i++) {
-                                    if ((userInfoDataList.get(i).getId()).equals(id)) {  //기존 id와 일치하면
-                                        isDuplicated = true;
-                                        break;
-                                    }
-                                }
-                                if (!isDuplicated)
-                                    userInfoDataList.add(userInfoData);
-                            }
-
-                            if (isLast) {
-                                if (friends.length == userInfoDataList.size())
-                                    setFriendListView();
-                                else {
-                                    System.out.println("리스트 길이가 다름!!! - friends.length: " + friends.length +", userInfoDataList.size(): " + userInfoDataList.size());  //임시, 확인용
-                                    //Toast.makeText(getApplicationContext(), "리스트 길이가 다름!!!", Toast.LENGTH_SHORT).show();  //임시, 확인용
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<UserInfoData> call, Throwable t) {
-                        Log.d("GET_FRIEND_USERINFO", "GET FAILED");
-                    }
-                });
-            }
+                @Override
+                public void onFailure(Call<UserInfoData> call, Throwable t) {
+                    Log.d("GET_FRIEND_USERINFO", "GET FAILED");
+                }
+            });
         }
     }
 
@@ -222,22 +198,30 @@ public class FriendActivity extends AppCompatActivity {
 
         if (userInfoDataList != null) {
             System.out.println("userInfoDataList : " + userInfoDataList.toString());  //임시, 확인용 - 하나여야 하는데 두 개가 들어있네...
-            for (int i=0; i<userInfoDataList.size(); i++) {
-                View customView = layoutInflater.inflate(R.layout.custom_friend_info, null);
-                UserInfoData userInfoData = userInfoDataList.get(i);
+            
+            if (userInfoDataList.size() != 0) {
+                //id(친구의 user_id)순으로 정렬
+                for (int i = 0; i < userInfoDataList.size(); i++) {
+                    userInfoDataMap.put(userInfoDataList.get(i).getId(), userInfoDataList.get(i));
+                }
+                for (Long nKey : userInfoDataMap.keySet()) {
+                    View customView = layoutInflater.inflate(R.layout.custom_friend_info, null);
+                    UserInfoData userInfoData = userInfoDataMap.get(nKey);
 
-                Long id = userInfoData.getId();
-                String name = userInfoData.getName();
-                String email = userInfoData.getEmail();
-                String picture = userInfoData.getPicture();
+                    Long id = userInfoData.getId();
+                    String name = userInfoData.getName();
+                    String email = userInfoData.getEmail();
+                    String picture = userInfoData.getPicture();
 
-                ((LinearLayout)customView.findViewById(R.id.container)).setTag(id+":"+email+":"+name);
-                ((TextView)customView.findViewById(R.id.tv_name)).setText(name);
-                ((TextView)customView.findViewById(R.id.tv_id)).setText("id: "+id.intValue());
-                ((TextView)customView.findViewById(R.id.tv_email)).setText(email);
-                if (picture!=null) Glide.with(this).load(picture).into((ImageView)customView.findViewById(R.id.profile_image));
+                    ((LinearLayout) customView.findViewById(R.id.container)).setTag(id + ":" + email + ":" + name);
+                    ((TextView) customView.findViewById(R.id.tv_name)).setText(name);
+                    ((TextView) customView.findViewById(R.id.tv_id)).setText("id: " + id.intValue());
+                    ((TextView) customView.findViewById(R.id.tv_email)).setText(email);
+                    if (picture != null)
+                        Glide.with(this).load(picture).into((ImageView) customView.findViewById(R.id.profile_image));
 
-                friendlist_layout.addView(customView);
+                    friendlist_layout.addView(customView);
+                }
             }
 
         } else {
