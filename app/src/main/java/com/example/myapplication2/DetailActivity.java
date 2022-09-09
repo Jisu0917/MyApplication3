@@ -1,5 +1,6 @@
 package com.example.myapplication2;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -85,6 +86,11 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        //액션바에 뒤로가기 버튼 추가
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
 // ListActivity 에서 넘긴 변수들을 받아줌
 //        board_seq = getIntent().getStringExtra("board_seq");

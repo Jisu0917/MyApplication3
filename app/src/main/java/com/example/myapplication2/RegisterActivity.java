@@ -1,5 +1,6 @@
 package com.example.myapplication2;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
@@ -57,6 +58,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setTitle("새 게시물 등록");
+
+        //액션바에 뒤로가기 버튼 추가
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 // ListActivity 에서 넘긴 userid 를 변수로 받음
         useridToken = getIntent().getStringExtra("userid");

@@ -26,16 +26,13 @@ import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.dto.FeedbacksData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ViewPracticePlayActivity extends AppCompatActivity {
+public class ViewFriendPracticePlayActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
 
     Intent it;
@@ -82,13 +79,13 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
         practice_sort = it.getStringExtra("practice_sort");
 //        parent_activity = it.getStringExtra("PRENT ACTIVITY");
 
-        reg_button.setVisibility(View.GONE);
+        reg_button.setVisibility(View.VISIBLE);
 
         tv_practiceTitle.setText(practice_title);
         tv_scope.setText(practice_scope);
         tv_sort.setText(practice_sort);
 
-        MediaController mc = new MediaController(ViewPracticePlayActivity.this); // 비디오 컨트롤 가능하게(일시정지, 재시작 등)
+        MediaController mc = new MediaController(ViewFriendPracticePlayActivity.this); // 비디오 컨트롤 가능하게(일시정지, 재시작 등)
         videoView.setMediaController(mc);
         videoView.setVideoURI(Uri.parse("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/video_"+userId+"_"+practice_id+".mp4"));    // 선택한 비디오 경로 비디오뷰에 셋
         videoView.requestFocus();
@@ -98,12 +95,12 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (practice_state.equals("COMPLETE")) {
-                    Intent intent = new Intent(ViewPracticePlayActivity.this, ViewAnalysisActivity.class);
+                    Intent intent = new Intent(ViewFriendPracticePlayActivity.this, ViewAnalysisActivity.class);
                     intent.putExtra("practice_id", practice_id);
                     intent.putExtra("practice_title", practice_title);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(ViewPracticePlayActivity.this, "분석이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewFriendPracticePlayActivity.this, "분석이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -192,7 +189,7 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
 //                jsonArray = new JSONArray(result);
 
 // custom_comment 를 불러오기 위한 객체
-        LayoutInflater layoutInflater = LayoutInflater.from(ViewPracticePlayActivity.this);
+        LayoutInflater layoutInflater = LayoutInflater.from(ViewFriendPracticePlayActivity.this);
         //LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
@@ -423,7 +420,7 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
                         getFeedbackOfUsers();  //피드백 불러오기
                         getFeedbackOfFriends();
 
-                        Toast.makeText(ViewPracticePlayActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewFriendPracticePlayActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
 
                     }
                     else {
