@@ -37,7 +37,6 @@ public class EditPracticeActivity1 extends AppCompatActivity {
 
     EditText editText_title;
     ImageView iv_scope;
-    Spinner sort_spinner, sensitivity_spinner, gender_spinner;
     Button btn_cancel, btn_save;
 
     String scope = "", sort = "", gender="";
@@ -58,9 +57,6 @@ public class EditPracticeActivity1 extends AppCompatActivity {
 
         editText_title = (EditText)findViewById(R.id.editText_title);
         iv_scope = (ImageView)findViewById(R.id.iv_scope);
-        sort_spinner = findViewById(R.id.sort_spinner);
-        sensitivity_spinner = findViewById(R.id.sensitivity_spinner);
-        gender_spinner = findViewById(R.id.gender_spinner);
 
         btn_cancel = findViewById(R.id.btn_cancel);
         btn_save = findViewById(R.id.btn_save);
@@ -68,66 +64,6 @@ public class EditPracticeActivity1 extends AppCompatActivity {
         it = getIntent();
         practice_id = it.getLongExtra("practice_id", 0);
         getPracticeInfo(practice_id);
-
-        // Sort Spinner
-        String[] itemList1 = {"ONLINE", "OFFLINE"};
-
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, itemList1);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sort_spinner.setAdapter(adapter1);
-
-        sort_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                sort = itemList1[i];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        // Sensitivity Spinner
-        String[] itemList2 = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, itemList2);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sensitivity_spinner.setAdapter(adapter2);
-
-        sensitivity_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                sensitivity = Integer.parseInt(itemList2[i]);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        // Gender Spinner
-        String[] itemList3 = {"WOMEN", "MEN"};
-
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, itemList3);
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        gender_spinner.setAdapter(adapter3);
-
-        gender_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                gender = itemList3[i];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -143,10 +79,11 @@ public class EditPracticeActivity1 extends AppCompatActivity {
                 String title = editText_title.getText().toString();
                 practicesData.setTitle(title);
                 practicesData.setScope(scope);
-                practicesData.setSort(sort);
-                practicesData.setMoveSensitivity(sensitivity);
-                practicesData.setEyesSensitivity(sensitivity);
-                practicesData.setGender(gender);
+                //영상 분석에 사용되는 항목(온,오프라인, 민감도, 성별)은 수정할 수 없게!
+                practicesData.setSort(practicesData.getSort());
+                practicesData.setMoveSensitivity(practicesData.getMoveSensitivity());
+                practicesData.setEyesSensitivity(practicesData.getEyesSensitivity());
+                practicesData.setGender(practicesData.getGender());
 
                 if (!title.equals("")) {
                     updatePractice();
