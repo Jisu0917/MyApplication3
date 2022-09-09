@@ -48,7 +48,6 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="홍길동"
                     />
             </LinearLayout>
 

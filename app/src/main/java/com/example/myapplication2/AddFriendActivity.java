@@ -49,7 +49,7 @@ public class AddFriendActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addfriend);
-        setTitle("회원 검색 및 친구 추가");
+        setTitle("사용자 검색 및 친구 추가");
 
         editText_name = (EditText) findViewById(R.id.editText_name);
         btn_search = (Button) findViewById(R.id.btn_search);
@@ -213,7 +213,7 @@ public class AddFriendActivity extends AppCompatActivity {
         dig.setTitle("친구를 추가하시겠습니까?");
 
         final TextView textView = (TextView) dialogView.findViewById(R.id.tv_selectedname);
-        textView.setText("선택한 회원 이름 : " + friend_name);
+        textView.setText("선택한 사용자 이름 : " + friend_name);
 
         dig.setNegativeButton("취소", null);
         dig.setPositiveButton("확인", new DialogInterface.OnClickListener() {
