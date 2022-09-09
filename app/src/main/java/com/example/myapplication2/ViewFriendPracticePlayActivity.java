@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -324,36 +325,35 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
                 this, R.layout.dialog_cmt, null);
         AlertDialog.Builder dig = new AlertDialog.Builder(this, R.style.Theme_Dialog);
         dig.setView(dialogView);
-        dig.setTitle("FEEDBACK");
+        dig.setTitle("연습에 대한 피드백을 입력하세요.");
 
-        final EditText et_speedscore = (EditText)dialogView.findViewById(R.id.et_speedscore);
+        final RatingBar ratingBar_speed = (RatingBar) dialogView.findViewById(R.id.ratingbar_speed);
+        final RatingBar ratingBar_tone = (RatingBar) dialogView.findViewById(R.id.ratingbar_tone);
+        final RatingBar ratingBar_closing = (RatingBar) dialogView.findViewById(R.id.ratingbar_closing);
+
         final EditText et_speedcmt = (EditText)dialogView.findViewById(R.id.et_speedcmt);
-        final EditText et_tonescore = (EditText)dialogView.findViewById(R.id.et_tonescore);
         final EditText et_tonecmt = (EditText)dialogView.findViewById(R.id.et_tonecmt);
-        final EditText et_closingscore = (EditText)dialogView.findViewById(R.id.et_closingscore);
         final EditText et_closingcmt = (EditText)dialogView.findViewById(R.id.et_closingcmt);
         //editText.requestFocus();
+
 
         dig.setNegativeButton("닫기", null);
         dig.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (et_speedscore.getText().toString().equals("") ||
-                        et_speedcmt.getText().toString().equals("") ||
-                        et_tonescore.getText().toString().equals("") ||
+                if (et_speedcmt.getText().toString().equals("") ||
                         et_tonecmt.getText().toString().equals("") ||
-                        et_closingscore.getText().toString().equals("") ||
                         et_closingcmt.getText().toString().equals("")
                 ) {
                     Toast.makeText(getApplicationContext(), "입력하지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show();
                     /// 다이얼로그 닫히지 않게 처리!!!
                 } else {
                     FeedbacksData feedback = new FeedbacksData();
-                    feedback.setSpeed_score(Integer.parseInt(et_speedscore.getText().toString()));
+                    feedback.setSpeed_score((int) ratingBar_speed.getRating());
                     feedback.setSpeed_comment(et_speedcmt.getText().toString());
-                    feedback.setTone_score(Integer.parseInt(et_tonescore.getText().toString()));
+                    feedback.setTone_score((int) ratingBar_tone.getRating());
                     feedback.setTone_comment(et_tonecmt.getText().toString());
-                    feedback.setClosing_score(Integer.parseInt(et_closingscore.getText().toString()));
+                    feedback.setClosing_score((int) ratingBar_closing.getRating());
                     feedback.setClosing_comment(et_closingcmt.getText().toString());
                     feedback.setInitiator("FRIEND");
                     feedback.setUserId(userId);

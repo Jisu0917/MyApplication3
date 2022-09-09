@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dp"
+    android:paddingBottom="20dp"
+    android:background="@color/white">
+
+    <!-- 말하기 속도 평가 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/colorAccentTransParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="1. 말하기 속도"
+            android:textAlignment="center"
+            android:textColor="#384d75"
+            android:textSize="22sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_speedscore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:hint="5"
+                android:inputType="number"
+                android:maxLength="2" />
+
+            <!--    <Spinner-->
+            <!--        android:id="@+id/spinner_alarm"-->
+            <!--        android:layout_width="wrap_content"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_gravity="center_vertical"-->
+            <!--        android:layout_marginStart="5dp"-->
+            <!--        android:spinnerMode="dropdown"-->
+            <!--        android:background="@null"/>-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="점"
+                android:textColor="#384d75"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_speedcmt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="말하기 속도 평가 내용을 입력하세요."
+            />
+    </LinearLayout>
+
+    <!-- 목소리 톤 평가 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/colorAccentTransParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="2. 목소리 톤"
+            android:textAlignment="center"
+            android:textColor="#384d75"
+            android:textSize="22sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_tonescore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:inputType="number"
+                android:maxLength="2"
+                android:hint="5" />
+
+            <!--    <Spinner-->
+            <!--        android:id="@+id/spinner_alarm"-->
+            <!--        android:layout_width="wrap_content"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_gravity="center_vertical"-->
+            <!--        android:layout_marginStart="5dp"-->
+            <!--        android:spinnerMode="dropdown"-->
+            <!--        android:background="@null"/>-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="점"
+                android:textColor="#384d75"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_tonecmt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="목소리 톤 평가 내용을 입력하세요."
+            />
+    </LinearLayout>
+
+    <!-- 말하기 속도 평가 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorAccentTransParent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="3. 맺음말 평가"
+            android:textAlignment="center"
+            android:textColor="#384d75"
+            android:textSize="22sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_closingscore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:inputType="number"
+                android:maxLength="2"
+                android:hint="5" />
+
+            <!--    <Spinner-->
+            <!--        android:id="@+id/spinner_alarm"-->
+            <!--        android:layout_width="wrap_content"-->
+            <!--        android:layout_height="wrap_content"-->
+            <!--        android:layout_gravity="center_vertical"-->
+            <!--        android:layout_marginStart="5dp"-->
+            <!--        android:spinnerMode="dropdown"-->
+            <!--        android:background="@null"/>-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="점"
+                android:textColor="#384d75"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_closingcmt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="맺음말 평가 내용을 입력하세요."
+            />
+    </LinearLayout>
+
+</LinearLayout>

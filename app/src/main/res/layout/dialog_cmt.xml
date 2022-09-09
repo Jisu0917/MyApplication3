@@ -14,55 +14,47 @@
         android:layout_marginStart="33dp"
         android:layout_marginEnd="33dp"
         android:layout_marginBottom="30dp"
-        android:background="@color/colorAccentTransParent">
+        android:background="@color/white">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="1. 말하기 속도"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="#384d75"
-            android:textSize="22sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="7dp">
+            <RatingBar
+                android:id="@+id/ratingbar_speed"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="7dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="1"/>
 
             <EditText
-                android:id="@+id/et_speedscore"
-                android:layout_width="wrap_content"
+                android:id="@+id/et_speedcmt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:inputType="number"
-                android:maxLength="2"
-                android:hint="5" />
-
-            <!--    <Spinner-->
-            <!--        android:id="@+id/spinner_alarm"-->
-            <!--        android:layout_width="wrap_content"-->
-            <!--        android:layout_height="wrap_content"-->
-            <!--        android:layout_gravity="center_vertical"-->
-            <!--        android:layout_marginStart="5dp"-->
-            <!--        android:spinnerMode="dropdown"-->
-            <!--        android:background="@null"/>-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="점"
-                android:textColor="#384d75"
-                android:textSize="16sp" />
+                android:layout_gravity="center"
+                android:textSize="17sp"
+                android:padding="10dp"
+                android:background="#eeeeee"
+                android:hint="평가 내용을 입력하세요."
+                android:maxLines="1"
+                android:singleLine="true"
+                />
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/et_speedcmt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="말하기 속도 평가 내용을 입력하세요."
-            />
     </LinearLayout>
 
     <!-- 목소리 톤 평가 -->
@@ -73,55 +65,47 @@
         android:layout_marginStart="33dp"
         android:layout_marginEnd="33dp"
         android:layout_marginBottom="30dp"
-        android:background="@color/colorAccentTransParent">
+        android:background="@color/white">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="2. 목소리 톤"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="#384d75"
-            android:textSize="22sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="7dp">
+            <RatingBar
+                android:id="@+id/ratingbar_tone"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="7dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="1"/>
 
             <EditText
-                android:id="@+id/et_tonescore"
-                android:layout_width="wrap_content"
+                android:id="@+id/et_tonecmt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:inputType="number"
-                android:maxLength="2"
-                android:hint="5" />
-
-            <!--    <Spinner-->
-            <!--        android:id="@+id/spinner_alarm"-->
-            <!--        android:layout_width="wrap_content"-->
-            <!--        android:layout_height="wrap_content"-->
-            <!--        android:layout_gravity="center_vertical"-->
-            <!--        android:layout_marginStart="5dp"-->
-            <!--        android:spinnerMode="dropdown"-->
-            <!--        android:background="@null"/>-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="점"
-                android:textColor="#384d75"
-                android:textSize="16sp" />
+                android:layout_gravity="center"
+                android:textSize="17sp"
+                android:padding="10dp"
+                android:background="#eeeeee"
+                android:hint="평가 내용을 입력하세요."
+                android:maxLines="1"
+                android:singleLine="true"
+                />
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/et_tonecmt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="목소리 톤 평가 내용을 입력하세요."
-            />
     </LinearLayout>
 
     <!-- 말하기 속도 평가 -->
@@ -131,56 +115,49 @@
         android:orientation="vertical"
         android:layout_marginStart="33dp"
         android:layout_marginEnd="33dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/colorAccentTransParent">
+        android:layout_marginBottom="30dp"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="3. 맺음말 평가"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="#384d75"
-            android:textSize="22sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="7dp">
+
+            <RatingBar
+                android:id="@+id/ratingbar_closing"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="7dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="1" />
 
             <EditText
-                android:id="@+id/et_closingscore"
-                android:layout_width="wrap_content"
+                android:id="@+id/et_closingcmt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:inputType="number"
-                android:maxLength="2"
-                android:hint="5" />
-
-            <!--    <Spinner-->
-            <!--        android:id="@+id/spinner_alarm"-->
-            <!--        android:layout_width="wrap_content"-->
-            <!--        android:layout_height="wrap_content"-->
-            <!--        android:layout_gravity="center_vertical"-->
-            <!--        android:layout_marginStart="5dp"-->
-            <!--        android:spinnerMode="dropdown"-->
-            <!--        android:background="@null"/>-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="점"
-                android:textColor="#384d75"
-                android:textSize="16sp" />
+                android:layout_gravity="center"
+                android:textSize="17sp"
+                android:padding="10dp"
+                android:background="#eeeeee"
+                android:hint="평가 내용을 입력하세요."
+                android:maxLines="1"
+                android:singleLine="true"
+                />
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/et_closingcmt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="맺음말 평가 내용을 입력하세요."
-            />
     </LinearLayout>
 
 </LinearLayout>
