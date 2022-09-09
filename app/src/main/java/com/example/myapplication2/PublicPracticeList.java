@@ -142,12 +142,14 @@ public class PublicPracticeList extends AppCompatActivity {
 
         //Toast.makeText(this, "id: " + id + ", title: " + title, Toast.LENGTH_SHORT).show();  //임시, 확인용
 
-        Intent intent = new Intent(PublicPracticeList.this, ViewPracticePlayActivity.class);
+        Intent intent = new Intent(PublicPracticeList.this, ViewFriendPracticePlayActivity.class);
         intent.putExtra("practice_id", id);
         intent.putExtra("practice_title", title);
         intent.putExtra("practice_state", state);
         intent.putExtra("practice_scope", scope);
         intent.putExtra("practice_sort", sort);
+        intent.putExtra("friend_name", friend_name);
+
         intent.putExtra("PRENT ACTIVITY", "PublicPracticeList");
         startActivity(intent);
     }

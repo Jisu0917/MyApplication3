@@ -6,6 +6,7 @@ import com.example.myapplication2.api.dto.FeedbacksData;
 import com.example.myapplication2.api.dto.FriendIdCodeData;
 import com.example.myapplication2.api.dto.FriendsData;
 import com.example.myapplication2.api.dto.LoginRequestDto;
+import com.example.myapplication2.api.dto.PointData;
 import com.example.myapplication2.api.dto.PostsData;
 import com.example.myapplication2.api.dto.PracticesData;
 import com.example.myapplication2.api.dto.UserInfoData;
@@ -117,4 +118,8 @@ public interface RetrofitAPI {
     Call<String> getWavFile(@Path("user_id") int user_id, @Path("practice_id") int practice_id);
 //    @GET("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/{practice_id}/{user_id}_{practice_id}.wav")
 //    Call<String> getWavFile(@Path("user_id") int user_id, @Path("practice_id") int practice_id);
+
+    // 포인트 수정하기
+    @POST("/api/users/point")
+    Call<Long> updatePoint(@Body PointData pointData);
 }

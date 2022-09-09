@@ -1,5 +1,7 @@
 package com.example.myapplication2;
 
+import static com.example.myapplication2.MainActivity.updatePoint;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -942,11 +944,14 @@ public class DetailActivity extends AppCompatActivity {
                         Log.d("POST", "POST Success!");
                         Log.d("POST", ">>>response.body()="+response.body());
 
+                        // 포인트 +3 지급
+                        updatePoint(3, "plus", DetailActivity.this);
+
                         // 댓글 새로고침
                         LoadCmt loadCmt = new LoadCmt();
                         loadCmt.execute(postId.toString());
 
-                        Toast.makeText(DetailActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailActivity.this, "피드백이 등록되었습니다.", Toast.LENGTH_SHORT).show();
 
                     }
                     else {

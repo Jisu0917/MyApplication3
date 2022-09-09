@@ -125,19 +125,21 @@ public class AddPracticeActivity1 extends AppCompatActivity {
             title = title.replaceAll("'", "\'\'");
         }
         if (!title.equals("")) {
-            //String sql = "INSERT INTO practiceTable (practice_id,file_url) VALUES ('" + NO_INPUT + "', " + curYear + ", " + curMonth +", " + curDate + ", " + curHour + ", " + curMinute + ", '" + AmPm + "', " + isStarFilled +", " + 0 + ", '', 0);";
-            //db.execSQL(sql);
-
-            //finish();
-
-            Intent intent = new Intent(AddPracticeActivity1.this, RecordActivity1.class);
-            intent.putExtra("title", title);
-            intent.putExtra("scope", scope);
-            intent.putExtra("sort", sort);
-            intent.putExtra("sensitivity", sensitivity);
-            intent.putExtra("gender", gender);
-            startActivity(intent);
-            finish();
+            //포인트 정보 확인
+            if (((UserPoint)getApplication()).getUserPoint() < 10) {
+                Toast.makeText(AddPracticeActivity1.this, "포인트가 부족하여 연습을 시작할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            else {
+                Intent intent = new Intent(AddPracticeActivity1.this, RecordActivity1.class);
+                intent.putExtra("title", title);
+                intent.putExtra("scope", scope);
+                intent.putExtra("sort", sort);
+                intent.putExtra("sensitivity", sensitivity);
+                intent.putExtra("gender", gender);
+                startActivity(intent);
+                finish();
+            }
         } else {
             Toast.makeText(getApplicationContext(), "내용을 입력하지 않았습니다.", Toast.LENGTH_SHORT).show();
         }

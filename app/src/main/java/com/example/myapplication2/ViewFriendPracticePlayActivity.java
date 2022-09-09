@@ -1,5 +1,7 @@
 package com.example.myapplication2;
 
+import static com.example.myapplication2.MainActivity.updatePoint;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -37,7 +39,7 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
 
     Intent it;
     Long practice_id;
-    String practice_title, practice_state, practice_scope, practice_sort, parent_activity;
+    String practice_title, practice_state, practice_scope, practice_sort, friend_name, parent_activity;
 
     TextView tv_practiceTitle, tv_scope, tv_sort;
     VideoView videoView;
@@ -56,11 +58,6 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewpractice_play);
-        setTitle("연습 정보 보기");
-
-        //액션바에 뒤로가기 버튼 추가
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         tv_practiceTitle = (TextView) findViewById(R.id.tv_practice_title);
         tv_scope = (TextView) findViewById(R.id.tv_scope);
@@ -77,6 +74,8 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
         practice_state = it.getStringExtra("practice_state");
         practice_scope = it.getStringExtra("practice_scope");
         practice_sort = it.getStringExtra("practice_sort");
+        friend_name = it.getStringExtra("friend_name");
+        setTitle("친구 " + friend_name + "의 연습 정보 보기");
 //        parent_activity = it.getStringExtra("PRENT ACTIVITY");
 
         reg_button.setVisibility(View.VISIBLE);
@@ -417,10 +416,13 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
                         Log.d("POST", "POST Success!");
                         Log.d("POST", ">>>response.body()="+response.body());
 
+                        // 포인트 +3 지급
+                        updatePoint(3, "plus", ViewFriendPracticePlayActivity.this);
+
                         getFeedbackOfUsers();  //피드백 불러오기
                         getFeedbackOfFriends();
 
-                        Toast.makeText(ViewFriendPracticePlayActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewFriendPracticePlayActivity.this, "피드백이 등록되었습니다.", Toast.LENGTH_SHORT).show();
 
                     }
                     else {

@@ -1,5 +1,7 @@
 package com.example.myapplication2;
 
+import static com.example.myapplication2.MainActivity.updatePoint;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -420,10 +422,13 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
                         Log.d("POST", "POST Success!");
                         Log.d("POST", ">>>response.body()="+response.body());
 
+                        // 포인트 +3 지급
+                        updatePoint(3, "plus", ViewPracticePlayActivity.this);
+
                         getFeedbackOfUsers();  //피드백 불러오기
                         getFeedbackOfFriends();
 
-                        Toast.makeText(ViewPracticePlayActivity.this, "댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewPracticePlayActivity.this, "피드백이 등록되었습니다.", Toast.LENGTH_SHORT).show();
 
                     }
                     else {

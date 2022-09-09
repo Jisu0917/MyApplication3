@@ -1,5 +1,7 @@
 package com.example.myapplication2;
 
+import static com.example.myapplication2.MainActivity.updatePoint;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -49,6 +51,7 @@ import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.RetrofitClient2;
 import com.example.myapplication2.api.RetrofitClient3;
 import com.example.myapplication2.api.dto.AnalysisData;
+import com.example.myapplication2.api.dto.PointData;
 import com.example.myapplication2.api.dto.PracticesData;
 import com.example.myapplication2.api.objects.UserIdObject;
 import com.google.android.gms.common.api.internal.StatusCallback;
@@ -258,11 +261,10 @@ public class RecordActivity1 extends AppCompatActivity {
         analysisBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 서버에 업로드
+                // 서버에 영상 업로드 + 분석 시작
                 postNewPractice();
 
                 finish();
-                //Toast.makeText(RecordActivity1.this, "분석을 시작합니다. 이 작업은 시간이 걸립니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -583,6 +585,9 @@ public class RecordActivity1 extends AppCompatActivity {
                         File file = new File(filename);
                         file.delete();
 
+                        // 포인트 -10 차감
+                        updatePoint(10, "minus", RecordActivity1.this);
+
                         ((HomeActivity1)HomeActivity1.context).getUserInfo();
                         System.out.println("HomeActivity1의 리스트 업데이트!");  //임시, 확인용
 
@@ -615,5 +620,5 @@ public class RecordActivity1 extends AppCompatActivity {
                 }
             });
         }
-    }
+    }  // end of askAnalysis
 }

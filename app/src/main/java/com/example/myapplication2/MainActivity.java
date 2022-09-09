@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.dto.LoginRequestDto;
+import com.example.myapplication2.api.dto.PointData;
 import com.example.myapplication2.api.dto.UserInfoData;
 import com.example.myapplication2.api.objects.UserIdObject;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -262,7 +263,6 @@ public class MainActivity extends TabActivity {
                         /////
                         userId = response.body().getUser_id();
 
-
                         spec = myTabHost.newTabSpec("Community").setIndicator("COMMUNITY").setContent(intent2);
                         myTabHost.addTab(spec);
 
@@ -300,9 +300,11 @@ public class MainActivity extends TabActivity {
                     UserInfoData userInfoData = response.body();
                     if (userInfoData!=null){
                         Log.d("GET_USERINFO", "GET SUCCESS");
-                        Log.d("GET_USERINFO", response.body().getEmail());
+                        Log.d("GET_USERINFO", "MainActivity: getUserInfo - response.body().getPoint()=" + response.body().getPoint());
 
                         putInfoToIntents(response.body());
+
+                        ((UserPoint)getApplication()).setUserPoint(response.body().getPoint());
                     }
                 }
 
@@ -325,7 +327,47 @@ public class MainActivity extends TabActivity {
         intent5.putExtra("name", userInfoData.getName());
         intent5.putExtra("email", userInfoData.getEmail());
         intent5.putExtra("picture", userInfoData.getPicture());
-        intent5.putExtra("point", String.valueOf(userInfoData.getPoint()));
+        intent5.putExtra("point", ((UserPoint)getApplication()).getUserPoint());
+    }
+
+    // 포인트 업데이트 함수
+    static public void updatePoint(int point, String insturction, Context context) {
+        System.out.println("서버에 포인트 업데이트 시작");
+
+        PointData pointData = new PointData();
+        pointData.setUserId(userId);
+        pointData.setPoint(point);
+        pointData.setInstruction(insturction);
+
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.updatePoint(pointData).enqueue(new Callback<Long>() {
+                @Override
+                public void onResponse(Call<Long> call, Response<Long> response) {
+                    Log.d("updatePoint: POST", "not success yet");
+                    if (response.isSuccessful()){
+                        Log.d("updatePoint: POST", "POST Success!");
+                        Log.d("updatePoint: POST", ">>>response.body()="+response.body());
+
+                        ((UserPoint)context.getApplicationContext()).updateUserPoint(point, insturction);
+                        System.out.println("포인트가 업데이트 되었습니다. 현재 user_point: " + ((UserPoint)context.getApplicationContext()).getUserPoint());
+                    }
+                    else {
+                        System.out.println("updatePoint: @@@@ response is not successful...");
+                        System.out.println("updatePoint: @@@@ response code : " + response.code());  //500
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Long> call, Throwable t) {
+                    Log.d("POST", "POST Failed");
+                    Log.d("POST", t.getMessage());
+                }
+            });
+        }
+
     }
 
 }

@@ -1,5 +1,7 @@
 package com.example.myapplication2;
 
+import static com.example.myapplication2.MainActivity.updatePoint;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
     String useridToken = "";
 
     static Long userId = MainActivity.userId;
+
     static int selected_practice_mid;
     static Long selected_practice_id;
 
@@ -50,8 +53,6 @@ public class RegisterActivity extends AppCompatActivity {
     PracticesData[] practicesDataList;
     ArrayList<PracticesData> practicesList;
     ArrayList<String> practiceTitleList;
-
-    static int point;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,19 +94,14 @@ public class RegisterActivity extends AppCompatActivity {
         reg_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                //포인트 정보 확인 및 차감
-//                if (point < 10)
-//                    Toast.makeText(RegisterActivity.this, "포인트가 부족하여 게시글을 등록할 수 없습니다.", Toast.LENGTH_SHORT).show();
-//                else {
-//                    //서버 User 정보에 point 업데이트 (10 차감)
-//// 게시물 등록 함수
-//                    RegBoard regBoard = new RegBoard();
-//                    regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
-//                }
-
-                //임시, 확인용
-                RegBoard regBoard = new RegBoard();
-                regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
+                //포인트 정보 확인 및 차감
+                if (((UserPoint)getApplication()).getUserPoint() < 10)
+                    Toast.makeText(RegisterActivity.this, "포인트가 부족하여 게시글을 등록할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                else {
+                    // 게시물 등록 함수
+                    RegBoard regBoard = new RegBoard();
+                    regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
+                }
             }
         });
 
@@ -162,8 +158,6 @@ public class RegisterActivity extends AppCompatActivity {
                     if (userInfoData!=null){
                         Log.d("RegisterActivity: GET_USERINFO", "GET SUCCESS");
                         Log.d("RegisterActivity: GET_USERINFO", ">>>response.body()=" + response.body());
-
-                        point = userInfoData.getPoint();
 
                         practicesDataList = userInfoData.getPractices();
 
@@ -235,6 +229,10 @@ public class RegisterActivity extends AppCompatActivity {
                         res[0] = "success";
 
                         Toast.makeText(RegisterActivity.this, "등록되었습니다.", Toast.LENGTH_SHORT).show();
+
+                        // 포인트 -10 차감
+                        updatePoint(10, "minus", RegisterActivity.this);
+
                         finish();
                     }
                     else {

@@ -192,7 +192,7 @@ public class EditPracticeActivity1 extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<PracticesData> call, Throwable t) {
-                    Log.d("GET", "POST Failed");
+                    Log.d("GET", "GET Failed");
                     Log.d("GET", t.getMessage());
 
                     Toast.makeText(EditPracticeActivity1.this, "연습 정보를 가져오는 데에 실패했습니다.", Toast.LENGTH_SHORT).show();
