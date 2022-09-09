@@ -116,7 +116,7 @@ public class AddPracticeActivity extends AppCompatActivity {
             cursor = db.rawQuery(" SELECT * FROM tableName ", null);
             startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
             cursor.moveToLast();
-            Intent intent = new Intent(AddPracticeActivity.this, RecordActivity.class);
+            Intent intent = new Intent(AddPracticeActivity.this, RecordActivity1.class);
             intent.putExtra("PRACTICE_INDEX", cursor.getInt(0));
             startActivity(intent);
             finish();

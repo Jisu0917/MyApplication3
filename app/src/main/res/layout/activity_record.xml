@@ -13,14 +13,14 @@
         android:layout_height="match_parent"
         android:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/imageview_analysis_start"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_analysis_start"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/imageview_analysis_start"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:adjustViewBounds="true"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:src="@drawable/ic_analysis_start"/>-->
 
     <RelativeLayout
         android:id="@+id/relativelayout_btns"
@@ -32,73 +32,56 @@
         android:layout_marginBottom="25dp"
         android:baselineAligned="true">
 
-<!--        <ImageView-->
-<!--            android:id="@+id/recentRecFile"-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_alignParentStart="true"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_marginStart="25dp" />-->
-
         <ImageView
             android:id="@+id/recStartBtn"
-            android:layout_height="57dp"
             android:layout_width="57dp"
+            android:layout_height="57dp"
             android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/record"
-            android:visibility="visible"/>
+            android:src="@drawable/ic_record_start"
+            android:visibility="visible" />
 
         <ImageView
             android:id="@+id/recStopBtn"
             android:layout_height="57dp"
             android:layout_width="57dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/stop"
+            android:src="@drawable/ic_record_stop"
             android:visibility="gone"/>
-
-
-<!--        <ImageView-->
-<!--            android:id="@+id/recFileList"-->
-<!--            android:layout_width="27dp"-->
-<!--            android:layout_height="28dp"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_marginEnd="25dp"-->
-<!--            android:src="@drawable/rec_list" />-->
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/guide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
         android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
-        android:layout_margin="50dp"
+        android:orientation="vertical"
         android:visibility="visible">
 
         <ImageView
             android:id="@+id/imageview_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_guideline_man_white"/>
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/ic_face" />
 
         <TextView
             android:id="@+id/tv_guidetext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageview_guideline"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="얼굴 위치를 가이드라인에 맞추세요."
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:text="몸을 가이드라인에 맞추세요." />
-    </RelativeLayout>
+            android:textSize="18sp" />
+    </LinearLayout>
 
 
 </RelativeLayout>

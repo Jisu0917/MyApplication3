@@ -33,10 +33,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RecordActivity"
-            android:screenOrientation="fullSensor"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
             android:name=".RecordActivity1"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppThemeNoActionBar" />

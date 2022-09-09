@@ -50,6 +50,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
     PracticesData practicesData;
     AnalysisData analysisData;
     AnalysisContentData analysisContentData;
+    String gender;
 
     LinearLayout linearLayout;
     ScrollView scrollView;
@@ -154,6 +155,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
     private void setAnalysisResult() {
         warnings = 0;
 
+        gender = practicesData.getGender();
         analysisData = practicesData.getAnalysis();
         analysisContentData = analysisData.getAnalysisContent();
 
@@ -173,11 +175,11 @@ public class ViewAnalysisActivity extends AppCompatActivity {
         tv_analysis_speed.setText("평균적인 말하기 속도는 1분당 96단어 이상 124 단어 미만이며, 현재 회원님의 말하기 속도는 1분당 "+
                 analysisContentData.getSpeed()+"단어입니다.\n"
                 + evaluateSpeed(analysisContentData.getSpeed()));  // speed 값에 따라 다른 평가 제시
-        tv_analysis_volume.setText("평균적인 목소리의 크기 변화율은 **00.00%**이며, 현재 회원님의 목소리 크기 변화율은 "+
+        tv_analysis_volume.setText("적절한 목소리의 크기 변화율은 "+ standardShimmer() +"이며, 현재 회원님의 목소리 크기 변화율은 "+
                 analysisContentData.getShimmer()+"%입니다.\n"
                 + evaluateShimmer(analysisContentData.getShimmer()) +
                 "\n중요한 부분에서 힘 있는 목소리로 연습하시기 바랍니다.");  // shimmer 값에 따라 다른 평가 제시
-        tv_analysis_pitch.setText("평균적인 목소리의 높낮이 변화율은 **00.00%**이며, 현재 회원님의 목소리 높낮이 변화율은 "+
+        tv_analysis_pitch.setText("적절한 목소리의 높낮이 변화율은 "+ standardJitter() +"이며, 현재 회원님의 목소리 높낮이 변화율은 "+
                 analysisContentData.getJitter()+"%입니다.\n"
                 + evaluateJitter(analysisContentData.getJitter()) +
                 "\n내용에 따라 목소리 높낮이를 다양하게 사용하며 내용을 효과적으로 전달하시기 바랍니다.");  // jitter 값에 따라 다른 평가 제시
@@ -403,14 +405,30 @@ public class ViewAnalysisActivity extends AppCompatActivity {
             case "speed":
                 return analysisContentData.getSpeed() >= 96 && analysisContentData.getSpeed() <= 124;
             case "volume":
-                return analysisContentData.getShimmer() >= 20;
+                return isGoodShimmer(analysisContentData.getShimmer());
             case "pitch":
-                return analysisContentData.getJitter() >= 20;
+                return isGoodJitter(analysisContentData.getJitter());
             case "conclusion":
                 return analysisContentData.getClosingRemarks() >= 80;
         }
 
         return false;
+    }
+
+    private String standardShimmer() {
+        if (gender.equals("MEN"))
+            return "남성은 10.132% 이상 13.526% 미만";
+        else if (gender.equals("WOMEN"))
+            return "여성은 7.393% 이상 12.221% 미만";
+        return "";
+    }
+
+    private String standardJitter() {
+        if (gender.equals("MEN"))
+            return "남성은 2.159% 이상 3.023% 미만";
+        else if (gender.equals("WOMEN"))
+            return "여성은 1.599% 이상 2.310% 미만";
+        return "";
     }
 
     private String evaluateSpeed(float speed) {
@@ -430,29 +448,66 @@ public class ViewAnalysisActivity extends AppCompatActivity {
     private String evaluateShimmer(float shimmer) {
         String res = "";
 
-        float avg = 20f; //음성데이터 평균  //임시, 확인용
-
-        if (shimmer < avg*0.95) {  //단조로움
-            res = "목소리의 크기 변화가 다소 단조로운 것으로 측정되었으며, 단조로운 목소리 크기 변화는 청중들을 쉽게 지루하게 만들 수 있습니다. 중요한 부분에서 힘 있는 목소리로 연습하시기 바랍니다.";
-        } else {  //적정
-            res = "회원님의 음성은 적정한 목소리의 크기 변화를 보이고 있으며, 강조할 내용에서의 충분한 목소리 크기 변화는 청중들의 집중도와 흥미를 높일 수 있습니다.";
+        if (gender.equals("MEN")) {
+            if (shimmer < 10.132) {  //단조로움
+                res = "목소리의 크기 변화가 다소 단조로운 것으로 측정되었으며, 단조로운 목소리 크기 변화는 청중들을 쉽게 지루하게 만들 수 있습니다. 중요한 부분에서 힘 있는 목소리로 연습하시기 바랍니다.";
+            } else if (shimmer < 13.526) {  //적정
+                res = "회원님의 음성은 적정한 목소리의 크기 변화를 보이고 있으며, 강조할 내용에서의 충분한 목소리 크기 변화는 청중들의 집중도와 흥미를 높일 수 있습니다.";
+            } else {  //너무 산만(?)함
+                res = "회원님의 음성은 산만한 목소리의 크기 변화를 보이고 있으며, 강조할 내용에서만 목소리 크기 변화를 주셔야 청중들의 집중도와 흥미를 높일 수 있습니다.";
+            }
+        } else if (gender.equals("WOMEN")) {
+            if (shimmer < 7.393) {  //단조로움
+                res = "목소리의 크기 변화가 다소 단조로운 것으로 측정되었으며, 단조로운 목소리 크기 변화는 청중들을 쉽게 지루하게 만들 수 있습니다. 중요한 부분에서 힘 있는 목소리로 연습하시기 바랍니다.";
+            } else if (shimmer < 12.221) {  //적정
+                res = "회원님의 음성은 적정한 목소리의 크기 변화를 보이고 있으며, 강조할 내용에서의 충분한 목소리 크기 변화는 청중들의 집중도와 흥미를 높일 수 있습니다.";
+            } else {  //너무 산만(?)함
+                res = "회원님의 음성은 산만한 목소리의 크기 변화를 보이고 있으며, 강조할 내용에서만 목소리 크기 변화를 주셔야 청중들의 집중도와 흥미를 높일 수 있습니다.";
+            }
         }
 
         return res;
     }
 
+    private boolean isGoodShimmer(float shimmer) {
+        if (gender.equals("MEN")) {
+            return shimmer >= 10.132 && shimmer < 13.526;
+        } else if (gender.equals("WOMEN")) {
+            return shimmer >= 7.393 && shimmer < 12.221;
+        }
+        else return false;
+    }
+
     private String evaluateJitter(float jitter) {
         String res = "";
 
-        float avg = 20f; //음성데이터 평균  //임시, 확인용
-
-        if (jitter < avg*0.95) {  //단조로움
-            res = "목소리의 높낮이 변화가 다소 단조로운 편으로 측정되었습니다. 목소리 높낮이가 단조로울 경우 좋은 내용이더라도 지루하게 느껴질 수 있습니다. 내용에 따라 목소리 높낮이를 다양하게 사용하며 내용을 효과적으로 전달하시기 바랍니다.";
-        } else {  //적정
-            res = "회원님의 음성은 적정한 목소리의 높낮이 변화를 보이고 있으며, 강조할 내용에서의 충분한 목소리 높낮이 강조는 청중들의 몰입감을 높일 수 있습니다.";
+        if (gender.equals("MEN")) {
+            if (jitter < 2.159) {  //단조로움
+                res = "목소리의 높낮이 변화가 다소 단조로운 편으로 측정되었습니다. 목소리 높낮이가 단조로울 경우 좋은 내용이더라도 지루하게 느껴질 수 있습니다. 내용에 따라 목소리 높낮이를 다양하게 사용하며 내용을 효과적으로 전달하시기 바랍니다.";
+            } else if (jitter < 3.023) {  //적정
+                res = "회원님의 음성은 적정한 목소리의 높낮이 변화를 보이고 있으며, 강조할 내용에서의 충분한 목소리 높낮이 강조는 청중들의 몰입감을 높일 수 있습니다.";
+            } else {  //너무 산만(?)함
+                res = "회원님의 음성은 다소 산만한 목소리의 높낮이 변화를 보이고 있으며, 강조할 내용에서만 목소리 높낮이 강조를 사용하셔야 청중들의 몰입감을 높일 수 있습니다.";
+            }
+        } else if (gender.equals("WOMEN")) {
+            if (jitter < 1.599) {  //단조로움
+                res = "목소리의 높낮이 변화가 다소 단조로운 편으로 측정되었습니다. 목소리 높낮이가 단조로울 경우 좋은 내용이더라도 지루하게 느껴질 수 있습니다. 내용에 따라 목소리 높낮이를 다양하게 사용하며 내용을 효과적으로 전달하시기 바랍니다.";
+            } else if (jitter < 2.310) {  //적정
+                res = "회원님의 음성은 적정한 목소리의 높낮이 변화를 보이고 있으며, 강조할 내용에서의 충분한 목소리 높낮이 강조는 청중들의 몰입감을 높일 수 있습니다.";
+            } else {  //너무 산만(?)함
+                res = "회원님의 음성은 다소 산만한 목소리의 높낮이 변화를 보이고 있으며, 강조할 내용에서만 목소리 높낮이 강조를 사용하셔야 청중들의 몰입감을 높일 수 있습니다.";
+            }
         }
-
         return res;
+    }
+
+    private boolean isGoodJitter(float jitter) {
+        if (gender.equals("MEN")) {
+            return jitter >= 2.159 && jitter < 3.023;
+        } else if (gender.equals("WOMEN")) {
+            return jitter >= 1.599 && jitter < 2.310;
+        }
+        else return false;
     }
 
     /* 이미지 스크롤 저장 */

@@ -6,6 +6,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -30,10 +31,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -72,6 +75,8 @@ public class RecordActivity1 extends AppCompatActivity {
     public static String RECORDED_DIR = "myRec";
     static String filename = "";
 
+    ImageView recStartBtn, recStopBtn, analysisBtn;
+
     File f;
 
     MediaRecorder recorder;
@@ -82,7 +87,7 @@ public class RecordActivity1 extends AppCompatActivity {
     private int RESULT_PERMISSIONS = 100;
     public static RecordActivity1 getInstance;
 
-    RelativeLayout guide;
+    LinearLayout guide;
 
     public static Context context;
 
@@ -142,13 +147,13 @@ public class RecordActivity1 extends AppCompatActivity {
         }
 
 
-        guide = (RelativeLayout) findViewById(R.id.guide);
+        guide = (LinearLayout) findViewById(R.id.guide);
         guide.setVisibility(View.VISIBLE);
 
-        final ImageView recStartBtn = (ImageView) findViewById(R.id.recStartBtn);
-        final ImageView recStopBtn = (ImageView) findViewById(R.id.recStopBtn);
-        final ImageView analysisBtn = (ImageView) findViewById(R.id.imageview_analysis_start);
-        analysisBtn.setVisibility(View.GONE);
+        recStartBtn = (ImageView) findViewById(R.id.recStartBtn);
+        recStopBtn = (ImageView) findViewById(R.id.recStopBtn);
+//        analysisBtn = (ImageView) findViewById(R.id.imageview_analysis_start);
+//        analysisBtn.setVisibility(View.GONE);
 
         f = new File(EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR);
         System.out.println(f);
@@ -158,58 +163,7 @@ public class RecordActivity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                guide.setVisibility(View.GONE);
-                analysisBtn.setVisibility(View.GONE);
-
-                try {
-                    if (recorder == null) {
-                        recorder = new MediaRecorder();
-                    }
-
-                    mCamera.unlock();
-                    recorder.setCamera(mCamera);
-                    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                    recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-                    //recorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
-                    recorder.setProfile(CamcorderProfile.get(Camera.CameraInfo.CAMERA_FACING_FRONT, CamcorderProfile.QUALITY_HIGH));
-
-
-                    recorder.setMaxDuration(1800000);  // 1800sec = 30min
-                    recorder.setMaxFileSize(500000000);  // 500Mb
-                    recorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
-                    recorder.setOrientationHint(90);
-
-
-
-//                    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-//                    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-
-
-                    if (Build.VERSION.SDK_INT >= 30){
-                        System.out.println("android version >= 30");
-
-                        filename = createFilename30();
-                        Log.d(TAG, "current filename (30) : " + filename);
-                        recorder.setOutputFile(filename);
-
-                        //recorder.setOutputFile(destination + "/myRecordingFile01.mp4");
-                    } else {
-                        filename = createFilename();
-                        Log.d(TAG, "current filename : " + filename);
-                        recorder.setOutputFile(filename);
-                    }
-
-                    recorder.setPreviewDisplay(holder.getSurface());
-
-                    recorder.prepare();
-                    recorder.start();
-                    recStartBtn.setVisibility(View.INVISIBLE);
-                    recStopBtn.setVisibility(View.VISIBLE);
-                } catch (Exception ex) {
-                    Log.e(TAG, "Exception : ", ex);
-                    recorder.release();
-                    recorder = null;
-                }
+                startRecording();
             }
         });
 
@@ -227,46 +181,68 @@ public class RecordActivity1 extends AppCompatActivity {
                     recorder = null;
                 }
 
-                analysisBtn.setVisibility(View.VISIBLE);
                 recStopBtn.setVisibility(View.INVISIBLE);
-                recStartBtn.setVisibility(View.VISIBLE);
+                recStartBtn.setVisibility(View.INVISIBLE);
 
-                Toast.makeText(RecordActivity1.this, "재촬영을 하려면 촬영 버튼을 다시 누르세요.", Toast.LENGTH_SHORT).show();
+                //다이얼로그 띄우기 - 재촬영 or 분석하기
+                AlertDialog.Builder builder = new AlertDialog.Builder(RecordActivity1.this);
+                builder.setTitle("이 영상을 분석할까요?");
+                builder.setMessage("재촬영을 원하시면 재촬영 버튼을 누르세요.");
+                builder.setPositiveButton("확인",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // 내장메모리에 영상 저장
+                                ContentValues values = new ContentValues(10);
 
-                /*
-                 * 촬영 버튼을 다시 만드는 게 아니라 업로드 버튼, 재촬영 버튼이 나오게끔 하기
-                 * dialog로 띄우거나...
-                 * */
+                                values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
+                                values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
+                                values.put(MediaStore.Audio.Media.ARTIST, "Mike");
+                                values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
+                                values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis()/1000);
+                                values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
+                                values.put(MediaStore.Audio.Media.DATA, filename);
 
-                ContentValues values = new ContentValues(10);
+                                Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+                                if (videoUri == null) {
+                                    Log.d("SampleVideoRecorder", "Video insert failed.");
+                                    return;
+                                }
+                                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
 
-                values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
-                values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
-                values.put(MediaStore.Audio.Media.ARTIST, "Mike");
-                values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
-                values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis()/1000);
-                values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
-                values.put(MediaStore.Audio.Media.DATA, filename);
+                                // 서버에 영상 업로드 + 분석 시작
+                                postNewPractice();
 
-                Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
-                if (videoUri == null) {
-                    Log.d("SampleVideoRecorder", "Video insert failed.");
-                    return;
-                }
-                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
+                                finish();
+                            }
+                        });
+                builder.setNegativeButton("재촬영",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                guide.setVisibility(View.VISIBLE);
+                                recStartBtn.setVisibility(View.VISIBLE);
+                                recStopBtn.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                builder.show();
+
+//                analysisBtn.setVisibility(View.VISIBLE);
+//                recStopBtn.setVisibility(View.INVISIBLE);
+//                recStartBtn.setVisibility(View.VISIBLE);
 
             }
         });
 
-        analysisBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 서버에 영상 업로드 + 분석 시작
-                postNewPractice();
-
-                finish();
-            }
-        });
+//        analysisBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 서버에 영상 업로드 + 분석 시작
+//                postNewPractice();
+//
+//                finish();
+//            }
+//        });
     }
 
     @Override
@@ -274,6 +250,60 @@ public class RecordActivity1 extends AppCompatActivity {
         super.onResume();
 
         guide.setVisibility(View.VISIBLE);
+    }
+
+    private void startRecording() {
+        guide.setVisibility(View.GONE);
+
+        try {
+            if (recorder == null) {
+                recorder = new MediaRecorder();
+            }
+
+            mCamera.unlock();
+            recorder.setCamera(mCamera);
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+            //recorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+            recorder.setProfile(CamcorderProfile.get(Camera.CameraInfo.CAMERA_FACING_FRONT, CamcorderProfile.QUALITY_HIGH));
+
+
+            recorder.setMaxDuration(1800000);  // 1800sec = 30min
+            recorder.setMaxFileSize(500000000);  // 500Mb
+            recorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
+            recorder.setOrientationHint(90);
+
+
+
+//                    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+//                    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+
+
+            if (Build.VERSION.SDK_INT >= 30){
+                System.out.println("android version >= 30");
+
+                filename = createFilename30();
+                Log.d(TAG, "current filename (30) : " + filename);
+                recorder.setOutputFile(filename);
+
+                //recorder.setOutputFile(destination + "/myRecordingFile01.mp4");
+            } else {
+                filename = createFilename();
+                Log.d(TAG, "current filename : " + filename);
+                recorder.setOutputFile(filename);
+            }
+
+            recorder.setPreviewDisplay(holder.getSurface());
+
+            recorder.prepare();
+            recorder.start();
+            recStartBtn.setVisibility(View.INVISIBLE);
+            recStopBtn.setVisibility(View.VISIBLE);
+        } catch (Exception ex) {
+            Log.e(TAG, "Exception : ", ex);
+            recorder.release();
+            recorder = null;
+        }
     }
 
     public static Camera getCamera(){
@@ -599,7 +629,7 @@ public class RecordActivity1 extends AppCompatActivity {
                             @Override
                             public void run()
                             {
-                                Toast.makeText(getApplicationContext(), practice.getTitle() + "의 분석에 실패하였습니다..", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), practice.getTitle() + "의 분석에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }, 0);
                     }
@@ -614,7 +644,7 @@ public class RecordActivity1 extends AppCompatActivity {
                         @Override
                         public void run()
                         {
-                            Toast.makeText(getApplicationContext(), practice.getTitle() + "의 분석에 실패하였습니다..", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), practice.getTitle() + "의 분석에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }, 0);
                 }
