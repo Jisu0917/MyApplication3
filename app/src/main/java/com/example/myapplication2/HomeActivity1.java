@@ -59,6 +59,7 @@ public class HomeActivity1 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home1);
+        setTitle("내 연습 목록");
 
         context = this;
 

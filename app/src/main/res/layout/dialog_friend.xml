@@ -13,7 +13,6 @@
         android:layout_gravity="center"
         android:layout_marginStart="20dp"
         android:text="선택한 친구 : 아무개"
-        android:textColor="#384d75"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
 </LinearLayout>

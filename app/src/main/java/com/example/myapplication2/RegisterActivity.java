@@ -94,13 +94,18 @@ public class RegisterActivity extends AppCompatActivity {
         reg_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //포인트 정보 확인 및 차감
-                if (((UserPoint)getApplication()).getUserPoint() < 10)
-                    Toast.makeText(RegisterActivity.this, "포인트가 부족하여 게시글을 등록할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                //빈 항목이 있는지 확인
+                if (title_et.getText().toString().equals("") || content_et.getText().toString().equals(""))
+                    Toast.makeText(RegisterActivity.this, "작성하지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show();
                 else {
-                    // 게시물 등록 함수
-                    RegBoard regBoard = new RegBoard();
-                    regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
+                    //포인트 정보 확인 및 차감
+                    if (((UserPoint) getApplication()).getUserPoint() < 10)
+                        Toast.makeText(RegisterActivity.this, "포인트가 부족하여 게시글을 등록할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    else {
+                        // 게시물 등록 함수
+                        RegBoard regBoard = new RegBoard();
+                        regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
+                    }
                 }
             }
         });

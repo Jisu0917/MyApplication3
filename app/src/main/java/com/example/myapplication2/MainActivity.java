@@ -24,6 +24,7 @@ import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.dto.LoginRequestDto;
 import com.example.myapplication2.api.dto.PointData;
+import com.example.myapplication2.api.dto.PracticesData;
 import com.example.myapplication2.api.dto.UserInfoData;
 import com.example.myapplication2.api.objects.UserIdObject;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -271,7 +272,7 @@ public class MainActivity extends TabActivity {
                         spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
                         myTabHost.addTab(spec);
 
-                        spec = myTabHost.newTabSpec("Settings").setIndicator("SETTINGS").setContent(intent5);
+                        spec = myTabHost.newTabSpec("Settings").setIndicator("MY PAGE").setContent(intent5);
                         myTabHost.addTab(spec);
 
                         myTabHost.setCurrentTab(1);  //메인 Tab 지정
@@ -323,10 +324,15 @@ public class MainActivity extends TabActivity {
         // TODO: intent4 - FriendActivity <- Friends
 
         // intent5 - SettingsActivity <- basic Userinfo
+        intent5.putExtra("id", userInfoData.getId());
         intent5.putExtra("name", userInfoData.getName());
         intent5.putExtra("email", userInfoData.getEmail());
         intent5.putExtra("picture", userInfoData.getPicture());
-        intent5.putExtra("point", ((UserPoint)getApplication()).getUserPoint());
+        //intent5.putExtra("point", ((UserPoint)getApplication()).getUserPoint());
+        intent5.putExtra("num_of_practices", userInfoData.getPractices().length);
+        intent5.putExtra("num_of_posts", userInfoData.getPosts().length);
+        intent5.putExtra("num_of_friends", userInfoData.getFriends().length);
+        intent5.putExtra("num_of_feedbacks", userInfoData.getFeedbacks().length);
     }
 
     // 포인트 업데이트 함수

@@ -89,6 +89,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        setTitle("게시글 보기");
 
         //액션바에 뒤로가기 버튼 추가
         ActionBar actionBar = getSupportActionBar();

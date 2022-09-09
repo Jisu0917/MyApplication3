@@ -51,6 +51,7 @@ public class FriendActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend);
+        setTitle("내 친구 목록");
 
         friendlist_layout = (LinearLayout) findViewById(R.id.friendlist_layout);
 

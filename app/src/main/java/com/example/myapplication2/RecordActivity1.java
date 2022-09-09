@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
@@ -25,6 +26,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -113,6 +115,7 @@ public class RecordActivity1 extends AppCompatActivity {
         sort = it.getStringExtra("sort");
         gender = it.getStringExtra("gender");
         sensitivity = it.getIntExtra("sensitivity", 0);
+
 
         // 카메라 프리뷰를  전체화면으로 보여주기 위해 셋팅한다.
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -316,6 +319,20 @@ public class RecordActivity1 extends AppCompatActivity {
         mCamera = Camera.open(findFrontSideCamera());
 
         setContentView(R.layout.activity_record);
+
+        // 가이드 이미지 크기 조정
+        /// 화면 가로 길이 구하기
+        Display display = getWindowManager().getDefaultDisplay();  // in Activity
+        /* getActivity().getWindowManager().getDefaultDisplay() */ // in Fragment
+        Point size = new Point();
+        display.getRealSize(size); // or getSize(size)
+        int width = size.x;
+        int height = size.y;
+        /// 이미지뷰 width, height 조절
+        ImageView iv_guideline = (ImageView) findViewById(R.id.imageview_guideline);
+        iv_guideline.requestLayout();
+        iv_guideline.getLayoutParams().height = (int) (width * 0.5);  // 비율 : 화면 가로 너비의 50%
+        iv_guideline.getLayoutParams().width = (int) (width * 0.5);  // 비율 : 화면 가로 너비의 50%
 
         // SurfaceView를 상속받은 레이아웃을 정의한다.
         surfaceView = (CameraPreview) findViewById(R.id.preview);
