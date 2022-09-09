@@ -184,6 +184,7 @@ public class CommunityActivity extends AppCompatActivity {
         intent.putExtra("content", content);
         intent.putExtra("postId", id);
         intent.putExtra("practiceId", practice_id);
+        intent.putExtra("practice_user_id", user_id);
         startActivity(intent);
     }
 

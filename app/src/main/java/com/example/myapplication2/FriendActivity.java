@@ -98,6 +98,8 @@ public class FriendActivity extends AppCompatActivity {
 //    }
 
     private void getUserInfo(){
+        System.out.println("FriendActivity : getUserInfo Called");  //임시, 확인용
+
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
         userInfoDataList = new ArrayList<>();
@@ -114,22 +116,33 @@ public class FriendActivity extends AppCompatActivity {
                         Log.d("GET_USERINFO", "GET SUCCESS");
                         Log.d("GET_USERINFO", ">>>response.body()=" + response.body());
 
+                        System.out.println("friends (null) : " + friends);  //임시, 확인용
                         friends = userInfoData.getFriends();
+                        System.out.println("friends : " + friends);  //임시, 확인용
 
                         Long friend_id;
                         // ...
                         if (friends != null) {
-                            boolean isLast = false;
-                            for (int i=0; i<friends.length; i++) {
-                                friend_id = friends[i].getFriend_id();
+                            if (friends.length != 0) {
+                                boolean isLast = false;
+                                for (int i = 0; i < friends.length; i++) {
+                                    friend_id = friends[i].getFriend_id();
 
-                                if (i == friends.length - 1) {  //마지막 친구일 때
-                                    isLast = true;
+                                    if (i == friends.length - 1) {  //마지막 친구일 때
+                                        isLast = true;
+                                    }
+
+                                    getFriendUserInfo(friend_id, isLast);
                                 }
-
-                                getFriendUserInfo(friend_id, isLast);
                             }
-                            //setFriendListView();
+                            else {
+                                friendlist_layout.removeAllViews();
+                                LayoutInflater layoutInflater = LayoutInflater.from(FriendActivity.this);
+                                View customView = layoutInflater.inflate(R.layout.custom_textview, null);
+
+                                ((TextView)customView.findViewById(R.id.custom_textView)).setText("+ 버튼을 눌러 친구를 추가하세요.");
+                                friendlist_layout.addView(customView);
+                            }
                         } else {
                             System.out.println("friends is null...");
                         }
@@ -145,6 +158,8 @@ public class FriendActivity extends AppCompatActivity {
     }
 
     private void getFriendUserInfo(Long user_id, boolean isLast){
+        System.out.println("FriendActivity : getFriendUserInfo Called");  //임시, 확인용
+
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
         if (retrofitClient!=null){
@@ -199,32 +214,28 @@ public class FriendActivity extends AppCompatActivity {
 
         if (userInfoDataList != null) {
             System.out.println("userInfoDataList : " + userInfoDataList.toString());  //임시, 확인용 - 하나여야 하는데 두 개가 들어있네...
-            
-            if (userInfoDataList.size() != 0) {
-                //id(친구의 user_id)순으로 정렬
-                for (int i = 0; i < userInfoDataList.size(); i++) {
-                    userInfoDataMap.put(userInfoDataList.get(i).getId(), userInfoDataList.get(i));
-                }
-                for (Long nKey : userInfoDataMap.keySet()) {
-                    View customView = layoutInflater.inflate(R.layout.custom_friend_info, null);
-                    UserInfoData userInfoData = userInfoDataMap.get(nKey);
-
-                    Long id = userInfoData.getId();
-                    String name = userInfoData.getName();
-                    String email = userInfoData.getEmail();
-                    String picture = userInfoData.getPicture();
-
-                    ((LinearLayout) customView.findViewById(R.id.container)).setTag(id + ":" + email + ":" + name);
-                    ((TextView) customView.findViewById(R.id.tv_name)).setText(name);
-                    ((TextView) customView.findViewById(R.id.tv_id)).setText("id: " + id.intValue());
-                    ((TextView) customView.findViewById(R.id.tv_email)).setText(email);
-                    if (picture != null)
-                        Glide.with(this).load(picture).into((ImageView) customView.findViewById(R.id.profile_image));
-
-                    friendlist_layout.addView(customView);
-                }
+            //id(친구의 user_id)순으로 정렬
+            for (int i = 0; i < userInfoDataList.size(); i++) {
+                userInfoDataMap.put(userInfoDataList.get(i).getId(), userInfoDataList.get(i));
             }
+            for (Long nKey : userInfoDataMap.keySet()) {
+                View customView = layoutInflater.inflate(R.layout.custom_friend_info, null);
+                UserInfoData userInfoData = userInfoDataMap.get(nKey);
 
+                Long id = userInfoData.getId();
+                String name = userInfoData.getName();
+                String email = userInfoData.getEmail();
+                String picture = userInfoData.getPicture();
+
+                ((LinearLayout) customView.findViewById(R.id.container)).setTag(id + ":" + email + ":" + name);
+                ((TextView) customView.findViewById(R.id.tv_name)).setText(name);
+                ((TextView) customView.findViewById(R.id.tv_id)).setText("id: " + id.intValue());
+                ((TextView) customView.findViewById(R.id.tv_email)).setText(email);
+                if (picture != null)
+                    Glide.with(this).load(picture).into((ImageView) customView.findViewById(R.id.profile_image));
+
+                friendlist_layout.addView(customView);
+            }
         } else {
             System.out.println("userInfoDataList is null...");
         }

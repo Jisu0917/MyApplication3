@@ -39,7 +39,7 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
 
     Intent it;
-    Long practice_id;
+    Long practice_id, practice_user_id;
     String practice_title, practice_state, practice_scope, practice_sort, friend_name, parent_activity;
 
     TextView tv_practiceTitle, tv_scope, tv_sort;
@@ -77,6 +77,7 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
         practice_sort = it.getStringExtra("practice_sort");
         friend_name = it.getStringExtra("friend_name");
         setTitle("친구 " + friend_name + "의 연습 정보 보기");
+        practice_user_id = it.getLongExtra("practice_user_id", 0);
 //        parent_activity = it.getStringExtra("PRENT ACTIVITY");
 
         reg_button.setVisibility(View.VISIBLE);
@@ -87,7 +88,7 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
 
         MediaController mc = new MediaController(ViewFriendPracticePlayActivity.this); // 비디오 컨트롤 가능하게(일시정지, 재시작 등)
         videoView.setMediaController(mc);
-        videoView.setVideoURI(Uri.parse("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/video_"+userId+"_"+practice_id+".mp4"));    // 선택한 비디오 경로 비디오뷰에 셋
+        videoView.setVideoURI(Uri.parse("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/video_"+practice_user_id+"_"+practice_id+".mp4"));    // 선택한 비디오 경로 비디오뷰에 셋
         videoView.requestFocus();
         videoView.start();  // 비디오뷰 시작
 
@@ -98,6 +99,7 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
                     Intent intent = new Intent(ViewFriendPracticePlayActivity.this, ViewAnalysisActivity.class);
                     intent.putExtra("practice_id", practice_id);
                     intent.putExtra("practice_title", practice_title);
+                    intent.putExtra("practice_user_id", practice_user_id);
                     startActivity(intent);
                 } else {
                     Toast.makeText(ViewFriendPracticePlayActivity.this, "분석이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();

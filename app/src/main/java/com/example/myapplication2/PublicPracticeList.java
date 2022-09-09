@@ -39,6 +39,8 @@ public class PublicPracticeList extends AppCompatActivity {
 
     LinearLayout practicelist_layout;
 
+    Long practice_user_id;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,48 @@ public class PublicPracticeList extends AppCompatActivity {
         }
     }
 
+    // 서버에서 연습 정보 가져오기
+    private void getPracticeInfo(Long practice_id) {
+        System.out.println("특정 연습 정보 가져오기 시작");
+
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.getPracticeInfo(practice_id).enqueue(new Callback<PracticesData>() {
+                @Override
+                public void onResponse(Call<PracticesData> call, Response<PracticesData> response) {
+                    Log.d("GET", "not success yet");
+                    if (response.isSuccessful()){
+                        Log.d("GET", "GET Success!");
+                        Log.d("GET", ">>>response.body()="+response.body());
+
+                        PracticesData practicesData = response.body();
+                        if (practicesData != null) {
+                            practice_user_id = practicesData.getUserId();
+                        }
+                    }
+                    else {
+                        System.out.println("@@@@ response is not successful...");
+                        System.out.println("@@@@ response code : " + response.code());
+
+                        Toast.makeText(PublicPracticeList.this, "연습 정보를 가져오는 데에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PracticesData> call, Throwable t) {
+                    Log.d("GET", "GET Failed");
+                    Log.d("GET", t.getMessage());
+
+                    Toast.makeText(PublicPracticeList.this, "연습 정보를 가져오는 데에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        }
+    }
+
     private void setPracticeListView() {
         practicelist_layout.removeAllViews();
 
@@ -111,6 +155,9 @@ public class PublicPracticeList extends AppCompatActivity {
                 String sort = practicesData.getSort();
                 String scope = practicesData.getScope();
                 String state = practicesData.getAnalysis().getState();  //COMPLETE, INCOMPLETE
+                //Long practice_user_id = practicesData.getUserId();
+                getPracticeInfo(id);
+
                 Drawable drawable;
                 if (state.equals("COMPLETE"))
                     drawable = ContextCompat.getDrawable(this, R.drawable.ic_100percent);
@@ -133,6 +180,7 @@ public class PublicPracticeList extends AppCompatActivity {
 
     public void onClickPractice(View view) {
         String tag = (String) view.getTag();
+        System.out.println("tag = " + tag);  //임시, 확인용
         String[] tag_split = tag.split(":");
         Long id = Long.valueOf(tag_split[0]);
         String title = tag_split[1];
@@ -149,6 +197,7 @@ public class PublicPracticeList extends AppCompatActivity {
         intent.putExtra("practice_scope", scope);
         intent.putExtra("practice_sort", sort);
         intent.putExtra("friend_name", friend_name);
+        intent.putExtra("practice_user_id", practice_user_id);
 
         intent.putExtra("PRENT ACTIVITY", "PublicPracticeList");
         startActivity(intent);

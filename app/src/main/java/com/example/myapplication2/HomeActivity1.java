@@ -34,6 +34,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +57,8 @@ public class HomeActivity1 extends AppCompatActivity {
     Long selectedPracticeId;
 
     public static Context context;
+
+    boolean isLoading = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +117,7 @@ public class HomeActivity1 extends AppCompatActivity {
 
 //                        practicesDataList = userInfoData.getPractices();
                         PracticesData[] tmpData = userInfoData.getPractices();
+                        
                         // 중복 제거
                         for (int i=0; i<tmpData.length; i++) {
                             System.out.println("temData["+i+"].getId() : " + tmpData[i].getId());  //임시, 확인용
@@ -130,7 +136,9 @@ public class HomeActivity1 extends AppCompatActivity {
 
 //                        Collections.addAll(practicesList, practicesDataList);
 
-                        setPracticeListView();
+                        System.out.println("isLoading : " + isLoading);  //임시, 확인용
+                        if (!isLoading)
+                            setPracticeListView();
                     }
                 }
 
@@ -144,7 +152,8 @@ public class HomeActivity1 extends AppCompatActivity {
 
     private void setPracticeListView() {
         System.out.println("HomeActivity1: setPracticeListView");  //임시, 확인용
-
+        System.out.println("isLoading : " + isLoading);  //임시, 확인용
+        isLoading = true;
         home_layout.removeAllViews();
 
         LayoutInflater layoutInflater = LayoutInflater.from(HomeActivity1.this);
@@ -153,14 +162,22 @@ public class HomeActivity1 extends AppCompatActivity {
 
         if (practicesList != null) {
             System.out.println("practicesList : " + practicesList);  //임시, 확인용
-            if (practicesList.size() == 0) {  //연습목록이 비어있을 때
+            //중복 제거
+            TreeMap<Long, PracticesData> tmpMap = new TreeMap<Long, PracticesData>();
+            for (int i=0; i<practicesList.size(); i++)
+                tmpMap.put(practicesList.get(i).getId(), practicesList.get(i));
+
+            System.out.println("tmpMap : " + tmpMap);  //임시, 확인용
+
+            if (tmpMap.size() == 0) {  //연습목록이 비어있을 때
                 tv_loading.setText("+ 버튼을 눌러 연습을 추가하세요.");
             }
             else {  //검색된 연습 목록이 존재할 때
                 tv_loading.setVisibility(View.GONE);
-                for (int i = 0; i< practicesList.size(); i++) {
+                //for (int i = 0; i< tmpMap.size(); i++) {
+                for (Long nKey : tmpMap.keySet()) {
                     View customView = layoutInflater.inflate(R.layout.custom_practice_info, null);
-                    PracticesData practicesData = practicesList.get(i);
+                    PracticesData practicesData = (PracticesData) tmpMap.get(nKey);
 
                     Long id = practicesData.getId();
                     String title = practicesData.getTitle();
@@ -182,11 +199,13 @@ public class HomeActivity1 extends AppCompatActivity {
                     registerForContextMenu((LinearLayout)customView.findViewById(R.id.container));  //register context menu
 
                     home_layout.addView(customView);
+
                 }
             }
         } else {
             System.out.println("practicesList is null...");
         }
+        isLoading = false;
     }
 
     public void onClickPractice(View view) {

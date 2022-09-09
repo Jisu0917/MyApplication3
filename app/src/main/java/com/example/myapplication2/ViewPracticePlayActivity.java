@@ -104,6 +104,7 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
                     Intent intent = new Intent(ViewPracticePlayActivity.this, ViewAnalysisActivity.class);
                     intent.putExtra("practice_id", practice_id);
                     intent.putExtra("practice_title", practice_title);
+                    intent.putExtra("practice_user_id", userId);
                     startActivity(intent);
                 } else {
                     Toast.makeText(ViewPracticePlayActivity.this, "분석이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();

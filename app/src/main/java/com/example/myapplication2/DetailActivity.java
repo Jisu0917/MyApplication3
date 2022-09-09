@@ -16,15 +16,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.dto.FeedbacksData;
+import com.example.myapplication2.api.dto.PostsData;
+import com.example.myapplication2.api.dto.UserInfoData;
+import com.example.myapplication2.api.objects.UserIdObject;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,7 +50,8 @@ public class DetailActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
 
     // 사용할 컴포넌트 선언
-    TextView title_tv, content_tv, date_tv, practiceId_tv;
+    ImageView iv_profile;
+    TextView tv_post_user_name, title_tv, content_tv, date_tv, practiceId_tv;
     LinearLayout comment_layout;
 //    EditText comment_et;
     Button reg_button, del_button;
@@ -58,7 +64,7 @@ public class DetailActivity extends AppCompatActivity {
 
     String title = "";
     String content = "";
-    Long postId, practiceId;
+    Long postId, post_user_id, practiceId, practice_user_id;
     Long userId = MainActivity.userId;
 
     ArrayList<FeedbacksData> feedbackOfUsersDataList = new ArrayList<>();
@@ -103,8 +109,11 @@ public class DetailActivity extends AppCompatActivity {
         content = getIntent().getStringExtra("content");
         postId = getIntent().getLongExtra("postId", 0);
         practiceId = getIntent().getLongExtra("practiceId", 0);
+        practice_user_id = getIntent().getLongExtra("practice_user_id", 0);
 
 // 컴포넌트 초기화
+        iv_profile = (ImageView) findViewById(R.id.iv_profile);
+        tv_post_user_name = (TextView) findViewById(R.id.tv_post_user_name);
         title_tv = findViewById(R.id.title_tv);
         content_tv = findViewById(R.id.content_tv);
         date_tv = findViewById(R.id.date_tv);
@@ -120,6 +129,8 @@ public class DetailActivity extends AppCompatActivity {
 //        comment_et = findViewById(R.id.comment_et);
         reg_button = findViewById(R.id.reg_button);
         del_button = findViewById(R.id.del_button);
+
+        getPost();
         
         del_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,35 +154,6 @@ public class DetailActivity extends AppCompatActivity {
 
 
         // wav 파일 재생
-        sb = (SeekBar) findViewById(R.id.seekBar);
-        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (seekBar.getMax() == i) {
-                    btn_start.setVisibility(View.VISIBLE);
-                    btn_pause.setVisibility(View.GONE);
-                    btn_restart.setVisibility(View.GONE);
-                    isPlaying = false;
-                    mp.stop();
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                isPlaying = false;
-                mp.pause();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                isPlaying = true;
-                int ttt = seekBar.getProgress();  //사용자가 움직여놓은 위치
-                mp.seekTo(ttt);
-                mp.start();
-                new WavPlayThread().start();
-            }
-        });
-
         btn_start = (Button) findViewById(R.id.btn_start);
         btn_pause = (Button) findViewById(R.id.btn_pause);
         btn_restart = (Button) findViewById(R.id.btn_restart);
@@ -181,12 +163,46 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // MediaPlayer 객체 초기화, 재생
                 //mp = MediaPlayer.create(getApplicationContext(), R.raw.test_wav_subway);  //임시, 확인용 - 서버에서 받아온 wav 파일 사용
-                playWavFile();
-                System.out.println("wav file url : " + url);  //임시, 확인용
-                if (!url.equals("")) {
-                    btn_start.setVisibility(View.GONE);
-                    btn_pause.setVisibility(View.VISIBLE);
-                    btn_restart.setVisibility(View.GONE);
+
+                try {
+                    playWavFile();
+                    System.out.println("wav file url : " + url);  //임시, 확인용
+                    if (!url.equals("")) {
+                        btn_start.setVisibility(View.GONE);
+                        btn_pause.setVisibility(View.VISIBLE);
+                        btn_restart.setVisibility(View.GONE);
+                    }
+
+                    sb = (SeekBar) findViewById(R.id.seekBar);
+                    sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                        @Override
+                        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                            if (seekBar.getMax() == i) {
+                                btn_start.setVisibility(View.VISIBLE);
+                                btn_pause.setVisibility(View.GONE);
+                                btn_restart.setVisibility(View.GONE);
+                                isPlaying = false;
+                                mp.stop();
+                            }
+                        }
+
+                        @Override
+                        public void onStartTrackingTouch(SeekBar seekBar) {
+                            isPlaying = false;
+                            mp.pause();
+                        }
+
+                        @Override
+                        public void onStopTrackingTouch(SeekBar seekBar) {
+                            isPlaying = true;
+                            int ttt = seekBar.getProgress();  //사용자가 움직여놓은 위치
+                            mp.seekTo(ttt);
+                            mp.start();
+                            new WavPlayThread().start();
+                        }
+                    });
+                } catch (Exception e) {
+                    Toast.makeText(DetailActivity.this, "파일을 재생할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -237,7 +253,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void playWavFile() {
         //https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/{practice_id}/{user_id}_{practice_id}.wav
-        url = "https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practiceId+"/"+userId+"_"+practiceId+".wav";
+        url = "https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practiceId+"/"+practice_user_id+"_"+practiceId+".wav";
 //        url = "http://mm.sookmyung.ac.kr/~sblim/lec/web-int/data/song.mp3";  //임시, 확인용
 
         // 미디어플레이어 설정
@@ -303,6 +319,69 @@ public class DetailActivity extends AppCompatActivity {
         LoadBoard loadBoard = new LoadBoard();
         //loadBoard.execute(board_seq);
         loadBoard.execute(postId.toString());
+    }
+
+    private void getPost() {
+        System.out.println("DetailActivity: getPost");  //임시, 확인용
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.getPost(postId).enqueue(new Callback<PostsData>() {
+                @Override
+                public void onResponse(Call<PostsData> call, Response<PostsData> response) {
+                    PostsData post = response.body();
+                    if (post != null) {
+                        post_user_id = post.getUserId();
+
+                        if (post_user_id.equals(userId)) {
+                            reg_button.setVisibility(View.GONE);
+                            del_button.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            reg_button.setVisibility(View.VISIBLE);
+                            del_button.setVisibility(View.GONE);
+                        }
+
+                        getUserInfo(new UserIdObject(post_user_id));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<PostsData> call, Throwable t) {
+                    Log.d("GET_POST", "GET FAILED");
+                }
+            });
+        }
+    }
+
+    private void getUserInfo(UserIdObject userIdObject){
+        RetrofitClient retrofitClient = RetrofitClient.getInstance();
+
+        if (retrofitClient!=null){
+            retrofitAPI = RetrofitClient.getRetrofitAPI();
+            retrofitAPI.getUserInfo(userIdObject.getId()).enqueue(new Callback<UserInfoData>() {
+                @Override
+                public void onResponse(Call<UserInfoData> call, Response<UserInfoData> response) {
+                    UserInfoData userInfoData = response.body();
+                    if (userInfoData!=null){
+                        Log.d("GET_USERINFO", "GET SUCCESS");
+                        Log.d("GET_USERINFO", "MainActivity: getUserInfo - response.body().getPoint()=" + response.body().getPoint());
+
+                        String post_user_name = userInfoData.getName();
+                        String post_user_picture = userInfoData.getPicture();
+
+                        tv_post_user_name.setText(post_user_name);
+                        if (post_user_picture!=null) Glide.with(DetailActivity.this).load(post_user_picture).into(iv_profile);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserInfoData> call, Throwable t) {
+                    Log.d("GET_USERINFO", "GET FAILED");
+                }
+            });
+        }
     }
 
     private void deletePost() {

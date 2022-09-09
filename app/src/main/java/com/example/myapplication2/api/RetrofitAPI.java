@@ -77,7 +77,7 @@ public interface RetrofitAPI {
 
     // 특정 게시글 가져오기
     @GET("/api/posts/{post_id}")
-    Call<PostsData> getPostId(@Path("post_id") Long id);
+    Call<PostsData> getPost(@Path("post_id") Long post_id);
 
     // 게시글 삭제하기
     @DELETE("/api/posts/{post_id}")
