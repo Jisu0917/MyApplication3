@@ -154,6 +154,35 @@ public class DetailActivity extends AppCompatActivity {
 
 
         // wav 파일 재생
+        sb = (SeekBar) findViewById(R.id.seekBar);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (seekBar.getMax() == i) {
+                    btn_start.setVisibility(View.VISIBLE);
+                    btn_pause.setVisibility(View.GONE);
+                    btn_restart.setVisibility(View.GONE);
+                    isPlaying = false;
+                    mp.stop();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                isPlaying = false;
+                mp.pause();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                isPlaying = true;
+                int ttt = seekBar.getProgress();  //사용자가 움직여놓은 위치
+                mp.seekTo(ttt);
+                mp.start();
+                new WavPlayThread().start();
+            }
+        });
+
         btn_start = (Button) findViewById(R.id.btn_start);
         btn_pause = (Button) findViewById(R.id.btn_pause);
         btn_restart = (Button) findViewById(R.id.btn_restart);
@@ -163,46 +192,12 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // MediaPlayer 객체 초기화, 재생
                 //mp = MediaPlayer.create(getApplicationContext(), R.raw.test_wav_subway);  //임시, 확인용 - 서버에서 받아온 wav 파일 사용
-
-                try {
-                    playWavFile();
-                    System.out.println("wav file url : " + url);  //임시, 확인용
-                    if (!url.equals("")) {
-                        btn_start.setVisibility(View.GONE);
-                        btn_pause.setVisibility(View.VISIBLE);
-                        btn_restart.setVisibility(View.GONE);
-                    }
-
-                    sb = (SeekBar) findViewById(R.id.seekBar);
-                    sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                            if (seekBar.getMax() == i) {
-                                btn_start.setVisibility(View.VISIBLE);
-                                btn_pause.setVisibility(View.GONE);
-                                btn_restart.setVisibility(View.GONE);
-                                isPlaying = false;
-                                mp.stop();
-                            }
-                        }
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-                            isPlaying = false;
-                            mp.pause();
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-                            isPlaying = true;
-                            int ttt = seekBar.getProgress();  //사용자가 움직여놓은 위치
-                            mp.seekTo(ttt);
-                            mp.start();
-                            new WavPlayThread().start();
-                        }
-                    });
-                } catch (Exception e) {
-                    Toast.makeText(DetailActivity.this, "파일을 재생할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                playWavFile();
+                System.out.println("wav file url : " + url);  //임시, 확인용
+                if (!url.equals("")) {
+                    btn_start.setVisibility(View.GONE);
+                    btn_pause.setVisibility(View.VISIBLE);
+                    btn_restart.setVisibility(View.GONE);
                 }
             }
         });
