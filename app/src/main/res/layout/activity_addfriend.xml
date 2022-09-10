@@ -18,47 +18,53 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="45dp"
         android:orientation="vertical">
+
         <TextView
-            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginBottom="15dp"
+            android:text="사용자 검색"
             android:textColor="#000000"
-            android:textSize="18sp"
-            android:text="사용자 검색"/>
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <EditText
                 android:id="@+id/editText_name"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/shape_edittext"
                 android:hint="이름을 입력하세요."
                 android:maxLength="20"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="#2d3b57"
                 android:textColorHint="#d5dae3"
-                android:textColor="#2d3b57"/>
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
+
             <Button
                 android:id="@+id/btn_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:background="@null"
-                android:text="검색"
-                android:onClick="search"/>
+                android:onClick="search"
+                android:text="검색" />
         </LinearLayout>
+
         <TextView
-            android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginTop="5dp"
-            android:textSize="12sp"
-            android:text="전체 사용자 목록을 조회하려면 입력창을 비우고 검색 버튼을 누르세요."/>
+            android:text="전체 사용자 목록을 조회하려면 입력창을 비우고 검색 버튼을 누르세요."
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -86,7 +92,8 @@
 
         <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="70dp">
             <LinearLayout
                 android:id="@+id/result_layout"
                 android:layout_width="match_parent"

@@ -1,10 +1,12 @@
 package com.example.myapplication2;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,8 +72,14 @@ public class AddFriendActivity extends AppCompatActivity {
     public void search(View view) {
         search_name = editText_name.getText().toString();
 
-
         searchUserInfos(search_name);
+
+        //hide keypad
+        View view1 = getCurrentFocus();
+        if (view1 != null) {
+            InputMethodManager imm = (InputMethodManager) AddFriendActivity.this.getSystemService((Context.INPUT_METHOD_SERVICE));
+            imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
+        }
     }
 
     private void searchUserInfos(String name) {
