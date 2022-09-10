@@ -111,7 +111,7 @@ public class MainActivity extends TabActivity {
         intent2 = new Intent(MainActivity.this, CommunityActivity.class);
 //        intent2 = new Intent(MainActivity.this, ListActivity.class);
         intent3 = new Intent(MainActivity.this, HomeActivity1.class);
-        intent4 = new Intent(MainActivity.this, FriendActivity.class);
+        intent4 = new Intent(MainActivity.this, FriendActivity4.class);
         intent5 = new Intent(MainActivity.this, SettingsActivity.class);
 
         //Tab 추가
