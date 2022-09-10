@@ -135,8 +135,25 @@ public class DetailActivity extends AppCompatActivity {
         del_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deletePost();
-                finish();
+                //삭제하시겠습니까? 다이얼로그 띄우기
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
+                builder.setTitle("삭제하시겠습니까?");
+                builder.setPositiveButton("예",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deletePost();
+                                finish();
+                            }
+                        });
+                builder.setNegativeButton("아니오",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                builder.show();
             }
         });
 
