@@ -6,8 +6,6 @@
     android:layout_margin="16dp"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    android:clickable="true"
-    android:onClick="onClickPost"
     android:id="@id/container">
 
 

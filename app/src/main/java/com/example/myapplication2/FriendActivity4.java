@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -73,6 +75,26 @@ public class FriendActivity4 extends AppCompatActivity {
         System.out.println("onResume() 실행");
 
         getUserInfo();
+    }
+
+    // 액션 바 아이콘 메뉴
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        if (item.getItemId() == R.id.action_btn_reload) {
+            getUserInfo();  //새로고침
+
+            System.out.println("친구 리스트를 업데이트 합니다.");  //임시, 확인용
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 //    @Override
