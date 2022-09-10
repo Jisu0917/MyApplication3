@@ -261,7 +261,14 @@ public class RecordActivity1 extends AppCompatActivity {
             recorder.setMaxDuration(1800000);  // 1800sec = 30min
             recorder.setMaxFileSize(500000000);  // 500Mb
             recorder.setPreviewDisplay(surfaceView.getHolder().getSurface());
-            recorder.setOrientationHint(90);
+
+            // 버전 30 이상에서 작동하도록 수정
+            if (Build.VERSION.SDK_INT >= 30) {
+                System.out.println("android version >= 30");
+                recorder.setOrientationHint(270);
+            } else {
+                recorder.setOrientationHint(90);
+            }
 
 
 
