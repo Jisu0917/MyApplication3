@@ -1,207 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:padding="20dp"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="20dp"
-                    android:text="작성자"/>
-
-                <ImageView
-                    android:id="@+id/iv_profile"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="center"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitXY"/>
-
-                <TextView
-                    android:id="@+id/tv_post_user_name"
-                    android:padding="12dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/shape_post">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!--                <TextView-->
-                    <!--                    android:layout_width="100dp"-->
-                    <!--                    android:layout_height="wrap_content"-->
-                    <!--                    android:padding="16dp"-->
-                    <!--                    android:text="제목"/>-->
-
-                    <TextView
-                        android:id="@+id/title_tv"
-                        android:padding="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="21sp"
-                        android:textStyle="bold"
-                        android:text="제목입니다."
-                        />
-                </LinearLayout>
-
-                <!--            <TextView-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:padding="16dp"-->
-                <!--                android:text="내용"/>-->
-
-                <TextView
-                    android:id="@+id/content_tv"
-                    android:padding="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="내용입니다."
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="게시물 ID"/>
-
-                    <TextView
-                        android:id="@+id/date_tv"
-                        android:padding="10dp"
-                        android:background="#eeeeee"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="00"
-                        android:textColor="@color/black"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="연습 ID"/>
-
-                    <TextView
-                        android:id="@+id/practiceId_tv"
-                        android:padding="10dp"
-                        android:background="#eeeeee"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="00"
-                        android:textColor="@color/black"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp">
-                <Button
-                    android:id="@+id/btn_start"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="재생" />
-
-                <Button
-                    android:id="@+id/btn_pause"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="정지" />
-
-                <Button
-                    android:id="@+id/btn_restart"
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="재생" />
-
-                <SeekBar
-                    android:id="@+id/seekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp" />
-            </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingStart="5dp"
+                android:paddingEnd="20dp"
+                android:text="작성자"/>
+
+            <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:id="@+id/tv_post_user_name"
+                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_post">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!--                <TextView-->
+                <!--                    android:layout_width="100dp"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:padding="16dp"-->
+                <!--                    android:text="제목"/>-->
+
+                <TextView
+                    android:id="@+id/title_tv"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="21sp"
+                    android:textStyle="bold"
+                    android:text="제목입니다."
+                    />
+            </LinearLayout>
+
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:padding="16dp"-->
+            <!--                android:text="내용"/>-->
+
+            <TextView
+                android:id="@+id/content_tv"
                 android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="피드백"
+                android:text="내용입니다."
+                android:textColor="@color/black"
                 />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="게시물 ID"/>
+
+                <TextView
+                    android:id="@+id/date_tv"
+                    android:padding="10dp"
+                    android:background="#eeeeee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="연습 ID"/>
+
+                <TextView
+                    android:id="@+id/practiceId_tv"
+                    android:padding="10dp"
+                    android:background="#eeeeee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="재생" />
+
+            <Button
+                android:id="@+id/btn_pause"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="정지" />
+
+            <Button
+                android:id="@+id/btn_restart"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="재생" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp" />
+        </LinearLayout>
+
+        <TextView
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="피드백"
+            />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:layout_marginBottom="50dp">
             <LinearLayout
                 android:id="@+id/comment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/reg_button"
@@ -225,4 +223,4 @@
             android:visibility="gone"
             android:text="게시글 삭제"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

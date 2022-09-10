@@ -1,157 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="16dp">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_marginBottom="50dp"
         android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="제목" />
+
+            <TextView
+                android:id="@+id/tv_practice_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#eeeeee"
+                android:padding="16dp"
+                android:text="제목입니다."
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="제목"/>
+                    android:text="공개 범위" />
 
                 <TextView
-                    android:id="@+id/tv_practice_title"
-                    android:padding="16dp"
-                    android:background="#eeeeee"
+                    android:id="@+id/tv_scope"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:text="제목입니다."
-                    />
+                    android:background="#eeeeee"
+                    android:padding="16dp"
+                    android:text="PRIVATE"
+                    android:textColor="@color/black" />
             </LinearLayout>
+
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                <TextView
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="공개 범위"/>
+                    android:padding="16dp"
+                    android:text="연습 종류" />
 
-                    <TextView
-                        android:id="@+id/tv_scope"
-                        android:padding="16dp"
-                        android:background="#eeeeee"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="PRIVATE"
-                        android:textColor="@color/black"
-                        />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                <TextView
+                    android:id="@+id/tv_sort"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:text="연습 종류"/>
-
-                    <TextView
-                        android:id="@+id/tv_sort"
-                        android:padding="16dp"
-                        android:background="#eeeeee"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ONLINE"
-                        android:textColor="@color/black"
-                        />
-                </LinearLayout>
+                    android:layout_weight="1"
+                    android:background="#eeeeee"
+                    android:padding="16dp"
+                    android:text="ONLINE"
+                    android:textColor="@color/black" />
             </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="연습 영상"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#eeeeee">
-                <VideoView
-                    android:id="@+id/videoView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="450dp"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
-            <Button
-                android:id="@+id/btn_show_analysis"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:text="분석 결과 확인하기"
-                android:clickable="true"
-                />
-
-            <!--     선 긋기 -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#333333"
-                />
-
-            <TextView
-                android:padding="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="피드백"
-                />
-
-            <LinearLayout
-                android:id="@+id/comment_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-
-            <Button
-                android:id="@+id/reg_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginTop="10dp"
-                android:text="피드백 등록하기"
-
-                android:onClick="showCmtDialog"/>
-
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="연습 영상" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eeeeee"
+            android:orientation="vertical">
+
+            <VideoView
+                android:id="@+id/videoView"
+                android:layout_width="wrap_content"
+                android:layout_height="450dp"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_show_analysis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:text="분석 결과 확인하기" />
+
+        <!--     선 긋기 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#333333"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="피드백" />
+
+        <LinearLayout
+            android:id="@+id/comment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/reg_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:text="피드백 등록하기"
+
+        android:onClick="showCmtDialog"/>
+
+
+</RelativeLayout>
