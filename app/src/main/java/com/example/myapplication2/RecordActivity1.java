@@ -525,10 +525,17 @@ public class RecordActivity1 extends AppCompatActivity {
 
         // 임시, 확인용
         String testFilename = "";
-        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
-            testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
+        if (Build.VERSION.SDK_INT >= 30) {
+            System.out.println("android version >= 30");
+            File destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+
+            testFilename = destination.getAbsolutePath() + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
         } else {
-            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+            if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
+                testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
+            } else {
+                testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+            }
         }
 
         OkHttpClient client = new OkHttpClient().newBuilder()
