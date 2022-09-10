@@ -10,6 +10,7 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -114,23 +116,19 @@ public class MainActivity extends TabActivity {
         intent4 = new Intent(MainActivity.this, FriendActivity4.class);
         intent5 = new Intent(MainActivity.this, SettingsActivity.class);
 
-        //Tab 추가
-//        spec = myTabHost.newTabSpec("Record").setIndicator("RECORD").setContent(intent1);
-//        myTabHost.addTab(spec);
-//
-//        spec = myTabHost.newTabSpec("Community").setIndicator("COMMUNITY").setContent(intent2);
-//        myTabHost.addTab(spec);
-//
-//        spec = myTabHost.newTabSpec("Home").setIndicator("HOME").setContent(intent3);
-//        myTabHost.addTab(spec);
-//
-//        spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
-//        myTabHost.addTab(spec);
-//
-//        spec = myTabHost.newTabSpec("Settings").setIndicator("SETTINGS").setContent(intent5);
-//        myTabHost.addTab(spec);
-//
-//        myTabHost.setCurrentTab(1);  //메인 Tab 지정
+        //TabWidget 색상 변경
+        myTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+
+            @Override
+            public void onTabChanged(String tabId) {
+
+                for (int i = 0; i < myTabHost.getTabWidget().getChildCount(); i++) {
+                    myTabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#ffffff")); // unselected
+                }
+
+                myTabHost.getTabWidget().getChildAt(myTabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#6be3d6")); // selected
+            }
+        });
 
         // 로그인 버튼 클릭 시
         login_btn.setOnClickListener(new View.OnClickListener() {
