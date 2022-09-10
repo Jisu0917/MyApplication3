@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -44,6 +45,7 @@ import retrofit2.Response;
 
 public class ViewAnalysisActivity extends AppCompatActivity {
     String CAPTURE_PATH = "/sookpeech_analysis_result";
+    public static String CAPTURE_DIR = "sookpeech_analysis_result";
     Long practice_id, practice_user_id;
     String practice_title = "";
 
@@ -519,15 +521,43 @@ public class ViewAnalysisActivity extends AppCompatActivity {
 
         Bitmap bitmap = getBitmapFromView(scrollView,scrollView.getChildAt(0).getHeight(),scrollView.getChildAt(0).getWidth());
         try {
-            File defaultFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+CAPTURE_PATH);
-            if (!defaultFile.exists())
-                defaultFile.mkdirs();
+//            File defaultFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+CAPTURE_PATH);
+//            if (!defaultFile.exists())
+//                defaultFile.mkdirs();
+
+
+            //////
+            // 버전 30 이상에서 작동하도록 수정
+            File directory;
+            if (Build.VERSION.SDK_INT >= 30){
+                System.out.println("android version >= 30");
+
+                File destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                if (!destination.exists()) { // 원하는 경로에 폴더가 있는지 확인
+                    destination.mkdirs();
+                    Log.d("ViewAnalysisActivity", "destination Created");
+                }
+
+                directory = new File(destination + File.separator+CAPTURE_DIR);
+                if (!directory.exists()) { // 원하는 경로에 폴더가 있는지 확인
+                    directory.mkdirs();
+                    Log.d("ViewAnalysisActivity", "Directory Created");
+                }
+            } else{
+                directory = new File(Environment.getExternalStorageDirectory() + File.separator+CAPTURE_DIR);
+                if (!directory.exists()) { // 원하는 경로에 폴더가 있는지 확인
+                    directory.mkdirs();
+                    Log.d("ViewAnalysisActivity", "Directory Created");
+                }
+            }
+
+            //////
 
             String filename = "Sookpeech_"+ practice_id + "_" + practice_title + "_"+ getNowTime() +".jpg";
-            File file = new File(defaultFile,filename);
+            File file = new File(directory,filename);
             if (file.exists()) {
                 file.delete();
-                file = new File(defaultFile,filename);
+                file = new File(directory,filename);
             }
 
             System.out.println("file: " + file);  //임시, 확인용
