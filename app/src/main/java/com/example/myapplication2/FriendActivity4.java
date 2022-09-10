@@ -150,8 +150,8 @@ public class FriendActivity4 extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         UserInfoData friendInfoData = response.body();
                         if (friendInfoData != null) {
-                            Log.d("GET_FRIEND_USERINFO", "GET SUCCESS");
-                            Log.d("GET_FRIEND_USERINFO", ">>>response.body()=" + response.body());
+                            Log.d("getFriendInfo", "GET SUCCESS");
+                            Log.d("getFriendInfo", ">>>response.body()=" + response.body());
 
                             System.out.println("재귀함수 getFriendInfo(" + n + ") : friendInfoData=" + friendInfoData);  //임시 확인용
 
@@ -169,7 +169,7 @@ public class FriendActivity4 extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<UserInfoData> call, Throwable t) {
-                    Log.d("GET_FRIEND_USERINFO", "GET FAILED");
+                    Log.d("getFriendInfo", "GET FAILED");
                 }
             });
         }
