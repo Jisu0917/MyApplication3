@@ -3,21 +3,15 @@ package com.example.myapplication2;
 import static com.example.myapplication2.MainActivity.updatePoint;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.drawable.GradientDrawable;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,14 +21,12 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -46,7 +38,6 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 
 import static com.example.myapplication2.MainActivity.EXTERNAL_STORAGE_PATH;
@@ -55,15 +46,11 @@ import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.RetrofitClient2;
 import com.example.myapplication2.api.RetrofitClient3;
-import com.example.myapplication2.api.dto.AnalysisData;
-import com.example.myapplication2.api.dto.PointData;
 import com.example.myapplication2.api.dto.PracticesData;
-import com.example.myapplication2.api.objects.UserIdObject;
 import com.google.android.gms.common.api.internal.StatusCallback;
 import com.google.gson.JsonObject;
 
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -537,18 +524,18 @@ public class RecordActivity1 extends AppCompatActivity {
         System.out.println("uploadVideoOkhttp 시작");
 
         // 임시, 확인용
-//        String testFilename = "";
-//        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
-//            testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
-//        } else {
-//            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
-//        }
+        String testFilename = "";
+        if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
+            testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
+        } else {
+            testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+        }
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("video/mp4");
-        RequestBody body = RequestBody.create(mediaType, new File(filename));
-//        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
+//        RequestBody body = RequestBody.create(mediaType, new File(filename));
+        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
 
         System.out.println("presignedUrl : " + presignedUrl);  // 임시, 확인용
 
@@ -662,6 +649,8 @@ public class RecordActivity1 extends AppCompatActivity {
                         public void run()
                         {
                             Toast.makeText(getApplicationContext(), practice.getTitle() + "의 분석에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+
                         }
                     }, 0);
                 }

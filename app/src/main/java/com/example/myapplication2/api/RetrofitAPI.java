@@ -110,7 +110,7 @@ public interface RetrofitAPI {
     @PUT("/{presignedUrl}")
     Call<StatusCallback> uploadVideo(@Path("presignedUrl") String presignedUrl, @Body File file);
 
-    @GET("http://13.125.254.29:8080/analysis/{user_id}/{practice_id}/{gender}/{pose_sensitivity}/{eyes_sensitivity}")
+    @GET("http://http://15.164.229.184:8080/analysis/{user_id}/{practice_id}/{gender}/{pose_sensitivity}/{eyes_sensitivity}")
     Call<StatusCallback> askAnalysis(@Path("user_id") int user_id, @Path("practice_id") int practice_id, @Path("gender") String gender, @Path("pose_sensitivity") int pose_sensitivity, @Path("eyes_sensitivity") int eyes_sensitivity);
 
 //    // 음성 파일 받아오기

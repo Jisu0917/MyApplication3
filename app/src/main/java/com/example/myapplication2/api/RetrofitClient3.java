@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient3 {
     private static RetrofitClient3 instance = null;
     private static RetrofitAPI retrofitAPI;
-    private final static String BASE_URL = "http://13.125.254.29:8080/";
+    private final static String BASE_URL = "http://15.164.229.184:8080/";  //Client2, RetrofitAPI.java askAnalysis path도 수정해야함!
 
     private RetrofitClient3(){
         // timeout setting 해주기
