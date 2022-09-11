@@ -215,7 +215,7 @@ public class RecordActivity1 extends AppCompatActivity {
 
                                     finish();
                                 } catch (Exception e) {
-                                    Toast.makeText(RecordActivity1.this, e.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RecordActivity1.this, e.toString(), Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
