@@ -76,7 +76,6 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
         videoView = (VideoView) findViewById(R.id.videoView);
         btn_showAnalysis = (Button) findViewById(R.id.btn_show_analysis);
         comment_layout = findViewById(R.id.comment_layout);
-        reg_button = (Button) findViewById(R.id.reg_button);
 
         // Practice Title
         it = getIntent();
@@ -86,8 +85,6 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
         practice_scope = it.getStringExtra("practice_scope");
         practice_sort = it.getStringExtra("practice_sort");
 //        parent_activity = it.getStringExtra("PRENT ACTIVITY");
-
-        reg_button.setVisibility(View.GONE);
 
         tv_practiceTitle.setText(practice_title);
         tv_scope.setText(practice_scope);
