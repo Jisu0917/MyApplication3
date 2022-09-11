@@ -175,7 +175,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                 "영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초이고,\n회원님의 분석 결과 "+
                 analysisContentData.getScriptDuration()+"초 동안 대본을 보는 시선 분산이 감지되었습니다.\n"+
                 "또한 "+analysisContentData.getAroundDuration()+"초 동안 주변을 보는 시선 분산이 감지되었습니다.\n"+
-                "발표시에는 화면을 응시하는 것이 좋습니다.");  // 온라인, 오프라인 ?  //임시, 확인용
+                "발표시 시선은 청중을 향하는 것이 좋습니다.");  // 온라인, 오프라인 ?  //임시, 확인용
         tv_analysis_face.setText(analysisContentData.getFaceMoveDuration() + "초 동안 얼굴 움직임 감지되었습니다.\n" +
                 "온라인 발표시에는 얼굴 움직임을 최소화하고 화면을 응시하는 것이 좋습니다.");
         tv_analysis_pose.setText("회원님이 선택하신 자세 민감도는 "+practicesData.getMoveSensitivity()+"이며, 총 영상 길이 "+
@@ -273,12 +273,12 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                 case 1:
                     ratingBar.setRating(4.5f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                        "분석 결과, 전반적으로 적정한 수준입니다. 7개의 항목에서 안정적인 결과를 보이고 있습니다. 자신감 있게 실전에 임하시기를 바랍니다.");
+                        "분석 결과, 전반적으로 양호한 수준입니다. 7개의 항목에서 안정적인 결과를 보이고 있습니다. 자신감 있게 실전에 임하시기를 바랍니다.");
                     break;
                 case 2:
                     ratingBar.setRating(4.0f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                        "분석 결과, 전반적으로 적정한 수준입니다. 6개의 항목에서 안정적인 결과를 보이고 있습니다. 2개의 항목을 보완하여 실전에 임하시기를 바랍니다.");
+                        "분석 결과, 전반적으로 양호한 수준입니다. 6개의 항목에서 안정적인 결과를 보이고 있습니다. 2개의 항목을 보완하여 실전에 임하시기를 바랍니다.");
                     break;
                 case 3:
                     ratingBar.setRating(3.5f);
@@ -418,13 +418,13 @@ public class ViewAnalysisActivity extends AppCompatActivity {
     private boolean isGood(String standard) {
         switch (standard) {
             case "gesture":
-                return analysisContentData.getFirstDuration() + analysisContentData.getSecondDuration() + analysisContentData.getThirdDuration() == 0;
+                return analysisContentData.getFirstDuration() + analysisContentData.getSecondDuration() + analysisContentData.getThirdDuration() < 3.0;
             case "gaze":
-                return analysisContentData.getScriptDuration() + analysisContentData.getAroundDuration() == 0;
+                return analysisContentData.getScriptDuration() + analysisContentData.getAroundDuration() < 2.0;
             case "face":
-                return analysisContentData.getFaceMoveDuration() == 0;
+                return analysisContentData.getFaceMoveDuration() < 1.0;
             case "pose":
-                return analysisContentData.getInclinedDuration() == 0;
+                return analysisContentData.getInclinedDuration() < 1.0;
             case "speed":
                 return analysisContentData.getSpeed() >= 96 && analysisContentData.getSpeed() <= 124;
             case "volume":
