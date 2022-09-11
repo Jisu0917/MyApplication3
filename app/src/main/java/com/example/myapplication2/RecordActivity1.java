@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
@@ -188,24 +189,75 @@ public class RecordActivity1 extends AppCompatActivity {
                                 try {
                                     Toast.makeText(RecordActivity1.this, "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
 
-                                    // 내장메모리에 영상 저장
-                                    ContentValues values = new ContentValues(10);
+                                    //////////
+//                                    // 내장메모리에 영상 저장
+//                                    Uri uri = null;
+//
+//                                    Uri filesUri = MediaStore.Files.getContentUri("external");
+//                                    String[] projection = {MediaStore.MediaColumns._ID, MediaStore.MediaColumns.TITLE};
+//                                    String selection = MediaStore.MediaColumns.DATA + " = ?";
+//                                    String[] args = {filename};
+//                                    Cursor c = getContentResolver().query(filesUri, projection, selection, args, null);
+//
+//                                    // We expect a single unique record to be returned, since _data is unique
+//                                    if (c.getCount() == 1) {
+//                                        c.moveToFirst();
+//                                        long rowId = c.getLong((int) c.getColumnIndex(MediaStore.MediaColumns._ID));
+//                                        String title = c.getString((int) c.getColumnIndex(MediaStore.MediaColumns.TITLE));
+//                                        c.close();
+//                                        uri = MediaStore.Files.getContentUri("external", rowId);
+//
+//                                        // Since all this stuff was added automatically, it might not have the metadata you want,
+//                                        // like Title, or Artist, or IsRingtone
+//                                        if (!title.equals("RecordedVideo")) {
+//                                            ContentValues values = new ContentValues();
+//                                            values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
+//                                            values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
+//                                            values.put(MediaStore.Audio.Media.ARTIST, "Mike");
+//                                            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
+//                                            values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1000);
+//                                            values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
+//                                            values.put(MediaStore.Audio.Media.DATA, filename);
+//
+//                                            if (getContentResolver().update(uri, values, null, null) != 1) {
+//                                                throw new UnsupportedOperationException(); // update failed
+//                                            }
+//
+//                                            // Apparently this is best practice, although I have no idea what the Media Scanner
+//                                            // does with the new data
+//                                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+//
+//
+//
+//                                        }
+//                                    }
+//                                    else if (c.getCount() == 0) {
+//                                        // I suppose the MediaScanner hasn't run yet, we'll insert it
+//                                        System.out.println("c.getCount() == 0");  //임시, 확인용
+//                                    }
+//                                    //////////
 
-                                    values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
-                                    values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
-                                    values.put(MediaStore.Audio.Media.ARTIST, "Mike");
-                                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
-                                    values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1000);
-                                    values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
-                                    values.put(MediaStore.Audio.Media.DATA, filename);
 
-                                    Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
-                                    if (videoUri == null) {
-                                        Toast.makeText(RecordActivity1.this, "### videoUri == null", Toast.LENGTH_SHORT).show();
-                                        Log.d("SampleVideoRecorder", "Video insert failed.");
-                                        return;
-                                    }
-                                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
+
+//                                    // 내장메모리에 영상 저장
+//                                    ContentValues values = new ContentValues(10);
+//
+//                                    values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
+//                                    values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
+//                                    values.put(MediaStore.Audio.Media.ARTIST, "Mike");
+//                                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
+//                                    values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1000);
+//                                    values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
+//                                    values.put(MediaStore.Audio.Media.DATA, filename);
+//
+//
+//                                    Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+//                                    if (videoUri == null) {
+//                                        Toast.makeText(RecordActivity1.this, "### videoUri == null", Toast.LENGTH_SHORT).show();
+//                                        Log.d("SampleVideoRecorder", "Video insert failed.");
+//                                        return;
+//                                    }
+//                                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
 
                                     Toast.makeText(RecordActivity1.this, "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
 
@@ -214,6 +266,8 @@ public class RecordActivity1 extends AppCompatActivity {
                                     postNewPractice();
 
                                     finish();
+
+
                                 } catch (Exception e) {
                                     Toast.makeText(RecordActivity1.this, e.toString(), Toast.LENGTH_LONG).show();
                                     e.printStackTrace();
@@ -281,7 +335,7 @@ public class RecordActivity1 extends AppCompatActivity {
                 System.out.println("android version >= 30");
                 recorder.setOrientationHint(270);
             } else {
-                recorder.setOrientationHint(90);
+                recorder.setOrientationHint(270);
             }
 
 
@@ -409,7 +463,7 @@ public class RecordActivity1 extends AppCompatActivity {
         String newFilename = "";
         File destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
 
-        newFilename = destination.getAbsolutePath() + "/" + RECORDED_DIR + "/" + "PRAKJISU_" + getNowTime() + ".mp4";
+        newFilename = destination.getAbsolutePath() + "/" + RECORDED_DIR + "/" + getNowTime() + ".mp4";
 
         return newFilename;
     }
