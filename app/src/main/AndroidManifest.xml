@@ -34,42 +34,42 @@
         </activity>
         <activity
             android:name=".RecordActivity1"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".HomeActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity1"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".FriendActivity4"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SettingsActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddPracticeActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddPracticeActivity1"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ShowPracticeActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ViewPracticeActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ViewPracticePlayActivity"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity1" />
         </activity>
         <activity
             android:name=".ViewFriendPracticePlayActivity"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".PlayActivity"
@@ -79,25 +79,27 @@
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".ShowAnalysisActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ViewAnalysisActivity"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".EditPracticeActivity"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditPracticeActivity1"
-            android:screenOrientation="fullSensor" />
+            android:screenOrientation="portrait" />
         <activity android:name=".GraphActivity"/>
         <activity android:name=".PieChart"/>
         <activity android:name=".LineChart"/>
         <activity android:name=".BarChart"/>
         <activity android:name=".ScatterPlot" />
 
-        <activity android:name=".CommunityActivity"></activity>
-        <activity android:name=".DetailActivity">
+        <activity android:name=".CommunityActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".DetailActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CommunityActivity" />
@@ -107,13 +109,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CommunityActivity" />
         </activity>
-        <activity android:name=".ListActivity"></activity>
-        <activity android:name=".PublicPracticeList">
+        <activity android:name=".ListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PublicPracticeList"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FriendActivity4" />
         </activity>
-        <activity android:name=".AddFriendActivity"></activity>
+        <activity android:name=".AddFriendActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
