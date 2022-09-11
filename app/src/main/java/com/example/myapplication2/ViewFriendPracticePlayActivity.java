@@ -369,6 +369,8 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
                 }
             }
         });
+
+        dig.setCancelable(false);
         dig.show();
     }
 

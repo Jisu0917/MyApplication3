@@ -938,6 +938,8 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
         });
+        dig.setCancelable(false);
+
         dig.show();
     }
 

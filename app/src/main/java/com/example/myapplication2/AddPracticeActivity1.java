@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -25,13 +26,14 @@ import java.util.TimeZone;
 
 public class AddPracticeActivity1 extends AppCompatActivity {
     final int NO_INPUT = Integer.MAX_VALUE;
-
+    
     EditText editText_title;
+    TextView tv_scope;
     ImageView iv_scope;
     Spinner sort_spinner, sensitivity_spinner, gender_spinner;
     Button btn_cancel, btn_record;
 
-    String scope = "PUBLIC", sort = "", gender="";
+    String scope = "PRIVATE", sort = "", gender="";
     int sensitivity;
 
     @Override
@@ -42,6 +44,7 @@ public class AddPracticeActivity1 extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         editText_title = (EditText)findViewById(R.id.editText_title);
+        tv_scope = (TextView) findViewById(R.id.tv_scope);
         iv_scope = (ImageView)findViewById(R.id.iv_scope);
         sort_spinner = findViewById(R.id.sort_spinner);
         sensitivity_spinner = findViewById(R.id.sensitivity_spinner);
@@ -150,9 +153,11 @@ public class AddPracticeActivity1 extends AppCompatActivity {
     // xml에서 호출
     public void setScopeImg(View view) {
         if (scope.equals("PUBLIC")) {
+            tv_scope.setText("비공개");
             iv_scope.setImageResource(R.drawable.ic_star_filled);
             scope = "PRIVATE";
         } else if (scope.equals("PRIVATE")) {
+            tv_scope.setText("공개");
             iv_scope.setImageResource(R.drawable.ic_star_empty);
             scope = "PUBLIC";
         }

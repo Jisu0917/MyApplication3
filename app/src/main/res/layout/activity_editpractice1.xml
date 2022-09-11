@@ -62,11 +62,12 @@
             android:textSize="18sp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_scope"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="0dp"
             android:text="비공개"
+            android:textAlignment="textEnd"
             android:textColor="#737373"
             android:textSize="18sp" />
 
@@ -79,7 +80,7 @@
             android:adjustViewBounds="true"
             android:scaleX="0.80"
             android:scaleY="0.80"
-            android:src="@drawable/ic_star_empty" />
+            android:src="@drawable/ic_star_filled" />
     </LinearLayout>
 
     <LinearLayout

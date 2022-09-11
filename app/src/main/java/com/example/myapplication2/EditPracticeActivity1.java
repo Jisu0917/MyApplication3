@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ public class EditPracticeActivity1 extends AppCompatActivity {
     PracticesData practicesData;
 
     EditText editText_title;
+    TextView tv_scope;
     ImageView iv_scope;
     Button btn_cancel, btn_save;
 
@@ -58,6 +60,7 @@ public class EditPracticeActivity1 extends AppCompatActivity {
         context = getApplicationContext();
 
         editText_title = (EditText)findViewById(R.id.editText_title);
+        tv_scope = (TextView) findViewById(R.id.tv_scope);
         iv_scope = (ImageView)findViewById(R.id.iv_scope);
 
         btn_cancel = findViewById(R.id.btn_cancel);
@@ -145,9 +148,11 @@ public class EditPracticeActivity1 extends AppCompatActivity {
         editText_title.setText(practicesData.getTitle());
 
         if (practicesData.getScope().equals("PRIVATE")) {
+            tv_scope.setText("비공개");
             iv_scope.setImageResource(R.drawable.ic_star_filled);
             scope = "PRIVATE";
         } else {
+            tv_scope.setText("공개");
             iv_scope.setImageResource(R.drawable.ic_star_empty);
             scope = "PUBLIC";
         }
@@ -187,9 +192,11 @@ public class EditPracticeActivity1 extends AppCompatActivity {
     // xml에서 호출
     public void setScopeImg(View view) {
         if (scope.equals("PUBLIC")) {
+            tv_scope.setText("비공개");
             iv_scope.setImageResource(R.drawable.ic_star_filled);
             scope = "PRIVATE";
         } else if (scope.equals("PRIVATE")) {
+            tv_scope.setText("공개");
             iv_scope.setImageResource(R.drawable.ic_star_empty);
             scope = "PUBLIC";
         }

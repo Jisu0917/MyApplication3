@@ -237,6 +237,8 @@ public class AddFriendActivity extends AppCompatActivity {
                 makeFriend(friendIdCodeData);
             }
         });
+
+        dig.setCancelable(false);
         dig.show();
     }
 
