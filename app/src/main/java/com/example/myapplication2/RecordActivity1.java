@@ -185,14 +185,7 @@ public class RecordActivity1 extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Handler handler = new Handler(Looper.getMainLooper());
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run()
-                                    {
-                                        Toast.makeText(getApplicationContext(), "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
-                                    }
-                                }, 0);
+                                Toast.makeText(RecordActivity1.this, "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
 
                                 // 내장메모리에 영상 저장
                                 ContentValues values = new ContentValues(10);
@@ -207,28 +200,14 @@ public class RecordActivity1 extends AppCompatActivity {
 
                                 Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
                                 if (videoUri == null) {
-                                    handler = new Handler(Looper.getMainLooper());
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run()
-                                        {
-                                            Toast.makeText(getApplicationContext(), "### videoUri == null", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }, 0);
-
+                                    Toast.makeText(RecordActivity1.this, "### videoUri == null", Toast.LENGTH_SHORT).show();
                                     Log.d("SampleVideoRecorder", "Video insert failed.");
                                     return;
                                 }
                                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
 
-                                handler = new Handler(Looper.getMainLooper());
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run()
-                                    {
-                                        Toast.makeText(getApplicationContext(), "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
-                                    }
-                                }, 0);
+                                Toast.makeText(RecordActivity1.this, "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
+
 
                                 // 서버에 영상 업로드 + 분석 시작
                                 postNewPractice();
