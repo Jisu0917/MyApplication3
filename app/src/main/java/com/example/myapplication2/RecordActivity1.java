@@ -409,7 +409,7 @@ public class RecordActivity1 extends AppCompatActivity {
         String newFilename = "";
         File destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
 
-        newFilename = destination.getAbsolutePath() + "/" + RECORDED_DIR + "/" + getNowTime() + ".mp4";
+        newFilename = destination.getAbsolutePath() + "/" + RECORDED_DIR + "/" + "PRAKJISU_" + getNowTime() + ".mp4";
 
         return newFilename;
     }
