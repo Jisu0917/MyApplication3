@@ -393,8 +393,8 @@ public class RecordActivity1 extends AppCompatActivity {
         /// 이미지뷰 width, height 조절
         ImageView iv_guideline = (ImageView) findViewById(R.id.imageview_guideline);
         iv_guideline.requestLayout();
-        iv_guideline.getLayoutParams().height = (int) (width * 0.5);  // 비율 : 화면 가로 너비의 50%
-        iv_guideline.getLayoutParams().width = (int) (width * 0.5);  // 비율 : 화면 가로 너비의 50%
+        iv_guideline.getLayoutParams().height = (int) (width * 0.4);  // 비율 : 화면 가로 너비의 40%
+        iv_guideline.getLayoutParams().width = (int) (width * 0.4);  // 비율 : 화면 가로 너비의 40%
 
         // SurfaceView를 상속받은 레이아웃을 정의한다.
         surfaceView = (CameraPreview) findViewById(R.id.preview);
