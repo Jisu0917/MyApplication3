@@ -565,7 +565,7 @@ public class RecordActivity1 extends AppCompatActivity {
                             @Override
                             public void run()
                             {
-                                Toast.makeText(getApplicationContext(), "presignedUrl 받아오는 데 성공했습니다.\n영상 업로드를 시작합니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "presignedUrl 받아오는 데 성공했습니다.\npresignedUrl : " + presignedUrl + "\n영상 업로드를 시작합니다.", Toast.LENGTH_SHORT).show();
                             }
                         }, 0);
 
