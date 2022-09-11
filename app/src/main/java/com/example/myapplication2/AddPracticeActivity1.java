@@ -1,6 +1,7 @@
 package com.example.myapplication2;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class AddPracticeActivity1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addpractice1);
         setTitle("새 연습 추가");
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         editText_title = (EditText)findViewById(R.id.editText_title);
         iv_scope = (ImageView)findViewById(R.id.iv_scope);

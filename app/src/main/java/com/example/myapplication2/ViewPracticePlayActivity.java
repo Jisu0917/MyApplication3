@@ -4,6 +4,7 @@ import static com.example.myapplication2.MainActivity.updatePoint;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewpractice_play);
         setTitle("연습 정보 보기");
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //액션바에 뒤로가기 버튼 추가
         ActionBar actionBar = getSupportActionBar();

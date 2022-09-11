@@ -2,6 +2,7 @@ package com.example.myapplication2;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,7 @@ public class AddFriendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addfriend);
         setTitle("사용자 검색 및 친구 추가");
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         editText_name = (EditText) findViewById(R.id.editText_name);
         btn_search = (Button) findViewById(R.id.btn_search);
