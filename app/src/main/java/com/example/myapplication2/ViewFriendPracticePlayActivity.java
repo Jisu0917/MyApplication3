@@ -58,7 +58,7 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_viewpractice_play);
+        setContentView(R.layout.activity_viewpractice_play_friend);
 
         tv_practiceTitle = (TextView) findViewById(R.id.tv_practice_title);
         tv_scope = (TextView) findViewById(R.id.tv_scope);
