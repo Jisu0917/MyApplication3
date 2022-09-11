@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.example.myapplication2.MainActivity.EXTERNAL_STORAGE_PATH;
 
@@ -184,6 +185,15 @@ public class RecordActivity1 extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run()
+                                    {
+                                        Toast.makeText(getApplicationContext(), "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }, 0);
+
                                 // 내장메모리에 영상 저장
                                 ContentValues values = new ContentValues(10);
 
@@ -197,10 +207,28 @@ public class RecordActivity1 extends AppCompatActivity {
 
                                 Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
                                 if (videoUri == null) {
+                                    handler = new Handler(Looper.getMainLooper());
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run()
+                                        {
+                                            Toast.makeText(getApplicationContext(), "### videoUri == null", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }, 0);
+
                                     Log.d("SampleVideoRecorder", "Video insert failed.");
                                     return;
                                 }
                                 sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
+
+                                handler = new Handler(Looper.getMainLooper());
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run()
+                                    {
+                                        Toast.makeText(getApplicationContext(), "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }, 0);
 
                                 // 서버에 영상 업로드 + 분석 시작
                                 postNewPractice();
@@ -445,6 +473,14 @@ public class RecordActivity1 extends AppCompatActivity {
         System.out.println("practice.getMoveSensitivity(): " + practice.getMoveSensitivity());  //임시, 확인용
         System.out.println("practice.getEyesSensitivity(): " + practice.getEyesSensitivity());  //임시, 확인용
 
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run()
+            {
+                Toast.makeText(getApplicationContext(), "@postNewPractice - RetrofitClient를 호출합니다.", Toast.LENGTH_SHORT).show();
+            }
+        }, 0);
 
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
@@ -464,6 +500,14 @@ public class RecordActivity1 extends AppCompatActivity {
 
 //                        // 내장 DB에 practice_id 업데이트
 //                        db.execSQL("UPDATE practiceTable SET practice_id = " + practice_id.intValue() + " WHERE time = '" + recordTime + "'");
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                Toast.makeText(getApplicationContext(), "연습 업로드에 성공했습니다.\npresignedUrl을 받아옵니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        }, 0);
 
                         getPresignedURL(practice);  // 영상 업로드 할 url 받아오기
                     }
@@ -485,6 +529,14 @@ public class RecordActivity1 extends AppCompatActivity {
     private void getPresignedURL(PracticesData practice) {
 
         System.out.println("getPresignedURL 시작");
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run()
+            {
+                Toast.makeText(getApplicationContext(), "@getPresignedURL - RetrofitClient를 호출합니다.", Toast.LENGTH_SHORT).show();
+            }
+        }, 0);
 
         RetrofitClient2 retrofitClient = RetrofitClient2.getInstance();
 
@@ -507,6 +559,15 @@ public class RecordActivity1 extends AppCompatActivity {
                         presignedUrl = String.valueOf(resbody.get("uploadURL"));
 
                         System.out.println("presignedUrl = " + presignedUrl);
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run()
+                            {
+                                Toast.makeText(getApplicationContext(), "presignedUrl 받아오는 데 성공했습니다.\n영상 업로드를 시작합니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        }, 0);
 
                         try {
                             uploadVideoOkhttp(practice);
@@ -531,6 +592,15 @@ public class RecordActivity1 extends AppCompatActivity {
 
     private void uploadVideoOkhttp(PracticesData practice) throws MalformedURLException {
         System.out.println("uploadVideoOkhttp 시작");
+
+        AtomicReference<Handler> handler = new AtomicReference<>(new Handler(Looper.getMainLooper()));
+        handler.get().postDelayed(new Runnable() {
+            @Override
+            public void run()
+            {
+                Toast.makeText(getApplicationContext(), "@uploadVideoOkhttp - OkHttpClient를 호출합니다.", Toast.LENGTH_SHORT).show();
+            }
+        }, 0);
 
 //        // 임시, 확인용
 //        String testFilename = "";
@@ -571,15 +641,27 @@ public class RecordActivity1 extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (response.isSuccessful()){
-                Log.d("PUT", ">>>response.body()="+response.body());
+            if (response != null) {
+                if (response.isSuccessful()) {
+                    Log.d("PUT", ">>>response.body()=" + response.body());
+                    handler.set(new Handler(Looper.getMainLooper()));
+                    handler.get().postDelayed(new Runnable() {
+                        @Override
+                        public void run()
+                        {
+                            Toast.makeText(getApplicationContext(), "영상 업로드에 성공했습니다.\n분석 요청을 시작합니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 0);
 
-                askAnalysis(practice);  // 분석 요청하기
-            }
-            else {
-                System.out.println("@@@@ response is not successful...");
-                System.out.println("@@@@ response code : " + response.code());  //404 403
-                System.out.println("@@@@ response : " + response);
+                    askAnalysis(practice);  // 분석 요청하기
+                } else {
+                    System.out.println("@@@@ response is not successful...");
+                    System.out.println("@@@@ response code : " + response.code());  //404 403
+                    System.out.println("@@@@ response : " + response);
+                }
+            } else {
+                System.out.println("RecordActivity1.this, @uploadVideoOkhttp - OkHttpClient response is null");
+                //Toast.makeText(RecordActivity1.this, "@uploadVideoOkhttp - OkHttpClient response is null", Toast.LENGTH_SHORT).show();  //임시, 확인용
             }
         }).start();
 
