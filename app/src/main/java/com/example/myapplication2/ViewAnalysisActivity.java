@@ -58,9 +58,9 @@ public class ViewAnalysisActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     ScrollView scrollView;
 
-    TextView tv_analysis_total, tv_analysis_gesture, tv_analysis_gaze, tv_analysis_pose, tv_analysis_speed,
+    TextView tv_analysis_total, tv_analysis_gesture, tv_analysis_gaze, tv_analysis_face, tv_analysis_pose, tv_analysis_speed,
             tv_analysis_volume, tv_analysis_pitch, tv_analysis_conclusion;
-    ImageView good_or_warning_gesture, good_or_warning_gaze, good_or_warning_pose, good_or_warning_speed,
+    ImageView good_or_warning_gesture, good_or_warning_gaze, good_or_warning_face, good_or_warning_pose, good_or_warning_speed,
             good_or_warning_volume, good_or_warning_pitch, good_or_warning_conclusion;
     RatingBar ratingBar;
     static int warnings = 0;
@@ -91,6 +91,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
         tv_analysis_total = (TextView) findViewById(R.id.tv_analysis_total);
         tv_analysis_gesture = (TextView) findViewById(R.id.tv_analysis_gesture);
         tv_analysis_gaze = (TextView) findViewById(R.id.tv_analysis_gaze);
+        tv_analysis_face = (TextView) findViewById(R.id.tv_analysis_face);
         tv_analysis_pose = (TextView) findViewById(R.id.tv_analysis_pose);
         tv_analysis_speed = (TextView) findViewById(R.id.tv_analysis_speed);
         tv_analysis_volume = (TextView) findViewById(R.id.tv_analysis_volume);
@@ -99,6 +100,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
 
         good_or_warning_gesture = (ImageView) findViewById(R.id.good_or_warning_gesture);
         good_or_warning_gaze = (ImageView) findViewById(R.id.good_or_warning_gaze);
+        good_or_warning_face = (ImageView) findViewById(R.id.good_or_warning_face);
         good_or_warning_pose = (ImageView) findViewById(R.id.good_or_warning_pose);
         good_or_warning_speed = (ImageView) findViewById(R.id.good_or_warning_speed);
         good_or_warning_volume = (ImageView) findViewById(R.id.good_or_warning_volume);
@@ -174,6 +176,8 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                 analysisContentData.getScriptDuration()+"초 동안 대본을 보는 시선 분산이 감지되었습니다.\n"+
                 "또한 "+analysisContentData.getAroundDuration()+"초 동안 주변을 보는 시선 분산이 감지되었습니다.\n"+
                 "발표시에는 화면을 응시하는 것이 좋습니다.");  // 온라인, 오프라인 ?  //임시, 확인용
+        tv_analysis_face.setText(analysisContentData.getFaceMoveDuration() + "초 동안 얼굴 움직임 감지되었습니다.\n" +
+                "온라인 발표시에는 얼굴 움직임을 최소화하고 화면을 응시하는 것이 좋습니다.");
         tv_analysis_pose.setText("회원님이 선택하신 자세 민감도는 "+practicesData.getMoveSensitivity()+"이며, 총 영상 길이 "+
                 analysisContentData.getTotalDuration()+"초 중 "+analysisContentData.getInclinedDuration()+"초 동안 자세가 기울어졌습니다."+
                 "\n두 어깨의 수평을 맞추는 자세를 권장합니다.");
@@ -203,6 +207,12 @@ public class ViewAnalysisActivity extends AppCompatActivity {
             good_or_warning_gaze.setImageResource(R.drawable.ic_good);
         } else {
             good_or_warning_gaze.setImageResource(R.drawable.ic_warning);
+            warnings++;
+        }
+        if (isGood("face")) {
+            good_or_warning_face.setImageResource(R.drawable.ic_good);
+        } else {
+            good_or_warning_face.setImageResource(R.drawable.ic_warning);
             warnings++;
         }
         if (isGood("pose")) {
@@ -237,7 +247,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
         }
 
         // 종합 평가 별점
-        /* 기준 : 7개 항목 중 warning
+        /* 기준 : 8개 항목 중 warning
         * 0개 : 5.0
         * 1개 : 4.5
         * 2개 : 4.0
@@ -246,10 +256,11 @@ public class ViewAnalysisActivity extends AppCompatActivity {
         * 5개 : 2.5
         * 6개 : 2.0
         * 7개 : 1.5
-        * 영상 길이가 5초 미만 : 1.0
+        * 8개 : 1.0
+        * 영상 길이가 5초 미만 : 0.5
         * */
         if (analysisContentData.getTotalDuration() < 5) {
-            ratingBar.setRating(1.0f);
+            ratingBar.setRating(0.5f);
             tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
                     "영상이 너무 짧아 평가가 제대로 이루어지지 않을 수 있습니다.");
         } else {
@@ -257,42 +268,47 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                 case 0:
                     ratingBar.setRating(5.0f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                            "분석 결과, 전반적으로 훌륭한 수준입니다. 7개의 항목 모두 안정적인 결과를 보이고 있습니다. 자신감 있게 실전에 임하시기를 바랍니다.");
+                            "분석 결과, 전반적으로 훌륭한 수준입니다. 8개의 항목 모두 안정적인 결과를 보이고 있습니다. 자신감 있게 실전에 임하시기를 바랍니다.");
                     break;
                 case 1:
                     ratingBar.setRating(4.5f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                        "분석 결과, 전반적으로 적정한 수준입니다. 6개의 항목에서 안정적인 결과를 보이고 있습니다. 자신감 있게 실전에 임하시기를 바랍니다.");
+                        "분석 결과, 전반적으로 적정한 수준입니다. 7개의 항목에서 안정적인 결과를 보이고 있습니다. 자신감 있게 실전에 임하시기를 바랍니다.");
                     break;
                 case 2:
                     ratingBar.setRating(4.0f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                        "분석 결과, 전반적으로 적정한 수준입니다. 5개의 항목에서 안정적인 결과를 보이고 있습니다. 2개의 항목을 보완하여 실전에 임하시기를 바랍니다.");
+                        "분석 결과, 전반적으로 적정한 수준입니다. 6개의 항목에서 안정적인 결과를 보이고 있습니다. 2개의 항목을 보완하여 실전에 임하시기를 바랍니다.");
                     break;
                 case 3:
                     ratingBar.setRating(3.5f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                            "분석 결과, 전반적으로 조금 미흡한 수준입니다. 4개의 항목에서 안정적인 결과를 보이고 있지만 3개의 항목은 보완할 필요가 있습니다. 조금 더 연습한 후 실전에 임하시기를 바랍니다.");
+                            "분석 결과, 전반적으로 조금 미흡한 수준입니다. 5개의 항목에서 안정적인 결과를 보이고 있지만 3개의 항목은 보완할 필요가 있습니다. 조금 더 연습한 후 실전에 임하시기를 바랍니다.");
                     break;
                 case 4:
                     ratingBar.setRating(3.0f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                            "분석 결과, 전반적으로 미흡한 수준입니다. 3개의 항목에서 안정적인 결과를 보이고 있지만 4개의 항목은 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
+                            "분석 결과, 전반적으로 미흡한 수준입니다. 4개의 항목에서 안정적인 결과를 보이고 있지만 4개의 항목은 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
                     break;
                 case 5:
                     ratingBar.setRating(2.5f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                            "분석 결과, 전반적으로 미흡한 수준입니다. 2개의 항목에서 안정적인 결과를 보이고 있지만 5개의 항목은 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
+                            "분석 결과, 전반적으로 미흡한 수준입니다. 3개의 항목에서 안정적인 결과를 보이고 있지만 5개의 항목은 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
                     break;
                 case 6:
                     ratingBar.setRating(2.0f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                            "분석 결과, 전반적으로 매우 미흡한 수준입니다. 1개의 항목에서 안정적인 결과를 보이고 있지만 6개의 항목은 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
+                            "분석 결과, 전반적으로 매우 미흡한 수준입니다. 2개의 항목에서 안정적인 결과를 보이고 있지만 6개의 항목은 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
                     break;
                 case 7:
                     ratingBar.setRating(1.5f);
                     tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
-                            "분석 결과, 전반적으로 매우 미흡한 수준입니다. 7개의 항목 모두 불안정한 결과를 보이고 있어 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
+                            "분석 결과, 전반적으로 매우 미흡한 수준입니다. 1개의 항목에서 안정적인 결과를 보이고 있지만 7개의 항목은 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
+                    break;
+                case 8:
+                    ratingBar.setRating(1.0f);
+                    tv_analysis_total.setText("영상의 총 길이는 "+analysisContentData.getTotalDuration()+"초입니다.\n"+
+                            "분석 결과, 전반적으로 매우 미흡한 수준입니다. 8개의 항목 모두 불안정한 결과를 보이고 있어 보완할 필요가 있습니다. 반복적으로 연습한 후 실전에 임하시기를 바랍니다.");
                     break;
             }
         }
@@ -405,6 +421,8 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                 return analysisContentData.getFirstDuration() + analysisContentData.getSecondDuration() + analysisContentData.getThirdDuration() == 0;
             case "gaze":
                 return analysisContentData.getScriptDuration() + analysisContentData.getAroundDuration() == 0;
+            case "face":
+                return analysisContentData.getFaceMoveDuration() == 0;
             case "pose":
                 return analysisContentData.getInclinedDuration() == 0;
             case "speed":
