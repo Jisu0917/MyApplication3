@@ -185,34 +185,38 @@ public class RecordActivity1 extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(RecordActivity1.this, "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
+                                try {
+                                    Toast.makeText(RecordActivity1.this, "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
 
-                                // 내장메모리에 영상 저장
-                                ContentValues values = new ContentValues(10);
+                                    // 내장메모리에 영상 저장
+                                    ContentValues values = new ContentValues(10);
 
-                                values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
-                                values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
-                                values.put(MediaStore.Audio.Media.ARTIST, "Mike");
-                                values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
-                                values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis()/1000);
-                                values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
-                                values.put(MediaStore.Audio.Media.DATA, filename);
+                                    values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
+                                    values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
+                                    values.put(MediaStore.Audio.Media.ARTIST, "Mike");
+                                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
+                                    values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1000);
+                                    values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
+                                    values.put(MediaStore.Audio.Media.DATA, filename);
 
-                                Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
-                                if (videoUri == null) {
-                                    Toast.makeText(RecordActivity1.this, "### videoUri == null", Toast.LENGTH_SHORT).show();
-                                    Log.d("SampleVideoRecorder", "Video insert failed.");
-                                    return;
+                                    Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+                                    if (videoUri == null) {
+                                        Toast.makeText(RecordActivity1.this, "### videoUri == null", Toast.LENGTH_SHORT).show();
+                                        Log.d("SampleVideoRecorder", "Video insert failed.");
+                                        return;
+                                    }
+                                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
+
+                                    Toast.makeText(RecordActivity1.this, "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
+
+
+                                    // 서버에 영상 업로드 + 분석 시작
+                                    postNewPractice();
+
+                                    finish();
+                                } catch (Exception e) {
+                                    Toast.makeText(RecordActivity1.this, e.toString(), Toast.LENGTH_SHORT).show();
                                 }
-                                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
-
-                                Toast.makeText(RecordActivity1.this, "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
-
-
-                                // 서버에 영상 업로드 + 분석 시작
-                                postNewPractice();
-
-                                finish();
                             }
                         });
                 builder.setNegativeButton("재촬영",
