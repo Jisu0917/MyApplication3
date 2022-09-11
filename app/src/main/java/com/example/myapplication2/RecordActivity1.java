@@ -187,7 +187,7 @@ public class RecordActivity1 extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 try {
-                                    Toast.makeText(RecordActivity1.this, "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(RecordActivity1.this, "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
 
                                     //////////
 //                                    // 내장메모리에 영상 저장
@@ -259,7 +259,7 @@ public class RecordActivity1 extends AppCompatActivity {
 //                                    }
 //                                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
 
-                                    Toast.makeText(RecordActivity1.this, "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(RecordActivity1.this, "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
 
 
                                     // 서버에 영상 업로드 + 분석 시작
@@ -511,14 +511,14 @@ public class RecordActivity1 extends AppCompatActivity {
         System.out.println("practice.getMoveSensitivity(): " + practice.getMoveSensitivity());  //임시, 확인용
         System.out.println("practice.getEyesSensitivity(): " + practice.getEyesSensitivity());  //임시, 확인용
 
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run()
-            {
-                Toast.makeText(getApplicationContext(), "@postNewPractice - RetrofitClient를 호출합니다.", Toast.LENGTH_SHORT).show();
-            }
-        }, 0);
+//        Handler handler = new Handler(Looper.getMainLooper());
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run()
+//            {
+//                Toast.makeText(getApplicationContext(), "@postNewPractice - RetrofitClient를 호출합니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        }, 0);
 
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
@@ -543,7 +543,9 @@ public class RecordActivity1 extends AppCompatActivity {
                             @Override
                             public void run()
                             {
-                                Toast.makeText(getApplicationContext(), "연습 업로드에 성공했습니다.\npresignedUrl을 받아옵니다.", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "연습 업로드에 성공했습니다.\npresignedUrl을 받아옵니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "영상 업로드를 시작합니다.", Toast.LENGTH_SHORT).show();
+
                             }
                         }, 0);
 
@@ -567,14 +569,14 @@ public class RecordActivity1 extends AppCompatActivity {
     private void getPresignedURL(PracticesData practice) {
 
         System.out.println("getPresignedURL 시작");
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run()
-            {
-                Toast.makeText(getApplicationContext(), "@getPresignedURL - RetrofitClient를 호출합니다.", Toast.LENGTH_SHORT).show();
-            }
-        }, 0);
+//        Handler handler = new Handler(Looper.getMainLooper());
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run()
+//            {
+//                Toast.makeText(getApplicationContext(), "@getPresignedURL - RetrofitClient를 호출합니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        }, 0);
 
         RetrofitClient2 retrofitClient = RetrofitClient2.getInstance();
 
@@ -598,14 +600,14 @@ public class RecordActivity1 extends AppCompatActivity {
 
                         System.out.println("presignedUrl = " + presignedUrl);
 
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run()
-                            {
-                                Toast.makeText(getApplicationContext(), "presignedUrl 받아오는 데 성공했습니다.\npresignedUrl : " + presignedUrl + "\n영상 업로드를 시작합니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        }, 0);
+//                        Handler handler = new Handler(Looper.getMainLooper());
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run()
+//                            {
+//                                Toast.makeText(getApplicationContext(), "presignedUrl 받아오는 데 성공했습니다.\npresignedUrl : " + presignedUrl + "\n영상 업로드를 시작합니다.", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }, 0);
 
                         try {
                             uploadVideoOkhttp(practice);
@@ -631,14 +633,14 @@ public class RecordActivity1 extends AppCompatActivity {
     private void uploadVideoOkhttp(PracticesData practice) throws MalformedURLException {
         System.out.println("uploadVideoOkhttp 시작");
 
-        AtomicReference<Handler> handler = new AtomicReference<>(new Handler(Looper.getMainLooper()));
-        handler.get().postDelayed(new Runnable() {
-            @Override
-            public void run()
-            {
-                Toast.makeText(getApplicationContext(), "@uploadVideoOkhttp - OkHttpClient를 호출합니다.", Toast.LENGTH_SHORT).show();
-            }
-        }, 0);
+//        AtomicReference<Handler> handler = new AtomicReference<>(new Handler(Looper.getMainLooper()));
+//        handler.get().postDelayed(new Runnable() {
+//            @Override
+//            public void run()
+//            {
+//                Toast.makeText(getApplicationContext(), "@uploadVideoOkhttp - OkHttpClient를 호출합니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        }, 0);
 
 //        // 임시, 확인용
 //        String testFilename = "";
@@ -682,14 +684,14 @@ public class RecordActivity1 extends AppCompatActivity {
             if (response != null) {
                 if (response.isSuccessful()) {
                     Log.d("PUT", ">>>response.body()=" + response.body());
-                    handler.set(new Handler(Looper.getMainLooper()));
-                    handler.get().postDelayed(new Runnable() {
-                        @Override
-                        public void run()
-                        {
-                            Toast.makeText(getApplicationContext(), "영상 업로드에 성공했습니다.\n분석 요청을 시작합니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    }, 0);
+//                    handler.set(new Handler(Looper.getMainLooper()));
+//                    handler.get().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run()
+//                        {
+//                            Toast.makeText(getApplicationContext(), "영상 업로드에 성공했습니다.\n분석을 시작합니다.", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }, 0);
 
                     askAnalysis(practice);  // 분석 요청하기
                 } else {
