@@ -15,11 +15,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication2.api.RetrofitAPI;
@@ -65,6 +69,9 @@ public class MainActivity extends TabActivity {
     static UserIdObject userIdObject;
 
     static Intent intent2, intent3, intent4, intent5;
+
+    TabHost.TabSpec tabSpec1, tabSpec2, tabSpec3, tabSpec4;
+    View view1, view2, view3, view4;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -118,6 +125,52 @@ public class MainActivity extends TabActivity {
         intent4 = new Intent(MainActivity.this, FriendActivity4.class);
         intent5 = new Intent(MainActivity.this, SettingsActivity.class);
 
+        //TabHost 아이콘 넣기
+        LayoutInflater vi1 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater vi2 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater vi3 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater vi4 = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        view1 = (View) vi1.inflate(R.layout.tab_row_item, null);
+        view2 = (View) vi2.inflate(R.layout.tab_row_item, null);
+        view3 = (View) vi3.inflate(R.layout.tab_row_item, null);
+        view4 = (View) vi4.inflate(R.layout.tab_row_item, null);
+
+        LinearLayout layout1 = (LinearLayout) view1.findViewById(R.id.Linearlayout01);
+        LinearLayout layout2 = (LinearLayout) view2.findViewById(R.id.Linearlayout01);
+        LinearLayout layout3 = (LinearLayout) view3.findViewById(R.id.Linearlayout01);
+        LinearLayout layout4 = (LinearLayout) view4.findViewById(R.id.Linearlayout01);
+
+//        layout1.setBackgroundResource(R.drawable.selector);
+//        layout2.setBackgroundResource(R.drawable.selector);
+//        layout3.setBackgroundResource(R.drawable.selector);
+//        layout4.setBackgroundResource(R.drawable.selector);
+        layout1.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+        layout2.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+        layout3.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+        layout4.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+
+        ImageView iv1 = (ImageView) view1.findViewById(R.id.icon);
+        ImageView iv2 = (ImageView) view2.findViewById(R.id.icon);
+        ImageView iv3 = (ImageView) view3.findViewById(R.id.icon);
+        ImageView iv4 = (ImageView) view4.findViewById(R.id.icon);
+
+        iv1.setImageResource(R.drawable.ic_community);
+        iv2.setImageResource(R.drawable.ic_home);
+        iv3.setImageResource(R.drawable.ic_friend);
+        iv4.setImageResource(R.drawable.ic_settings);
+
+        TextView tv1 = (TextView) view1.findViewById(R.id.text);
+        TextView tv2 = (TextView) view2.findViewById(R.id.text);
+        TextView tv3 = (TextView) view3.findViewById(R.id.text);
+        TextView tv4 = (TextView) view4.findViewById(R.id.text);
+
+        tv1.setText("POSTS");
+        tv2.setText("HOME");
+        tv3.setText("FRIEND");
+        tv4.setText("MY PAGE");
+
+
         //TabWidget 색상 변경
         myTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
 
@@ -128,7 +181,7 @@ public class MainActivity extends TabActivity {
                     myTabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#ffffff")); // unselected
                 }
 
-                myTabHost.getTabWidget().getChildAt(myTabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#94b9ff")); // selected
+                myTabHost.getTabWidget().getChildAt(myTabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#609cbfff")); // selected
             }
         });
 
@@ -264,18 +317,40 @@ public class MainActivity extends TabActivity {
                         userId = response.body().getUser_id();
                         ((UserPoint)getApplication()).setUserId(userId);
 
-                        spec = myTabHost.newTabSpec("Community").setIndicator("POSTS").setContent(intent2);
-                        myTabHost.addTab(spec);
+//                        spec = myTabHost.newTabSpec("Community").setIndicator("POSTS").setContent(intent2);
+//                        myTabHost.addTab(spec);
+//
+//                        spec = myTabHost.newTabSpec("Home").setIndicator("HOME").setContent(intent3);
+//                        myTabHost.addTab(spec);
+//
+//                        spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
+//                        myTabHost.addTab(spec);
+//
+//                        spec = myTabHost.newTabSpec("Settings").setIndicator("MY PAGE", getResources().getDrawable(R.drawable.selector)).setContent(intent5);
+//                        myTabHost.addTab(spec);
+//
+//                        myTabHost.setCurrentTab(1);  //메인 Tab 지정
 
-                        spec = myTabHost.newTabSpec("Home").setIndicator("HOME").setContent(intent3);
-                        myTabHost.addTab(spec);
+                        tabSpec1 = myTabHost.newTabSpec("POSTS");
+                        tabSpec2 = myTabHost.newTabSpec("HOME");
+                        tabSpec3 = myTabHost.newTabSpec("FRIEND");
+                        tabSpec4 = myTabHost.newTabSpec("MY PAGE");
 
-                        spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
-                        myTabHost.addTab(spec);
+                        tabSpec1.setIndicator(view1);
+                        tabSpec1.setContent(intent2);
+                        tabSpec2.setIndicator(view2);
+                        tabSpec2.setContent(intent3);
+                        tabSpec3.setIndicator(view3);
+                        tabSpec3.setContent(intent4);
+                        tabSpec4.setIndicator(view4);
+                        tabSpec4.setContent(intent5);
 
-                        spec = myTabHost.newTabSpec("Settings").setIndicator("MY PAGE", getResources().getDrawable(R.drawable.selector)).setContent(intent5);
-                        myTabHost.addTab(spec);
+                        myTabHost.addTab(tabSpec1);
+                        myTabHost.addTab(tabSpec2);
+                        myTabHost.addTab(tabSpec3);
+                        myTabHost.addTab(tabSpec4);
 
+                        myTabHost.getTabWidget().setCurrentTab(1);
                         myTabHost.setCurrentTab(1);  //메인 Tab 지정
                     }
                 }
