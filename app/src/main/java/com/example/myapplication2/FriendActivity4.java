@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication2.api.RetrofitAPI;
@@ -32,6 +34,9 @@ import retrofit2.Response;
 public class FriendActivity4 extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
 
+    Toolbar toolbar;
+    ActionBar actionBar;
+
     static Long userId = MainActivity.userId;
     static RetrofitAPI retrofitAPI;
 
@@ -49,6 +54,14 @@ public class FriendActivity4 extends AppCompatActivity {
         setContentView(R.layout.activity_friend);
         setTitle("내 친구 목록");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+
 
         friendlist_layout = (LinearLayout) findViewById(R.id.friendlist_layout);
 
