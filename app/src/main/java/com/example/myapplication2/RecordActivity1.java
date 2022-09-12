@@ -392,9 +392,15 @@ public class RecordActivity1 extends AppCompatActivity {
         int height = size.y;
         /// 이미지뷰 width, height 조절
         ImageView iv_guideline = (ImageView) findViewById(R.id.imageview_guideline);
-        iv_guideline.requestLayout();
-        iv_guideline.getLayoutParams().height = (int) (width * 0.4);  // 비율 : 화면 가로 너비의 40%
-        iv_guideline.getLayoutParams().width = (int) (width * 0.4);  // 비율 : 화면 가로 너비의 40%
+//        iv_guideline.requestLayout();
+//        iv_guideline.getLayoutParams().height = (int) (width * 0.35);  // 비율 : 화면 가로 너비의 35%
+//        iv_guideline.getLayoutParams().width = (int) (width * 0.35);  // 비율 : 화면 가로 너비의 35%
+        /// 이미지뷰 marginTop 조절
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, (int) (height /8), 0, 0);  // 비율 : 화면 세로 길이의 8뷴의 1
+        lp.height = (int) (width * 0.35);  // 비율 : 화면 가로 너비의 35%
+        lp.width = (int) (width * 0.35);  // 비율 : 화면 가로 너비의 35%
+        iv_guideline.setLayoutParams(lp);
 
         // SurfaceView를 상속받은 레이아웃을 정의한다.
         surfaceView = (CameraPreview) findViewById(R.id.preview);
