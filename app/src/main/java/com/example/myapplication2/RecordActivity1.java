@@ -649,25 +649,25 @@ public class RecordActivity1 extends AppCompatActivity {
 //        }, 0);
 
 //        // 임시, 확인용
-        String testFilename = "";
-        if (Build.VERSION.SDK_INT >= 30) {
-            System.out.println("android version >= 30");
-            File destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-
-            testFilename = destination.getAbsolutePath() + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
-        } else {
-            if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
-                testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
-            } else {
-                testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
-            }
-        }
+//        String testFilename = "";
+//        if (Build.VERSION.SDK_INT >= 30) {
+//            System.out.println("android version >= 30");
+//            File destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+//
+//            testFilename = destination.getAbsolutePath() + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+//        } else {
+//            if (EXTERNAL_STORAGE_PATH == null || EXTERNAL_STORAGE_PATH.equals("")) {
+//                testFilename = RECORDED_DIR + "/analysis_test_video.mp4";
+//            } else {
+//                testFilename = EXTERNAL_STORAGE_PATH + "/" + RECORDED_DIR + "/analysis_test_video.mp4";
+//            }
+//        }
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("video/mp4");
-//        RequestBody body = RequestBody.create(mediaType, new File(filename));
-        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
+        RequestBody body = RequestBody.create(mediaType, new File(filename));
+//        RequestBody body = RequestBody.create(mediaType, new File(testFilename));
 
         System.out.println("presignedUrl : " + presignedUrl);  // 임시, 확인용
 

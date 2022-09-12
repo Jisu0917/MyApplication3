@@ -10,8 +10,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"><ImageView
+        android:layout_gravity="left"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/sookmyung_logo_circle"/>
         <TextView
+            android:gravity="center"
             android:id="@+id/tv_toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
