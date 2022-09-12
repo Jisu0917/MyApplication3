@@ -1,7 +1,9 @@
 package com.example.myapplication2;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 //import static com.example.myapplication2.MainActivity.tabWidget;
 
@@ -23,6 +25,9 @@ import java.util.ArrayList;
 
 
 public class SettingsActivity extends AppCompatActivity {
+    Toolbar toolbar;
+    ActionBar actionBar;
+
     ImageView iv_profile;
     TextView tv_name, tv_email, tv_id, tv_point, tv_num_practice, tv_num_post, tv_num_feedback, tv_num_friend;
     ArrayList<String> history;
@@ -34,6 +39,13 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         setTitle("내 회원 정보");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
 
         Intent it = getIntent();
 

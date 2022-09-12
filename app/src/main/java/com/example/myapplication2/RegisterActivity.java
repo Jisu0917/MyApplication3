@@ -4,6 +4,7 @@ import static com.example.myapplication2.MainActivity.updatePoint;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
@@ -32,9 +33,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-
     // 로그에 사용할 TAG 변수 선언
     final private String TAG = getClass().getSimpleName();
+
+    Toolbar toolbar;
+    ActionBar actionBar;
 
     // 사용할 컴포넌트 선언
     EditText title_et, content_et;
@@ -62,9 +65,17 @@ public class RegisterActivity extends AppCompatActivity {
         setTitle("새 게시물 등록");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //액션바에 뒤로가기 버튼 추가
-        ActionBar actionBar = getSupportActionBar();
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+//        //액션바에 뒤로가기 버튼 추가
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
 // ListActivity 에서 넘긴 userid 를 변수로 받음
         useridToken = getIntent().getStringExtra("userid");

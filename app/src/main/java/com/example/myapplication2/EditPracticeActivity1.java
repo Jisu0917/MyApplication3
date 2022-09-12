@@ -19,7 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
@@ -32,6 +34,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditPracticeActivity1 extends AppCompatActivity {
+    Toolbar toolbar;
+    ActionBar actionBar;
+
     Intent it;
     Cursor cursor;
     Long practice_id;
@@ -56,6 +61,14 @@ public class EditPracticeActivity1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editpractice1);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         context = getApplicationContext();
 

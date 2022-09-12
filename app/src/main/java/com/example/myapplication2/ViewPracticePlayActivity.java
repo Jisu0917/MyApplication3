@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
@@ -41,6 +42,9 @@ import retrofit2.Response;
 
 public class ViewPracticePlayActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
+
+    Toolbar toolbar;
+    ActionBar actionBar;
 
     Intent it;
     Long practice_id;
@@ -66,9 +70,17 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
         setTitle("연습 정보 보기");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //액션바에 뒤로가기 버튼 추가
-        ActionBar actionBar = getSupportActionBar();
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+//        //액션바에 뒤로가기 버튼 추가
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         tv_practiceTitle = (TextView) findViewById(R.id.tv_practice_title);
         tv_scope = (TextView) findViewById(R.id.tv_scope);

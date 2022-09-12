@@ -20,7 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.example.myapplication2.api.RetrofitAPI;
@@ -38,6 +40,9 @@ import retrofit2.Response;
 
 public class CommunityActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
+
+    Toolbar toolbar;
+    ActionBar actionBar;
 
     static Long userId = MainActivity.userId;
     static RetrofitAPI retrofitAPI;
@@ -57,6 +62,13 @@ public class CommunityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_community);
         setTitle("게시판");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
 
         context = this;
 

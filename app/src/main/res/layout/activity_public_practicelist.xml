@@ -6,6 +6,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="17dp"
+            android:textColor="#000000"
+            android:text="친구 OOO의 공개된 연습 목록">
+        </TextView>
+    </androidx.appcompat.widget.Toolbar>
+
     <include layout="@layout/content_practicelist" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

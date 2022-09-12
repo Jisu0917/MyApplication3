@@ -37,6 +37,7 @@
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
+            android:theme="@style/AppTheme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,33 +48,43 @@
         <activity
             android:name=".RecordActivity1"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity1"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".FriendActivity4"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SettingsActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AddPracticeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AddPracticeActivity1"
-            android:screenOrientation="portrait" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity1" />
+        </activity>
         <activity
             android:name=".ShowPracticeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ViewPracticeActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ViewPracticePlayActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -81,19 +92,21 @@
         </activity>
         <activity
             android:name=".ViewFriendPracticePlayActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".PlayActivity"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".PlayPracticeActivity"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ShowAnalysisActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ViewAnalysisActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -101,7 +114,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".EditPracticeActivity1"
-            android:screenOrientation="portrait" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity1" />
+        </activity>
         <activity android:name=".GraphActivity"/>
         <activity android:name=".PieChart"/>
         <activity android:name=".LineChart"/>
@@ -109,14 +127,18 @@
         <activity android:name=".ScatterPlot" />
 
         <activity android:name=".CommunityActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
         <activity android:name=".DetailActivity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CommunityActivity" />
         </activity>
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".RegisterActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CommunityActivity" />
@@ -124,13 +146,19 @@
         <activity android:name=".ListActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".PublicPracticeList"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FriendActivity4" />
         </activity>
         <activity android:name=".AddFriendActivity"
-            android:screenOrientation="portrait" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FriendActivity4" />
+        </activity>
     </application>
 
 </manifest>

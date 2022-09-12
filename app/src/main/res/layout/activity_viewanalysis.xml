@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/relativelayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#3e465e">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="left"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/sookmyung_logo_circle"/>
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="17dp"
+            android:textColor="#000000"
+            android:text="OOO의 분석 결과">
+        </TextView>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#3e465e">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -487,6 +515,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:onClick="download_img"
+                    app:backgroundTint="@color/colorPrimary"
+                    android:textColor="@color/white"
                     android:text="이미지로 저장하기" />
             </LinearLayout>
 
@@ -497,3 +527,4 @@
 
 
 </RelativeLayout>
+</LinearLayout>

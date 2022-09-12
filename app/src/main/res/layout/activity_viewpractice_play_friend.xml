@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="17dp"
+            android:textColor="#000000"
+            android:text="친구 OOO의 연습 정보 보기">
+        </TextView>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -117,6 +140,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:clickable="true"
+            app:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
             android:text="분석 결과 확인하기" />
 
         <!--     선 긋기 -->
@@ -151,8 +176,11 @@
         android:layout_marginTop="10dp"
         android:layout_alignParentBottom="true"
         android:text="피드백 등록하기"
+        app:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/white"
 
         android:onClick="showCmtDialog"/>
 
 
 </RelativeLayout>
+</LinearLayout>

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
@@ -45,6 +46,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ViewAnalysisActivity extends AppCompatActivity {
+    Toolbar toolbar;
+    ActionBar actionBar;
+
     String CAPTURE_PATH = "/sookpeech_analysis_result";
     public static String CAPTURE_DIR = "sookpeech_analysis_result";
     Long practice_id, practice_user_id;
@@ -78,12 +82,23 @@ public class ViewAnalysisActivity extends AppCompatActivity {
         setContentView(R.layout.activity_viewanalysis);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+
         final Intent it = getIntent();
         practice_id = it.getLongExtra("practice_id", 0);
         practice_title = it.getStringExtra("practice_title");
         practice_user_id = it.getLongExtra("practice_user_id", 0);
         
         setTitle(practice_title + "의 분석 결과");
+
+        TextView tv_toolber = (TextView) toolbar.findViewById(R.id.tv_toolbar);
+        tv_toolber.setText(practice_title + "의 분석 결과");
 
         linearLayout = (LinearLayout) findViewById(R.id.linearlayout_analysis);
         scrollView = (ScrollView) findViewById(R.id.scrollView);

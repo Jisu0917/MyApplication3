@@ -5,6 +5,7 @@ import static com.example.myapplication2.MainActivity.updatePoint;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
@@ -46,9 +47,11 @@ import retrofit2.Response;
 /* 댓글 등록 후 자동 업데이트 되도록 처리!!! */
 
 public class DetailActivity extends AppCompatActivity {
-
     // 로그에 사용할 TAG
     final private String TAG = getClass().getSimpleName();
+
+    Toolbar toolbar;
+    ActionBar actionBar;
 
     // 사용할 컴포넌트 선언
     ImageView iv_profile;
@@ -99,9 +102,17 @@ public class DetailActivity extends AppCompatActivity {
         setTitle("게시글 보기");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //액션바에 뒤로가기 버튼 추가
-        ActionBar actionBar = getSupportActionBar();
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+//        //액션바에 뒤로가기 버튼 추가
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
 
 // ListActivity 에서 넘긴 변수들을 받아줌

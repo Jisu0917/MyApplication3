@@ -128,7 +128,7 @@ public class MainActivity extends TabActivity {
                     myTabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#ffffff")); // unselected
                 }
 
-                myTabHost.getTabWidget().getChildAt(myTabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#6be3d6")); // selected
+                myTabHost.getTabWidget().getChildAt(myTabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#94b9ff")); // selected
             }
         });
 
@@ -273,7 +273,7 @@ public class MainActivity extends TabActivity {
                         spec = myTabHost.newTabSpec("Friend").setIndicator("FRIEND").setContent(intent4);
                         myTabHost.addTab(spec);
 
-                        spec = myTabHost.newTabSpec("Settings").setIndicator("MY PAGE").setContent(intent5);
+                        spec = myTabHost.newTabSpec("Settings").setIndicator("MY PAGE", getResources().getDrawable(R.drawable.selector)).setContent(intent5);
                         myTabHost.addTab(spec);
 
                         myTabHost.setCurrentTab(1);  //메인 Tab 지정

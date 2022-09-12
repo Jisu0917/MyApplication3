@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="20dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="17dp"
+            android:textColor="#000000"
+            android:text="게시글 보기">
+        </TextView>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -154,12 +176,16 @@
                 android:id="@+id/btn_start"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                app:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:text="재생" />
 
             <Button
                 android:id="@+id/btn_pause"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                app:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:visibility="gone"
                 android:text="정지" />
 
@@ -167,6 +193,8 @@
                 android:id="@+id/btn_restart"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
+                app:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:visibility="gone"
                 android:text="재생" />
 
@@ -210,6 +238,8 @@
             android:layout_margin="5dp"
             android:visibility="gone"
             android:text="피드백 등록"
+            app:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
 
             android:onClick="showCmtDialog"/>
 
@@ -221,6 +251,9 @@
             android:padding="8dp"
             android:layout_margin="5dp"
             android:visibility="gone"
-            android:text="게시글 삭제"/>
+            android:text="게시글 삭제"
+            app:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"/>
     </LinearLayout>
 </RelativeLayout>
+</LinearLayout>

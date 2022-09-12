@@ -18,7 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+//import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -26,6 +30,9 @@ import java.util.TimeZone;
 
 public class AddPracticeActivity1 extends AppCompatActivity {
     final int NO_INPUT = Integer.MAX_VALUE;
+
+    Toolbar toolbar;
+    ActionBar actionBar;
     
     EditText editText_title;
     TextView tv_scope;
@@ -42,6 +49,14 @@ public class AddPracticeActivity1 extends AppCompatActivity {
         setContentView(R.layout.activity_addpractice1);
         setTitle("새 연습 추가");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         editText_title = (EditText)findViewById(R.id.editText_title);
         tv_scope = (TextView) findViewById(R.id.tv_scope);

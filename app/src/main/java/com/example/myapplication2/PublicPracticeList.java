@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +30,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PublicPracticeList extends AppCompatActivity {
+    Toolbar toolbar;
+    ActionBar actionBar;
+
     static Long userId = MainActivity.userId;
     static RetrofitAPI retrofitAPI;
 
@@ -46,14 +50,25 @@ public class PublicPracticeList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_practicelist);
 
-        //액션바에 뒤로가기 버튼 추가
-        ActionBar actionBar = getSupportActionBar();
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+//        //액션바에 뒤로가기 버튼 추가
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent it = getIntent();
         friend_id = it.getLongExtra("friend_id", 0L);
         friend_name = it.getStringExtra("friend_name");
         setTitle("친구 " + friend_name +"의 공개된 연습 목록");
+
+        TextView tv_toolber = (TextView) toolbar.findViewById(R.id.tv_toolbar);
+        tv_toolber.setText("친구 " + friend_name +"의 공개된 연습 목록");
 
         practicelist_layout = (LinearLayout) findViewById(R.id.practicelist_layout);
 

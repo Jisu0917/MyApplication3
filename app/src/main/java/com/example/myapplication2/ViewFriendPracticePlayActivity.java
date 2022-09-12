@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
@@ -38,6 +39,9 @@ import retrofit2.Response;
 
 public class ViewFriendPracticePlayActivity extends AppCompatActivity {
     final private String TAG = getClass().getSimpleName();
+
+    Toolbar toolbar;
+    ActionBar actionBar;
 
     Intent it;
     Long practice_id, practice_user_id;
@@ -62,6 +66,14 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_viewpractice_play_friend);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+//        actionBar.setDisplayHomeAsUpEnabled(true);
+
         tv_practiceTitle = (TextView) findViewById(R.id.tv_practice_title);
         tv_scope = (TextView) findViewById(R.id.tv_scope);
         tv_sort = (TextView) findViewById(R.id.tv_sort);
@@ -81,6 +93,9 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
         setTitle("친구 " + friend_name + "의 연습 정보 보기");
         practice_user_id = it.getLongExtra("practice_user_id", 0);
 //        parent_activity = it.getStringExtra("PRENT ACTIVITY");
+
+        TextView tv_toolber = (TextView) toolbar.findViewById(R.id.tv_toolbar);
+        tv_toolber.setText("친구 " + friend_name + "의 연습 정보 보기");
 
         reg_button.setVisibility(View.VISIBLE);
 

@@ -21,9 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+//import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.example.myapplication2.api.RetrofitAPI;
@@ -47,6 +51,9 @@ public class HomeActivity1 extends AppCompatActivity {
     static Long userId = MainActivity.userId;
     static RetrofitAPI retrofitAPI;
 
+    Toolbar toolbar;
+    ActionBar actionBar;
+
     FloatingActionButton fab_add;
 
     PracticesData[] practicesDataList;
@@ -67,6 +74,13 @@ public class HomeActivity1 extends AppCompatActivity {
         setContentView(R.layout.activity_home1);
         setTitle("내 연습 목록");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
 
         context = this;
 

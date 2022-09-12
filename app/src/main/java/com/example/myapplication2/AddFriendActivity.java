@@ -16,8 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+//import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication2.api.RetrofitAPI;
@@ -37,6 +41,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddFriendActivity extends AppCompatActivity {
+    Toolbar toolbar;
+    ActionBar actionBar;
+
     EditText editText_name;
     Button btn_search, btn_cancel;
     LinearLayout result_layout;
@@ -54,6 +61,14 @@ public class AddFriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_addfriend);
         setTitle("사용자 검색 및 친구 추가");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        //툴바
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         editText_name = (EditText) findViewById(R.id.editText_name);
         btn_search = (Button) findViewById(R.id.btn_search);

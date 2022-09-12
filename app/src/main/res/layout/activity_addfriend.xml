@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingTop="30dp"
-    android:paddingStart="30dp"
-    android:paddingEnd="30dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff">
 
+    <androidx.appcompat.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="17dp"
+            android:textColor="#000000"
+            android:text="사용자 검색 및 친구 추가">
+        </TextView>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:paddingTop="20dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff">
 
     <LinearLayout
         android:id="@+id/search_name"
@@ -38,6 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="center"
                 android:background="@drawable/shape_edittext"
                 android:hint="이름을 입력하세요."
                 android:maxLength="20"
@@ -53,7 +74,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:background="@null"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp"
+                app:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/white"
                 android:onClick="search"
                 android:text="검색" />
         </LinearLayout>
@@ -113,10 +138,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="20dp"
-            android:background="@null"
+            android:padding="15dp"
+            app:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
             android:text="완료"/>
 
     </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>
