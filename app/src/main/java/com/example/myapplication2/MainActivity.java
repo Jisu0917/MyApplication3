@@ -17,6 +17,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -57,6 +59,7 @@ public class MainActivity extends TabActivity {
 
     static TabWidget tabWidget;
     static Button login_btn;
+    static LinearLayout linearLayout_hello;
 
     private final int RC_SIGN_IN = 123;
     GoogleSignInClient mGoogleSignInClient;
@@ -90,6 +93,11 @@ public class MainActivity extends TabActivity {
             EXTERNAL_STORAGE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
         }
 
+
+        login_btn = (Button)findViewById(R.id.login_button);
+        linearLayout_hello = (LinearLayout) findViewById(R.id.Linearlayout_hello);
+        linearLayout_hello.setVisibility(View.GONE);
+
         checkDangerousPermissions();
 
         //로그인 옵션 설정
@@ -114,7 +122,6 @@ public class MainActivity extends TabActivity {
 
 
         tabWidget = (TabWidget)findViewById(android.R.id.tabs);
-        login_btn = (Button)findViewById(R.id.login_button);
 
         myTabHost = getTabHost();
 
@@ -219,6 +226,8 @@ public class MainActivity extends TabActivity {
                 Log.d("idToken=", idToken);
                 Log.d("personName=", personName);
                 login_btn.setVisibility(View.GONE);
+                linearLayout_hello.setVisibility(View.GONE);
+
 
                 postUserLogin(idToken);
 
@@ -295,6 +304,11 @@ public class MainActivity extends TabActivity {
         } else {
             ActivityCompat.requestPermissions(this, permissions, 1);
         }
+
+        Animation anim;
+        anim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.wave);
+        linearLayout_hello.setVisibility(View.VISIBLE);
+        linearLayout_hello.startAnimation(anim);
     }
 
     //send ID Token to server and validate
