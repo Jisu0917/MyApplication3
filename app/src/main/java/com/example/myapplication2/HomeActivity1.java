@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication2.api.RetrofitAPI;
 import com.example.myapplication2.api.RetrofitClient;
 import com.example.myapplication2.api.dto.PracticesData;
@@ -201,16 +202,20 @@ public class HomeActivity1 extends AppCompatActivity {
                     String scope = practicesData.getScope();
                     String state = practicesData.getAnalysis().getState();  //COMPLETE, INCOMPLETE
                     Drawable drawable;
-                    if (state.equals("COMPLETE"))
-                        drawable = ContextCompat.getDrawable(this, R.drawable.ic_100percent);
-                    else drawable = ContextCompat.getDrawable(this, R.drawable.ic_loading);
+                    if (state.equals("COMPLETE")) {
+                        drawable = ContextCompat.getDrawable(this, R.drawable.ic_100percent_blue);
+                        ((ImageView)customView.findViewById(R.id.iv_finished)).setImageDrawable(drawable);
+                    }
+                    //else drawable = ContextCompat.getDrawable(this, R.drawable.ic_loading);
+                    else {
+                        Glide.with(this).load(R.raw.loading_gif).into((ImageView)customView.findViewById(R.id.iv_finished));
+                    }
 
                     ((LinearLayout)customView.findViewById(R.id.container)).setTag(id+":"+title+":"+state+":"+scope+":"+sort);
                     ((TextView)customView.findViewById(R.id.tv_title)).setText(title);
                     ((TextView)customView.findViewById(R.id.tv_id)).setText("id: "+id.intValue());
                     ((TextView)customView.findViewById(R.id.tv_sort)).setText(sort);
                     ((TextView)customView.findViewById(R.id.tv_scope)).setText(scope);
-                    ((ImageView)customView.findViewById(R.id.iv_finished)).setImageDrawable(drawable);
 
                     registerForContextMenu((LinearLayout)customView.findViewById(R.id.container));  //register context menu
 
