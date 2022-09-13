@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class UserPoint extends Application {
     public static String HISTORY_DIR = "sookpeech_history";
@@ -80,15 +81,17 @@ public class UserPoint extends Application {
 
         if (instruction.equals("plus")) {
             this.user_point += point;
+            addHistoryToFile(getNowDateTime() + "#" + point+" 포인트 적립" + "#남은 포인트 : " + user_point);
         }
         else if (instruction.equals("minus")) {
             this.user_point -= point;
+            addHistoryToFile(getNowDateTime() + "#" + point+" 포인트 차감" + "#남은 포인트 : " + user_point);
         } else if (instruction.equals("join")) {
             addHistoryToFile("join");
         }
 
 //        addHistoryToFile(point, instruction);
-        addHistoryToFile(getHistoryStr(point, instruction));
+//        addHistoryToFile(getHistoryStr(point, instruction));
     }
 
 
@@ -139,7 +142,7 @@ public class UserPoint extends Application {
             //write on the file
             try {
                 BufferedWriter buf = new BufferedWriter(new FileWriter(saveFile, true));
-                buf.append(str);
+                buf.append(str + "\r\n");
                 buf.newLine(); // 개행
                 buf.close();
             } catch (IOException e) {
@@ -150,11 +153,14 @@ public class UserPoint extends Application {
 
     public ArrayList<String> getHistory() {
         this.filename = "user"+userId+"_history.txt";
-        saveFile = new File(directory, filename);
+//        saveFile = new File(directory, filename);
         
         ArrayList<String> history = new ArrayList<>();
-        if(saveFile.exists()) { // 폴더 있을 경우
-            String line = null; // 한줄씩 읽기
+        if (saveFile != null) {
+            if (saveFile.exists()) { // 폴더 있을 경우
+                System.out.println("getHistory : saveFile.exists()=true");  //임시, 확인용
+
+                String line = null; // 한줄씩 읽기
             try {
                 BufferedReader buf = new BufferedReader(new FileReader(saveFile));
                 while ((line = buf.readLine()) != null) {
@@ -164,6 +170,27 @@ public class UserPoint extends Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+//                Scanner scan = null;
+//                try {
+//                    scan = new Scanner(saveFile);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                if (scan != null) {
+//                    while (scan.hasNextLine()) {
+//                        line = scan.nextLine();
+//                        history.add(line);
+//                    }
+//
+//                    scan.close();
+//                }
+            } else {
+                System.out.println("saveFile.exists()=false.");
+            }
+        } else {
+            System.out.println("saveFile is null...");
         }
         return history;
     }
