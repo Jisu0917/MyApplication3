@@ -159,6 +159,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
 
                         Toast.makeText(ViewAnalysisActivity.this, "분석 결과를 가져오는 데에 실패했습니다.", Toast.LENGTH_SHORT).show();
                         finish();
+                        overridePendingTransition(R.anim.slide_down,R.anim.slide_up);
                     }
                 }
 
@@ -169,6 +170,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
 
                     Toast.makeText(ViewAnalysisActivity.this, "분석 결과를 가져오는 데에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     finish();
+                    overridePendingTransition(R.anim.slide_down,R.anim.slide_up);
                 }
             });
         }
