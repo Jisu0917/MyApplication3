@@ -12,11 +12,14 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication2.api.dto.UserInfoData;
@@ -92,6 +95,28 @@ public class SettingsActivity extends AppCompatActivity {
         tv_point.setText("" + ((UserPoints)getApplication()).getUserPoint());
 
         setHistoryView();
+    }
+
+    // 액션 바 아이콘 메뉴
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_menu_settings, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        if (item.getItemId() == R.id.action_btn_logout) {
+
+            //// 로그아웃 코드 ////
+
+            Toast.makeText(SettingsActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+            ////////////////////
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setHistoryView() {

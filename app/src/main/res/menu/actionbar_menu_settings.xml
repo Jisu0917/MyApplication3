@@ -1,0 +1,23 @@
+<menu  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_btn_logout"
+        android:title="Reload"
+        android:icon="@drawable/ic_logout"
+        app:showAsAction="always" />
+<!--    <item android:id="@+id/action_btn_select"-->
+<!--        android:title="Select"-->
+<!--        android:icon="@drawable/ic_select"-->
+<!--        app:showAsAction="always" />-->
+
+<!--    <item android:id="@+id/action_btn_delFinished"-->
+<!--        android:title="체크된 항목 모두 삭제"-->
+<!--        app:showAsAction="never"/>-->
+    <!--
+    <item android:id="@+id/action_btn_reset"
+        android:title="Reset"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="ifRoom" />
+        -->
+
+</menu>
