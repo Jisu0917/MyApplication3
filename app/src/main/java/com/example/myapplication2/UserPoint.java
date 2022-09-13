@@ -50,13 +50,13 @@ public class UserPoint extends Application {
 
             directory = new File(destination + File.separator+HISTORY_DIR);
             if (!directory.exists()) { // 원하는 경로에 폴더가 있는지 확인
-                directory.mkdirs();
+                directory.mkdirs();  // 해당 유저의 history 파일이 없으면
                 Log.d("UserPoint", "Directory Created");
             }
         } else{
             directory = new File(Environment.getExternalStorageDirectory() + File.separator+HISTORY_DIR);
             if (!directory.exists()) { // 원하는 경로에 폴더가 있는지 확인
-                directory.mkdirs();
+                directory.mkdirs();  // 해당 유저의 history 파일이 없으면
                 Log.d("UserPoint", "Directory Created");
             }
         }
@@ -83,30 +83,69 @@ public class UserPoint extends Application {
         }
         else if (instruction.equals("minus")) {
             this.user_point -= point;
+        } else if (instruction.equals("join")) {
+            addHistoryToFile("join");
         }
 
-        addHistoryToFile(point, instruction);
+//        addHistoryToFile(point, instruction);
+        addHistoryToFile(getHistoryStr(point, instruction));
     }
 
-    private void addHistoryToFile(int point, String instruction) {
 
-        this.filename = "user"+userId+"_history.txt";
-        saveFile = new File(directory, filename);
-
+    private String getHistoryStr(int point, String instruction) {
         String str = "";
         if (instruction.equals("plus"))
             str = getNowDateTime() + "#" + point+" 포인트 적립" + "#남은 포인트 : " + user_point;
         else if (instruction.equals("minus"))
             str = getNowDateTime() + "#" + point+" 포인트 차감" + "#남은 포인트 : " + user_point;
 
-        //write on the file
-        try {
-            BufferedWriter buf = new BufferedWriter(new FileWriter(saveFile, true));
-            buf.append(str);
-            buf.newLine(); // 개행
-            buf.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        return str;
+    }
+
+    private void addHistoryToFile(String str) {
+
+        if (str.equals("join")) {
+            System.out.println("addHistoryToFile : join");  //임시, 확인용
+            File f = new File(directory + File.separator + "user"+userId+"_history.txt");
+            if (!f.exists()) {
+                System.out.println("addHistoryToFile : join : f.exists() false");  //임시, 확인용
+
+                this.filename = "user"+userId+"_history.txt";
+                saveFile = new File(directory, filename);
+
+                //write on the file
+                try {
+                    BufferedWriter buf = new BufferedWriter(new FileWriter(saveFile, true));
+                    buf.append("회원가입을 축하합니다!#30 포인트 지급#남은 포인트 : 30");
+                    buf.newLine(); // 개행
+                    buf.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+
+                System.out.println("addHistoryToFile : join : f.exists() true");  //임시, 확인용
+            }
+        } else {
+
+//        String str = "";
+//        if (instruction.equals("plus"))
+//            str = getNowDateTime() + "#" + point+" 포인트 적립" + "#남은 포인트 : " + user_point;
+//        else if (instruction.equals("minus"))
+//            str = getNowDateTime() + "#" + point+" 포인트 차감" + "#남은 포인트 : " + user_point;
+
+            this.filename = "user" + userId + "_history.txt";
+            saveFile = new File(directory, filename);
+
+            //write on the file
+            try {
+                BufferedWriter buf = new BufferedWriter(new FileWriter(saveFile, true));
+                buf.append(str);
+                buf.newLine(); // 개행
+                buf.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

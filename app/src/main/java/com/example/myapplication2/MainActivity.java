@@ -331,6 +331,9 @@ public class MainActivity extends TabActivity {
                         userId = response.body().getUser_id();
                         ((UserPoint)getApplication()).setUserId(userId);
 
+                        ((UserPoint)getApplication()).updateUserPoint(0, "join");  //회원가입 30 포인트 지급
+
+
 //                        spec = myTabHost.newTabSpec("Community").setIndicator("POSTS").setContent(intent2);
 //                        myTabHost.addTab(spec);
 //

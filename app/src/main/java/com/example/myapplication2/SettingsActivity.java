@@ -115,16 +115,18 @@ public class SettingsActivity extends AppCompatActivity {
                 for (int i=history.size()-1; i>=0; i--) {
                     View customView = layoutInflater.inflate(R.layout.custom_history, null);
                     String s = history.get(i);
-                    String s_split[] = s.split("#");
-                    String time = s_split[0];
-                    String update = s_split[1];
-                    String mypoint = s_split[2];
+                    if (!s.equals("")) {
+                        String s_split[] = s.split("#");
+                        String time = s_split[0];
+                        String update = s_split[1];
+                        String mypoint = s_split[2];
 
-                    ((TextView)customView.findViewById(R.id.tv_update_point)).setText(update);
-                    ((TextView)customView.findViewById(R.id.tv_date_time)).setText(time);
-                    ((TextView)customView.findViewById(R.id.tv_mypoint)).setText(mypoint);
+                        ((TextView) customView.findViewById(R.id.tv_update_point)).setText(update);
+                        ((TextView) customView.findViewById(R.id.tv_date_time)).setText(time);
+                        ((TextView) customView.findViewById(R.id.tv_mypoint)).setText(mypoint);
 
-                    history_layout.addView(customView);
+                        history_layout.addView(customView);
+                    }
                 }
             }
 
