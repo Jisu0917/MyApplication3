@@ -123,7 +123,7 @@ public class UserPoint extends Application {
                 }
             } else {
 
-                System.out.println("addHistoryToFile : join : saveFiler43.exists() true");  //임시, 확인용
+                System.out.println("addHistoryToFile : join : saveFile.exists() true");  //임시, 확인용
             }
         } else {
 
