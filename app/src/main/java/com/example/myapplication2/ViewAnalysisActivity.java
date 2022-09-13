@@ -449,7 +449,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
             case "pitch":
                 return isGoodJitter(analysisContentData.getJitter());
             case "conclusion":
-                return analysisContentData.getClosingRemarks() >= 80;
+                return analysisContentData.getClosingRemarks() >= 70;
         }
 
         return false;
