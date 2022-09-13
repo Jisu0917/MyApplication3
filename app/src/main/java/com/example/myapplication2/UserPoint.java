@@ -104,14 +104,13 @@ public class UserPoint extends Application {
 
     private void addHistoryToFile(String str) {
 
+        this.filename = "user"+userId+"_history.txt";
+        saveFile = new File(directory, filename);
+
         if (str.equals("join")) {
             System.out.println("addHistoryToFile : join");  //임시, 확인용
-            File f = new File(directory + File.separator + "user"+userId+"_history.txt");
-            if (!f.exists()) {
-                System.out.println("addHistoryToFile : join : f.exists() false");  //임시, 확인용
-
-                this.filename = "user"+userId+"_history.txt";
-                saveFile = new File(directory, filename);
+            if (!saveFile.exists()) {
+                System.out.println("addHistoryToFile : join : saveFile.exists() false");  //임시, 확인용
 
                 //write on the file
                 try {
@@ -124,7 +123,7 @@ public class UserPoint extends Application {
                 }
             } else {
 
-                System.out.println("addHistoryToFile : join : f.exists() true");  //임시, 확인용
+                System.out.println("addHistoryToFile : join : saveFiler43.exists() true");  //임시, 확인용
             }
         } else {
 

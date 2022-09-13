@@ -648,7 +648,7 @@ public class RecordActivity1 extends AppCompatActivity {
 //            }
 //        }, 0);
 
-//        // 임시, 확인용
+        // 임시, 확인용
 //        String testFilename = "";
 //        if (Build.VERSION.SDK_INT >= 30) {
 //            System.out.println("android version >= 30");

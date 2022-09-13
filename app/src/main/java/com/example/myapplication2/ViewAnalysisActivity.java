@@ -414,7 +414,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
 
             //작업 Thread에서 이미지를 불러오는 작업을 완료한 뒤
             //UI 작업을 할 수 있는 메인 Thread에서 ImageView에 이미지 지정
-            iv_chart_gesture.setVisibility(View.VISIBLE);
+//            iv_chart_gesture.setVisibility(View.VISIBLE);
             iv_chart_pose.setVisibility(View.VISIBLE);
             iv_chart_speed.setVisibility(View.VISIBLE);
             iv_chart_volume_pitch.setVisibility(View.VISIBLE);
