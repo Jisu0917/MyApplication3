@@ -225,23 +225,30 @@ public class FriendActivity4 extends AppCompatActivity {
                 System.out.println("friendInfoList.get(i).getId() : " + friendInfoList.get(i).getId());  //임시, 확인용
                 friendInfoDataMap.put(friendInfoList.get(i).getId(), friendInfoList.get(i));
             }
-            for (Long nKey : friendInfoDataMap.keySet()) {
-                View customView = layoutInflater.inflate(R.layout.custom_friend_info, null);
-                UserInfoData userInfoData = friendInfoDataMap.get(nKey);
+            if (friendInfoDataMap.size() == 0) {
+                View customView = layoutInflater.inflate(R.layout.custom_textview, null);
 
-                Long id = userInfoData.getId();
-                String name = userInfoData.getName();
-                String email = userInfoData.getEmail();
-                String picture = userInfoData.getPicture();
-
-                ((LinearLayout) customView.findViewById(R.id.container)).setTag(id + ":" + email + ":" + name);
-                ((TextView) customView.findViewById(R.id.tv_name)).setText(name);
-                ((TextView) customView.findViewById(R.id.tv_id)).setText("id: " + id.intValue());
-                ((TextView) customView.findViewById(R.id.tv_email)).setText(email);
-                if (picture != null)
-                    Glide.with(this).load(picture).into((ImageView) customView.findViewById(R.id.profile_image));
-
+                ((TextView)customView.findViewById(R.id.custom_textView)).setText("+ 버튼을 눌러 친구를 추가하세요.");
                 friendlist_layout.addView(customView);
+            } else {
+                for (Long nKey : friendInfoDataMap.keySet()) {
+                    View customView = layoutInflater.inflate(R.layout.custom_friend_info, null);
+                    UserInfoData userInfoData = friendInfoDataMap.get(nKey);
+
+                    Long id = userInfoData.getId();
+                    String name = userInfoData.getName();
+                    String email = userInfoData.getEmail();
+                    String picture = userInfoData.getPicture();
+
+                    ((LinearLayout) customView.findViewById(R.id.container)).setTag(id + ":" + email + ":" + name);
+                    ((TextView) customView.findViewById(R.id.tv_name)).setText(name);
+                    ((TextView) customView.findViewById(R.id.tv_id)).setText("id: " + id.intValue());
+                    ((TextView) customView.findViewById(R.id.tv_email)).setText(email);
+                    if (picture != null)
+                        Glide.with(this).load(picture).into((ImageView) customView.findViewById(R.id.profile_image));
+
+                    friendlist_layout.addView(customView);
+                }
             }
         } else {
             System.out.println("friendInfoList is null...");
