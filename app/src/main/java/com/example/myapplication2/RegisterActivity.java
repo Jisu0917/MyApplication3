@@ -9,6 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -120,6 +122,32 @@ public class RegisterActivity extends AppCompatActivity {
                         regBoard.execute(useridToken, title_et.getText().toString(), content_et.getText().toString());
                     }
                 }
+            }
+        });
+
+        content_et.addTextChangedListener(new TextWatcher() {
+            String maxText = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                maxText = charSequence.toString();
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if (content_et.getLineCount() > 4) {
+                    Toast.makeText(RegisterActivity.this, "최대 4줄까지 입력 가능합니다.", Toast.LENGTH_SHORT).show();
+
+                    content_et.setText(maxText);
+                    content_et.setSelection(content_et.length());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
