@@ -153,7 +153,7 @@ public class RecordActivity1 extends AppCompatActivity {
         System.out.println(f);
 
         recStartBtn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.S)
+//            @RequiresApi(api = Build.VERSION_CODES.S)
             @Override
             public void onClick(View v) {
 

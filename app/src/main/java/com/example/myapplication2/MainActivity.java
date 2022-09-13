@@ -329,9 +329,9 @@ public class MainActivity extends TabActivity {
 
                         /////
                         userId = response.body().getUser_id();
-                        ((UserPoint)getApplication()).setUserId(userId);
+                        ((UserPoints)getApplication()).setUserId(userId);
 
-                        ((UserPoint)getApplication()).updateUserPoint(0, "join");  //회원가입 30 포인트 지급
+                        ((UserPoints)getApplication()).updateUserPoint(0, "join");  //회원가입 30 포인트 지급
 
 
 //                        spec = myTabHost.newTabSpec("Community").setIndicator("POSTS").setContent(intent2);
@@ -397,7 +397,7 @@ public class MainActivity extends TabActivity {
 
                         putInfoToIntents(response.body());
 
-                        ((UserPoint)getApplication()).setUserPoint(response.body().getPoint());
+                        ((UserPoints)getApplication()).setUserPoint(response.body().getPoint());
                     }
                 }
 
@@ -449,8 +449,8 @@ public class MainActivity extends TabActivity {
                         Log.d("updatePoint: POST", "POST Success!");
                         Log.d("updatePoint: POST", ">>>response.body()="+response.body());
 
-                        ((UserPoint)context.getApplicationContext()).updateUserPoint(point, insturction);
-                        System.out.println("포인트가 업데이트 되었습니다. 현재 user_point: " + ((UserPoint)context.getApplicationContext()).getUserPoint());
+                        ((UserPoints)context.getApplicationContext()).updateUserPoint(point, insturction);
+                        System.out.println("포인트가 업데이트 되었습니다. 현재 user_point: " + ((UserPoints)context.getApplicationContext()).getUserPoint());
                     }
                     else {
                         System.out.println("updatePoint: @@@@ response is not successful...");

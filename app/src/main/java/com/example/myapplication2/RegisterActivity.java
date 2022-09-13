@@ -114,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "작성하지 않은 항목이 있습니다.", Toast.LENGTH_SHORT).show();
                 else {
                     //포인트 정보 확인 및 차감
-                    if (((UserPoint) getApplication()).getUserPoint() < 10)
+                    if (((UserPoints) getApplication()).getUserPoint() < 10)
                         Toast.makeText(RegisterActivity.this, "포인트가 부족하여 게시글을 등록할 수 없습니다.", Toast.LENGTH_SHORT).show();
                     else {
                         // 게시물 등록 함수

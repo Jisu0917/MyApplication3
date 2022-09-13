@@ -74,12 +74,12 @@ public class SettingsActivity extends AppCompatActivity {
         if (name!=null) tv_name.setText(name);
         if (email!=null) tv_email.setText(email);
         tv_id.setText(""+id);
-        tv_point.setText("" + ((UserPoint)getApplication()).getUserPoint());
+        tv_point.setText("" + ((UserPoints)getApplication()).getUserPoint());
         tv_num_practice.setText(num_of_practices+"개");
         tv_num_post.setText(num_of_posts+"개");
         tv_num_feedback.setText(num_of_feedbacks+"개");
         tv_num_friend.setText(num_of_friends+"명");
-        
+
         history_layout = (LinearLayout) findViewById(R.id.history_layout);
 
         setHistoryView();
@@ -89,13 +89,13 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        tv_point.setText("" + ((UserPoint)getApplication()).getUserPoint());
+        tv_point.setText("" + ((UserPoints)getApplication()).getUserPoint());
 
         setHistoryView();
     }
 
     private void setHistoryView() {
-        history = ((UserPoint)getApplication()).getHistory();
+        history = ((UserPoints)getApplication()).getHistory();
 
         history_layout.removeAllViews();
 

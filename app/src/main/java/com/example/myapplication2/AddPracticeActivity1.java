@@ -146,7 +146,7 @@ public class AddPracticeActivity1 extends AppCompatActivity {
         }
         if (!title.equals("")) {
             //포인트 정보 확인
-            if (((UserPoint)getApplication()).getUserPoint() < 10) {
+            if (((UserPoints)getApplication()).getUserPoint() < 10) {
                 Toast.makeText(AddPracticeActivity1.this, "포인트가 부족하여 연습을 시작할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 finish();
             }
