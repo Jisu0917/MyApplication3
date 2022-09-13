@@ -397,7 +397,7 @@ public class RecordActivity1 extends AppCompatActivity {
 //        iv_guideline.getLayoutParams().width = (int) (width * 0.35);  // 비율 : 화면 가로 너비의 35%
         /// 이미지뷰 marginTop 조절
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, (int) (height /6), 0, 0);  // 비율 : 화면 세로 길이의 7분의 1
+        lp.setMargins(0, (int) (height /5), 0, 0);  // 비율 : 화면 세로 길이의 5분의 1
         lp.height = (int) (width * 0.30);  // 비율 : 화면 가로 너비의 30%
         lp.width = (int) (width * 0.30);  // 비율 : 화면 가로 너비의 30%
         iv_guideline.setLayoutParams(lp);
