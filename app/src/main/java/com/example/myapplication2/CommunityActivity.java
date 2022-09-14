@@ -88,7 +88,7 @@ public class CommunityActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CommunityActivity.this, RegisterActivity.class);
-                intent.putExtra("userid", userId);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -203,7 +203,7 @@ public class CommunityActivity extends AppCompatActivity {
         intent.putExtra("practiceId", practice_id);
         intent.putExtra("practice_user_id", user_id);
 
-        intent.putExtra("userid", userId);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 
