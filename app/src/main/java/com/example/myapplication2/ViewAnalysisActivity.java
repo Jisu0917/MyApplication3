@@ -343,7 +343,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                     if (practice_id <= 234)
                         url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"/"+practice_id+"/movement.png");
                     else
-                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"_"+practice_id+"_movement.png");
+                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+ practice_id + "_" + practice_user_id + "_movement.png");
 
 
                     // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
@@ -359,7 +359,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                     if (practice_id <= 234)
                         url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"/"+practice_id+"/movement_detail.png");
                     else
-                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"_"+practice_id+"_movement_detail.png");
+                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+ practice_id + "_" + practice_user_id + "_movement_detail.png");
 
                     // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
                     conn = (HttpURLConnection)url.openConnection();
@@ -374,7 +374,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                     if (practice_id <= 234)
                         url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"/"+practice_id+"/speed.png");
                     else
-                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"_"+practice_id+"_speed.png");
+                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+ practice_id + "_" + practice_user_id + "_speed.png");
 
                     // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
                     conn = (HttpURLConnection)url.openConnection();
@@ -389,7 +389,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                     if (practice_id <= 234)
                         url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"/"+practice_id+"/shimmer_jitter.png");
                     else
-                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"_"+practice_id+"_shimmer_jitter.png");
+                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+ practice_id + "_" + practice_user_id + "_shimmer_jitter.png");
 
                     // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
                     conn = (HttpURLConnection)url.openConnection();
@@ -404,7 +404,7 @@ public class ViewAnalysisActivity extends AppCompatActivity {
                     if (practice_id <= 234)
                         url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"/"+practice_id+"/closing_remarks.png");
                     else
-                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+practice_user_id+"_"+practice_id+"_closing_remarks.png");
+                        url = new URL("https://sookpeech-wavfile.s3.ap-northeast-2.amazonaws.com/"+ practice_id + "_" + practice_user_id + "_closing_remarks.png");
 
                     // web에서 이미지를 가져와 ImageView에 저장할 Bitmap을 만든다.
                     conn = (HttpURLConnection)url.openConnection();
