@@ -77,31 +77,38 @@ public class UserPoints extends Application {
         if (str.equals("join")) {
             Cursor cursor = db.rawQuery(" SELECT * FROM pointHistory ", null);
             if (cursor.moveToFirst()) {
-                int count = 1;
-                while (cursor.moveToNext())
-                    count++;
+                int count = 0;
+                if (cursor.getInt(0) == userId) {
+                    count = 1;
+                    while (cursor.moveToNext()) {
+                        if (cursor.getInt(0) == userId) {
+                            count++;
+                        }
+                    }
+                }
 
                 System.out.println("count : " + count);  //임시, 확인용
 
                 if (count == 0) {
                     String s = "회원가입을 축하합니다!#30 포인트 지급#남은 포인트 : 30";
-                    String sql = "INSERT INTO pointHistory (history) VALUES ('" + s + "');";
+                    String sql = "INSERT INTO pointHistory (userid,history) VALUES (" + userId + ", '" + s + "');";
                     db.execSQL(sql);
                 }
             } else {
                 System.out.println("cursor.moveToFirst() null");  //임시, 확인용
                 String s = "회원가입을 축하합니다!#30 포인트 지급#남은 포인트 : 30";
-                String sql = "INSERT INTO pointHistory (history) VALUES ('" + s + "');";
+                String sql = "INSERT INTO pointHistory (userid,history) VALUES (" + userId + " , '" + s + "');";
                 db.execSQL(sql);
             }
         } else {
-            String sql = "INSERT INTO pointHistory (history) VALUES ('" + str + "');";
+            String sql = "INSERT INTO pointHistory (userid,history) VALUES (" + userId + ", '" + str + "');";
             db.execSQL(sql);
         }
 
     }
 
     public ArrayList<String> getHistory() {
+        printDB();
 
 //        saveFile = new File(directory, filename);
         
@@ -110,9 +117,13 @@ public class UserPoints extends Application {
         cursor = db.rawQuery(" SELECT * FROM pointHistory ", null);
         //startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
         if (cursor.moveToFirst()) {
-            history.add(cursor.getString(0));
-            while (cursor.moveToNext()) {
-                history.add(cursor.getString(0));
+            if (cursor.getInt(0) == userId) {
+                history.add(cursor.getString(1));
+                while (cursor.moveToNext()) {
+                    if (cursor.getInt(0) == userId) {
+                        history.add(cursor.getString(1));
+                    }
+                }
             }
         } else {
             System.out.println("cursor.moveToFirst()=null!");
@@ -128,5 +139,17 @@ public class UserPoints extends Application {
         String nowTime = sdf.format(date);
 
         return nowTime;
+    }
+
+    private void printDB() {
+        cursor = db.rawQuery(" SELECT * FROM pointHistory ", null);
+        //startManagingCursor(cursor);    // 엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
+        if (cursor.moveToFirst()) {
+            System.out.println(cursor.getInt(0) + ", " + cursor.getString(1));
+            while (cursor.moveToNext())
+                System.out.println(cursor.getInt(0) + ", " + cursor.getString(1));
+        } else {
+            System.out.println("cursor.moveToFirst()=null!");
+        }
     }
 }

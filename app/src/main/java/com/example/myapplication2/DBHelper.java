@@ -25,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE alarmTable ( alarmCount INTEGER )");
         db.execSQL("CREATE TABLE practiceTable ( practice_id INTEGER, file_url TEXT, time TEXT )");
 
-        db.execSQL("CREATE TABLE pointHistory ( history TEXT )");
+        db.execSQL("CREATE TABLE pointHistory ( userid INTEGER DEFAULT 0, history TEXT )");
     }
 
     /* index
