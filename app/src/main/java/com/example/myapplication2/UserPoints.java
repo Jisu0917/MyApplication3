@@ -80,10 +80,10 @@ public class UserPoints extends Application {
                 int count = 0;
                 if (cursor.getInt(0) == userId) {
                     count = 1;
-                    while (cursor.moveToNext()) {
-                        if (cursor.getInt(0) == userId) {
-                            count++;
-                        }
+                }
+                while (cursor.moveToNext()) {
+                    if (cursor.getInt(0) == userId) {
+                        count++;
                     }
                 }
 
@@ -119,12 +119,13 @@ public class UserPoints extends Application {
         if (cursor.moveToFirst()) {
             if (cursor.getInt(0) == userId) {
                 history.add(cursor.getString(1));
-                while (cursor.moveToNext()) {
-                    if (cursor.getInt(0) == userId) {
-                        history.add(cursor.getString(1));
-                    }
+            }
+            while (cursor.moveToNext()) {
+                if (cursor.getInt(0) == userId) {
+                    history.add(cursor.getString(1));
                 }
             }
+
         } else {
             System.out.println("cursor.moveToFirst()=null!");
         }

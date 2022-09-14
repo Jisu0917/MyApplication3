@@ -1,5 +1,6 @@
 package com.example.myapplication2;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication2.api.dto.UserInfoData;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -86,7 +95,8 @@ public class SettingsActivity extends AppCompatActivity {
         history_layout = (LinearLayout) findViewById(R.id.history_layout);
 
         setHistoryView();
-    }
+
+    }//end of OnCreate
 
     @Override
     protected void onResume() {
@@ -112,6 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
             //// 로그아웃 코드 ////
 
             Toast.makeText(SettingsActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+
             ////////////////////
 
             return true;

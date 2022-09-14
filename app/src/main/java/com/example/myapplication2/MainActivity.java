@@ -35,11 +35,16 @@ import com.example.myapplication2.api.dto.PointData;
 import com.example.myapplication2.api.dto.PracticesData;
 import com.example.myapplication2.api.dto.UserInfoData;
 import com.example.myapplication2.api.objects.UserIdObject;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -50,7 +55,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends TabActivity {
+public class MainActivity extends TabActivity implements GoogleApiClient.OnConnectionFailedListener {
     static String EXTERNAL_STORAGE_PATH = "";
 
     public static Context context_main;
@@ -468,4 +473,8 @@ public class MainActivity extends TabActivity {
 
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        
+    }
 }
