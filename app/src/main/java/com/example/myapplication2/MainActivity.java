@@ -423,10 +423,10 @@ public class MainActivity extends TabActivity implements GoogleApiClient.OnConne
 
     private void putInfoToIntents(UserInfoData userInfoData){
         Log.d("PUT_INTENTS", userInfoData.getEmail());
-        // TODO: intent3 - HomeActivity <- Practices
+        // TODO: intent3 - HomeActivity1 <- Practices
         intent3.putExtra("practices", userInfoData.getPractices());
 
-        // TODO: intent4 - FriendActivity <- Friends
+        // TODO: intent4 - FriendActivity4 <- Friends
 
         // intent5 - SettingsActivity <- basic Userinfo
         intent5.putExtra("id", userInfoData.getId());
@@ -438,6 +438,15 @@ public class MainActivity extends TabActivity implements GoogleApiClient.OnConne
         intent5.putExtra("num_of_posts", userInfoData.getPosts().length);
         intent5.putExtra("num_of_friends", userInfoData.getFriends().length);
         intent5.putExtra("num_of_feedbacks", userInfoData.getFeedbacks().length);
+
+        // intent2 - CommunityActivity <- basic Userinfo
+        intent2.putExtra("id", userInfoData.getId());
+
+        // intent3 - HomeActivity1 <- basic Userinfo
+        intent3.putExtra("id", userInfoData.getId());
+
+        // intent4 - FriendActivity4 <- basic Userinfo
+        intent4.putExtra("id", userInfoData.getId());
     }
 
     // 포인트 업데이트 함수

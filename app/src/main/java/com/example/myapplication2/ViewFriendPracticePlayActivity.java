@@ -58,7 +58,7 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
 
     static RetrofitAPI retrofitAPI;
 
-    static Long userId = MainActivity.userId;
+    static Long userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +94,8 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
         practice_user_id = it.getLongExtra("practice_user_id", 0);
 //        parent_activity = it.getStringExtra("PRENT ACTIVITY");
 
+        userId = it.getLongExtra("userId", 0);
+
         TextView tv_toolber = (TextView) toolbar.findViewById(R.id.tv_toolbar);
         tv_toolber.setText("친구 " + friend_name + "의 연습 정보 보기");
 
@@ -117,6 +119,8 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
                     intent.putExtra("practice_id", practice_id);
                     intent.putExtra("practice_title", practice_title);
                     intent.putExtra("practice_user_id", practice_user_id);
+
+                    intent.putExtra("userId", userId);
                     startActivity(intent);
                 } else {
                     Toast.makeText(ViewFriendPracticePlayActivity.this, "분석이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();

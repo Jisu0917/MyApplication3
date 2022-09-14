@@ -44,7 +44,7 @@ public class CommunityActivity extends AppCompatActivity {
     Toolbar toolbar;
     ActionBar actionBar;
 
-    static Long userId = MainActivity.userId;
+    static Long userId;
     static RetrofitAPI retrofitAPI;
 
     FloatingActionButton fab_register;
@@ -71,6 +71,9 @@ public class CommunityActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
 
         context = this;
+
+        Intent it = getIntent();
+        userId = it.getLongExtra("id", 0);
 
         tabWidget.setVisibility(View.VISIBLE);
 
@@ -199,6 +202,8 @@ public class CommunityActivity extends AppCompatActivity {
         intent.putExtra("postId", id);
         intent.putExtra("practiceId", practice_id);
         intent.putExtra("practice_user_id", user_id);
+
+        intent.putExtra("userid", userId);
         startActivity(intent);
     }
 

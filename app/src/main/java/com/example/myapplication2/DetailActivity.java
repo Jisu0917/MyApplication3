@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -69,7 +70,7 @@ public class DetailActivity extends AppCompatActivity {
     String title = "";
     String content = "";
     Long postId, post_user_id, practiceId, practice_user_id;
-    Long userId = MainActivity.userId;
+    Long userId;
 
     ArrayList<FeedbacksData> feedbackOfUsersDataList = new ArrayList<>();
     ArrayList<FeedbacksData> feedbackOfFriendsDataList = new ArrayList<>();
@@ -114,7 +115,6 @@ public class DetailActivity extends AppCompatActivity {
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 
-
 // ListActivity 에서 넘긴 변수들을 받아줌
 //        board_seq = getIntent().getStringExtra("board_seq");
 //        userid = getIntent().getStringExtra("userid");
@@ -123,6 +123,8 @@ public class DetailActivity extends AppCompatActivity {
         postId = getIntent().getLongExtra("postId", 0);
         practiceId = getIntent().getLongExtra("practiceId", 0);
         practice_user_id = getIntent().getLongExtra("practice_user_id", 0);
+
+        userId = getIntent().getLongExtra("userId", 0);
 
 // 컴포넌트 초기화
         iv_profile = (ImageView) findViewById(R.id.iv_profile);

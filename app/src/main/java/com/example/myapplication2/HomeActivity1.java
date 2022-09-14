@@ -49,7 +49,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity1 extends AppCompatActivity {
-    static Long userId = MainActivity.userId;
+    static Long userId;
     static RetrofitAPI retrofitAPI;
 
     Toolbar toolbar;
@@ -85,6 +85,9 @@ public class HomeActivity1 extends AppCompatActivity {
 
         context = this;
 
+        Intent it = getIntent();
+        userId = it.getLongExtra("id", 0);
+
         System.out.println("HomeActivity1: onCreate");  //임시, 확인용
 
         tabWidget.setVisibility(View.VISIBLE);
@@ -101,6 +104,7 @@ public class HomeActivity1 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity1.this, AddPracticeActivity1.class);
                 intent.putExtra("Home", "ADD");
+                intent.putExtra("userId", userId);
                 startActivity(intent);
             }
         });
@@ -247,6 +251,8 @@ public class HomeActivity1 extends AppCompatActivity {
         intent.putExtra("practice_scope", scope);
         intent.putExtra("practice_sort", sort);
         intent.putExtra("PRENT ACTIVITY", "HomeActivity1");
+
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 
@@ -272,6 +278,7 @@ public class HomeActivity1 extends AppCompatActivity {
             case R.id.menu_edit:
                 Intent intent = new Intent(HomeActivity1.this, EditPracticeActivity1.class);
                 intent.putExtra("practice_id", practice_id);
+                intent.putExtra("userId", userId);
                 startActivity(intent);
                 break;
 

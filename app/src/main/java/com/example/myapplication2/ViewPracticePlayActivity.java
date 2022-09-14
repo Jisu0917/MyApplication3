@@ -61,7 +61,7 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
 
     static RetrofitAPI retrofitAPI;
 
-    static Long userId = MainActivity.userId;
+    static Long userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +81,9 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
 //        //액션바에 뒤로가기 버튼 추가
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Intent it = getIntent();
+        userId = it.getLongExtra("userId", 0);
 
         tv_practiceTitle = (TextView) findViewById(R.id.tv_practice_title);
         tv_scope = (TextView) findViewById(R.id.tv_scope);
@@ -108,6 +111,8 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
         videoView.requestFocus();
         videoView.start();  // 비디오뷰 시작
 
+        System.out.println("userId : " + userId);  //임시, 확인용
+
         btn_showAnalysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +121,8 @@ public class ViewPracticePlayActivity extends AppCompatActivity {
                     intent.putExtra("practice_id", practice_id);
                     intent.putExtra("practice_title", practice_title);
                     intent.putExtra("practice_user_id", userId);
+
+                    intent.putExtra("userId", userId);
                     startActivity(intent);
                 } else {
                     Toast.makeText(ViewPracticePlayActivity.this, "분석이 완료되지 않았습니다.", Toast.LENGTH_SHORT).show();

@@ -33,7 +33,7 @@ public class PublicPracticeList extends AppCompatActivity {
     Toolbar toolbar;
     ActionBar actionBar;
 
-    static Long userId = MainActivity.userId;
+    static Long userId;
     static RetrofitAPI retrofitAPI;
 
     Long friend_id;
@@ -66,6 +66,8 @@ public class PublicPracticeList extends AppCompatActivity {
         friend_id = it.getLongExtra("friend_id", 0L);
         friend_name = it.getStringExtra("friend_name");
         setTitle("친구 " + friend_name +"의 공개된 연습 목록");
+
+        userId = it.getLongExtra("userId", 0);
 
         TextView tv_toolber = (TextView) toolbar.findViewById(R.id.tv_toolbar);
         tv_toolber.setText("친구 " + friend_name +"의 공개된 연습 목록");
@@ -218,6 +220,8 @@ public class PublicPracticeList extends AppCompatActivity {
         intent.putExtra("practice_user_id", practice_user_id);
 
         intent.putExtra("PRENT ACTIVITY", "PublicPracticeList");
+
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 }

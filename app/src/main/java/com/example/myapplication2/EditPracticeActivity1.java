@@ -52,7 +52,7 @@ public class EditPracticeActivity1 extends AppCompatActivity {
 
     public static Context context;
 
-    static Long userId = MainActivity.userId;
+    static Long userId;
 
     static RetrofitAPI retrofitAPI;
 
@@ -69,6 +69,9 @@ public class EditPracticeActivity1 extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Intent it = getIntent();
+        userId = it.getLongExtra("userId", 0);
 
         context = getApplicationContext();
 

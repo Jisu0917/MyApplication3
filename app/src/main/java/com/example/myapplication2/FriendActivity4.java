@@ -37,7 +37,7 @@ public class FriendActivity4 extends AppCompatActivity {
     Toolbar toolbar;
     ActionBar actionBar;
 
-    static Long userId = MainActivity.userId;
+    static Long userId;
     static RetrofitAPI retrofitAPI;
 
     LinearLayout friendlist_layout;
@@ -61,6 +61,9 @@ public class FriendActivity4 extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+
+        Intent it = getIntent();
+        userId = it.getLongExtra("id", 0);
 
 
         friendlist_layout = (LinearLayout) findViewById(R.id.friendlist_layout);
@@ -267,6 +270,8 @@ public class FriendActivity4 extends AppCompatActivity {
         Intent intent = new Intent(FriendActivity4.this, PublicPracticeList.class);
         intent.putExtra("friend_id", id);
         intent.putExtra("friend_name", name);
+
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 }

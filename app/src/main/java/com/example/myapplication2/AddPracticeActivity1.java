@@ -30,6 +30,7 @@ import java.util.TimeZone;
 
 public class AddPracticeActivity1 extends AppCompatActivity {
     final int NO_INPUT = Integer.MAX_VALUE;
+    static Long userId;
 
     Toolbar toolbar;
     ActionBar actionBar;
@@ -57,6 +58,10 @@ public class AddPracticeActivity1 extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+        Intent it = getIntent();
+        userId = it.getLongExtra("userId", 0);
 
         editText_title = (EditText)findViewById(R.id.editText_title);
         tv_scope = (TextView) findViewById(R.id.tv_scope);
@@ -157,6 +162,8 @@ public class AddPracticeActivity1 extends AppCompatActivity {
                 intent.putExtra("sort", sort);
                 intent.putExtra("sensitivity", sensitivity);
                 intent.putExtra("gender", gender);
+
+                intent.putExtra("userId", userId);
                 startActivity(intent);
                 finish();
             }

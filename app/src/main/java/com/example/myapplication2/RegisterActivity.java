@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     // 유저아이디 변수
     String useridToken = "";
 
-    static Long userId = MainActivity.userId;
+    static Long userId;
 
     static int selected_practice_mid;
     static Long selected_practice_id;
@@ -78,6 +79,9 @@ public class RegisterActivity extends AppCompatActivity {
 //        //액션바에 뒤로가기 버튼 추가
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Intent it = getIntent();
+        userId = it.getLongExtra("userId", 0);
 
 // ListActivity 에서 넘긴 userid 를 변수로 받음
         useridToken = getIntent().getStringExtra("userid");

@@ -2,6 +2,7 @@ package com.example.myapplication2;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +50,7 @@ public class AddFriendActivity extends AppCompatActivity {
     LinearLayout result_layout;
 
     String search_name = "";
-    static Long userId = MainActivity.userId;
+    static Long userId;
     static RetrofitAPI retrofitAPI;
 
     UserInfoData[] userInfoDataList;
@@ -69,6 +70,9 @@ public class AddFriendActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Intent it = getIntent();
+        userId = it.getLongExtra("userId", 0);
 
         editText_name = (EditText) findViewById(R.id.editText_name);
         btn_search = (Button) findViewById(R.id.btn_search);

@@ -89,7 +89,7 @@ public class RecordActivity1 extends AppCompatActivity {
     int sensitivity;
 
 
-    static Long userId = MainActivity.userId;
+    static Long userId;
 
     static RetrofitAPI retrofitAPI;
 
@@ -106,6 +106,9 @@ public class RecordActivity1 extends AppCompatActivity {
         sort = it.getStringExtra("sort");
         gender = it.getStringExtra("gender");
         sensitivity = it.getIntExtra("sensitivity", 0);
+
+        Intent it = getIntent();
+        userId = it.getLongExtra("userId", 0);
 
 
         // 카메라 프리뷰를  전체화면으로 보여주기 위해 셋팅한다.
