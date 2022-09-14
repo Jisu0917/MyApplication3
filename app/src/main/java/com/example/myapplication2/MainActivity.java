@@ -68,6 +68,7 @@ public class MainActivity extends TabActivity implements GoogleApiClient.OnConne
 
     private final int RC_SIGN_IN = 123;
     GoogleSignInClient mGoogleSignInClient;
+    GoogleApiClient mGoogleApiClient;
 
     static String personName;
     static String idToken;
@@ -124,6 +125,12 @@ public class MainActivity extends TabActivity implements GoogleApiClient.OnConne
                     }
                 }
         );
+        /////
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        /////
 
 
         tabWidget = (TabWidget)findViewById(android.R.id.tabs);
