@@ -643,7 +643,7 @@ public class DetailActivity extends AppCompatActivity {
 
             ////
             getFeedbackOfUsers();
-            getFeedbackOfFriends();
+            //getFeedbackOfFriends();
             ////
 
 
@@ -768,6 +768,118 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setCommentView() {
+        comment_layout.removeAllViews();
+
+        //// JSONArray, JSONObject 로 받은 데이터 파싱
+//                JSONArray jsonArray = null;
+//                jsonArray = new JSONArray(result);
+
+// custom_comment 를 불러오기 위한 객체
+        LayoutInflater layoutInflater = LayoutInflater.from(DetailActivity.this);
+        //LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+        if (feedbackOfUsersDataList != null) {
+            if (feedbackOfUsersDataList.size() == 0) {  //피드백이 1개도 없을 때
+                View customView = layoutInflater.inflate(R.layout.custom_textview, null);
+
+                ((TextView)customView.findViewById(R.id.custom_textView)).setText("아직 받은 피드백이 없습니다.");
+                comment_layout.addView(customView);
+            } else {  //피드백이 1개 이상 있을 때
+                //User 피드백 id순으로 정렬
+                for (int i = 0; i < feedbackOfUsersDataList.size(); i++) {
+                    feedbackDataMap.put(feedbackOfUsersDataList.get(i).getId(), feedbackOfUsersDataList.get(i));
+                }
+//                Object[] mapkey = feedbackDataMap.keySet().toArray();
+//                Arrays.sort(mapkey);
+//
+                System.out.println("feedbackDataMap.keySet(): " + feedbackDataMap.keySet());  //임시, 확인용
+
+                //뷰 구성하기
+                int cmt_count = 1;
+                for (Long nKey : feedbackDataMap.keySet()) {
+                    View customView = layoutInflater.inflate(R.layout.custom_comment, null);
+                    FeedbacksData feedback = feedbackDataMap.get(nKey);
+
+//                        Long feedbackId = feedback.getId();
+//                        String initiator = feedback.getInitiator(); //USER, FRIEND
+                    int speed_score = feedback.getSpeed_score();
+                    String speed_comment = feedback.getSpeed_comment();
+                    int tone_score = feedback.getTone_score();
+                    String tone_comment = feedback.getTone_comment();
+                    int closing_score = feedback.getClosing_score();
+                    String closing_comment = feedback.getClosing_comment();
+                    String initiator = "";
+                    if (feedback.getInitiator().equals("USER"))
+                        initiator = "익명";
+                    else if (feedback.getInitiator().equals("FRIEND"))
+                        initiator = "친구";
+
+                    //임시, 확인용
+                    System.out.println("speed : " + speed_score + ", " + speed_comment);
+                    System.out.println("tone : " + tone_score + ", " + tone_comment);
+                    System.out.println("closing : " + closing_score + ", " + closing_comment);
+
+                    ((TextView)customView.findViewById(R.id.cmt_count)).setText(initiator + "의 댓글 " + cmt_count);
+                    ((TextView) customView.findViewById(R.id.cmt_speedscore_tv)).setText(numberToStars(speed_score));
+                    ((TextView) customView.findViewById(R.id.cmt_speedcmt_tv)).setText(speed_comment);
+                    ((TextView) customView.findViewById(R.id.cmt_tonescore_tv)).setText(numberToStars(tone_score));
+                    ((TextView) customView.findViewById(R.id.cmt_tonecmt_tv)).setText(tone_comment);
+                    ((TextView) customView.findViewById(R.id.cmt_closingscore_tv)).setText(numberToStars(closing_score));
+                    ((TextView) customView.findViewById(R.id.cmt_closingcmt_tv)).setText(closing_comment);
+
+                    // 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
+                    comment_layout.addView(customView);
+
+                    cmt_count++;
+                }
+
+
+//                int cmt_count = 1;
+//                for (int i = 0; i < feedbackOfUsersDataList.size(); i++) {
+//                    View customView = layoutInflater.inflate(R.layout.custom_comment, null);
+//                    FeedbacksData feedback = feedbackOfUsersDataList.get(i);
+//
+////                        Long feedbackId = feedback.getId();
+////                        String initiator = feedback.getInitiator(); //USER, FRIEND
+//                    int speed_score = feedback.getSpeed_score();
+//                    String speed_comment = feedback.getSpeed_comment();
+//                    int tone_score = feedback.getTone_score();
+//                    String tone_comment = feedback.getTone_comment();
+//                    int closing_score = feedback.getClosing_score();
+//                    String closing_comment = feedback.getClosing_comment();
+//                    String initiator = "";
+//                    if (feedback.getInitiator().equals("USER"))
+//                        initiator = "익명";
+//                    else if (feedback.getInitiator().equals("FRIEND"))
+//                        initiator = "친구";
+//
+//                    //임시, 확인용
+//                    System.out.println("speed : " + speed_score + ", " + speed_comment);
+//                    System.out.println("tone : " + tone_score + ", " + tone_comment);
+//                    System.out.println("closing : " + closing_score + ", " + closing_comment);
+//
+//                    ((TextView)customView.findViewById(R.id.cmt_count)).setText(initiator + "의 댓글 " + cmt_count);
+//                    ((TextView) customView.findViewById(R.id.cmt_speedscore_tv)).setText(numberToStars(speed_score));
+//                    ((TextView) customView.findViewById(R.id.cmt_speedcmt_tv)).setText(speed_comment);
+//                    ((TextView) customView.findViewById(R.id.cmt_tonescore_tv)).setText(numberToStars(tone_score));
+//                    ((TextView) customView.findViewById(R.id.cmt_tonecmt_tv)).setText(tone_comment);
+//                    ((TextView) customView.findViewById(R.id.cmt_closingscore_tv)).setText(numberToStars(closing_score));
+//                    ((TextView) customView.findViewById(R.id.cmt_closingcmt_tv)).setText(closing_comment);
+//
+//                    // 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
+//                    comment_layout.addView(customView);
+//
+//                    cmt_count++;
+//                }
+            }
+
+        } else {
+            System.out.println("LoadCmt : onPostExecute : feedbackOfUsersDataList is null...");
+        }
+    }
+
+    private void setCommentView1() {
         comment_layout.removeAllViews();
 
         //// JSONArray, JSONObject 로 받은 데이터 파싱
