@@ -54,9 +54,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".HomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".HomeActivity1"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
@@ -69,9 +66,6 @@
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddPracticeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".AddPracticeActivity1"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait" >
@@ -79,13 +73,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity1" />
         </activity>
-        <activity
-            android:name=".ShowPracticeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ViewPracticeActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ViewPracticePlayActivity"
             android:theme="@style/AppTheme"
@@ -100,22 +87,10 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".PlayActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".PlayPracticeActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".ShowAnalysisActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ViewAnalysisActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
         </activity>
-        <activity
-            android:name=".EditPracticeActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".EditPracticeActivity1"
             android:theme="@style/AppTheme"
@@ -124,12 +99,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity1" />
         </activity>
-        <activity android:name=".GraphActivity"/>
-        <activity android:name=".PieChart"/>
-        <activity android:name=".LineChart"/>
-        <activity android:name=".BarChart"/>
-        <activity android:name=".ScatterPlot" />
-
         <activity android:name=".CommunityActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait" />
@@ -147,8 +116,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CommunityActivity" />
         </activity>
-        <activity android:name=".ListActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".PublicPracticeList"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait" >
