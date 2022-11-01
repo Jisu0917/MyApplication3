@@ -15,7 +15,6 @@
         android:layout_marginTop="5dp"
         android:scaleType="fitXY"
         android:layout_gravity="center"
-        android:src="@drawable/ic_bulb_off"
         android:layout_marginBottom="2dp"/>
 
     <TextView

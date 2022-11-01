@@ -271,45 +271,6 @@ public class ViewFriendPracticePlayActivity extends AppCompatActivity {
 
                     cmt_count++;
                 }
-
-
-//                int cmt_count = 1;
-//                for (int i = 0; i < feedbackOfUsersDataList.size(); i++) {
-//                    View customView = layoutInflater.inflate(R.layout.custom_comment, null);
-//                    FeedbacksData feedback = feedbackOfUsersDataList.get(i);
-//
-////                        Long feedbackId = feedback.getId();
-////                        String initiator = feedback.getInitiator(); //USER, FRIEND
-//                    int speed_score = feedback.getSpeed_score();
-//                    String speed_comment = feedback.getSpeed_comment();
-//                    int tone_score = feedback.getTone_score();
-//                    String tone_comment = feedback.getTone_comment();
-//                    int closing_score = feedback.getClosing_score();
-//                    String closing_comment = feedback.getClosing_comment();
-//                    String initiator = "";
-//                    if (feedback.getInitiator().equals("USER"))
-//                        initiator = "익명";
-//                    else if (feedback.getInitiator().equals("FRIEND"))
-//                        initiator = "친구";
-//
-//                    //임시, 확인용
-//                    System.out.println("speed : " + speed_score + ", " + speed_comment);
-//                    System.out.println("tone : " + tone_score + ", " + tone_comment);
-//                    System.out.println("closing : " + closing_score + ", " + closing_comment);
-//
-//                    ((TextView)customView.findViewById(R.id.cmt_count)).setText(initiator + "의 댓글 " + cmt_count);
-//                    ((TextView) customView.findViewById(R.id.cmt_speedscore_tv)).setText(numberToStars(speed_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_speedcmt_tv)).setText(speed_comment);
-//                    ((TextView) customView.findViewById(R.id.cmt_tonescore_tv)).setText(numberToStars(tone_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_tonecmt_tv)).setText(tone_comment);
-//                    ((TextView) customView.findViewById(R.id.cmt_closingscore_tv)).setText(numberToStars(closing_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_closingcmt_tv)).setText(closing_comment);
-//
-//                    // 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
-//                    comment_layout.addView(customView);
-//
-//                    cmt_count++;
-//                }
             }
 
         } else {

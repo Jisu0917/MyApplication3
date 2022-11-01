@@ -190,81 +190,6 @@ public class RecordActivity1 extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 try {
-//                                    Toast.makeText(RecordActivity1.this, "내장메모리에 영상 저장을 시작합니다.", Toast.LENGTH_SHORT).show();
-
-                                    //////////
-//                                    // 내장메모리에 영상 저장
-//                                    Uri uri = null;
-//
-//                                    Uri filesUri = MediaStore.Files.getContentUri("external");
-//                                    String[] projection = {MediaStore.MediaColumns._ID, MediaStore.MediaColumns.TITLE};
-//                                    String selection = MediaStore.MediaColumns.DATA + " = ?";
-//                                    String[] args = {filename};
-//                                    Cursor c = getContentResolver().query(filesUri, projection, selection, args, null);
-//
-//                                    // We expect a single unique record to be returned, since _data is unique
-//                                    if (c.getCount() == 1) {
-//                                        c.moveToFirst();
-//                                        long rowId = c.getLong((int) c.getColumnIndex(MediaStore.MediaColumns._ID));
-//                                        String title = c.getString((int) c.getColumnIndex(MediaStore.MediaColumns.TITLE));
-//                                        c.close();
-//                                        uri = MediaStore.Files.getContentUri("external", rowId);
-//
-//                                        // Since all this stuff was added automatically, it might not have the metadata you want,
-//                                        // like Title, or Artist, or IsRingtone
-//                                        if (!title.equals("RecordedVideo")) {
-//                                            ContentValues values = new ContentValues();
-//                                            values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
-//                                            values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
-//                                            values.put(MediaStore.Audio.Media.ARTIST, "Mike");
-//                                            values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
-//                                            values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1000);
-//                                            values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
-//                                            values.put(MediaStore.Audio.Media.DATA, filename);
-//
-//                                            if (getContentResolver().update(uri, values, null, null) != 1) {
-//                                                throw new UnsupportedOperationException(); // update failed
-//                                            }
-//
-//                                            // Apparently this is best practice, although I have no idea what the Media Scanner
-//                                            // does with the new data
-//                                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
-//
-//
-//
-//                                        }
-//                                    }
-//                                    else if (c.getCount() == 0) {
-//                                        // I suppose the MediaScanner hasn't run yet, we'll insert it
-//                                        System.out.println("c.getCount() == 0");  //임시, 확인용
-//                                    }
-//                                    //////////
-
-
-
-//                                    // 내장메모리에 영상 저장
-//                                    ContentValues values = new ContentValues(10);
-//
-//                                    values.put(MediaStore.MediaColumns.TITLE, "RecordedVideo");
-//                                    values.put(MediaStore.Audio.Media.ALBUM, "Video Album");
-//                                    values.put(MediaStore.Audio.Media.ARTIST, "Mike");
-//                                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, "RecordedVideo");
-//                                    values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1000);
-//                                    values.put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4");
-//                                    values.put(MediaStore.Audio.Media.DATA, filename);
-//
-//
-//                                    Uri videoUri = getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
-//                                    if (videoUri == null) {
-//                                        Toast.makeText(RecordActivity1.this, "### videoUri == null", Toast.LENGTH_SHORT).show();
-//                                        Log.d("SampleVideoRecorder", "Video insert failed.");
-//                                        return;
-//                                    }
-//                                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, videoUri));
-
-//                                    Toast.makeText(RecordActivity1.this, "내장메모리에 영상을 저장했습니다.\n연습 정보를 서버에 업로드합니다.", Toast.LENGTH_SHORT).show();
-
-
                                     // 서버에 영상 업로드 + 분석 시작
                                     postNewPractice();
 
@@ -288,22 +213,9 @@ public class RecordActivity1 extends AppCompatActivity {
                         });
                 builder.show();
 
-//                analysisBtn.setVisibility(View.VISIBLE);
-//                recStopBtn.setVisibility(View.INVISIBLE);
-//                recStartBtn.setVisibility(View.VISIBLE);
-
             }
         });
 
-//        analysisBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 서버에 영상 업로드 + 분석 시작
-//                postNewPractice();
-//
-//                finish();
-//            }
-//        });
     }
 
     @Override
@@ -340,11 +252,6 @@ public class RecordActivity1 extends AppCompatActivity {
             } else {
                 recorder.setOrientationHint(270);
             }
-
-
-
-//                    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-//                    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
 
             if (Build.VERSION.SDK_INT >= 30){
@@ -520,14 +427,6 @@ public class RecordActivity1 extends AppCompatActivity {
         System.out.println("practice.getMoveSensitivity(): " + practice.getMoveSensitivity());  //임시, 확인용
         System.out.println("practice.getEyesSensitivity(): " + practice.getEyesSensitivity());  //임시, 확인용
 
-//        Handler handler = new Handler(Looper.getMainLooper());
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run()
-//            {
-//                Toast.makeText(getApplicationContext(), "@postNewPractice - RetrofitClient를 호출합니다.", Toast.LENGTH_SHORT).show();
-//            }
-//        }, 0);
 
         RetrofitClient retrofitClient = RetrofitClient.getInstance();
 
@@ -578,14 +477,6 @@ public class RecordActivity1 extends AppCompatActivity {
     private void getPresignedURL(PracticesData practice) {
 
         System.out.println("getPresignedURL 시작");
-//        Handler handler = new Handler(Looper.getMainLooper());
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run()
-//            {
-//                Toast.makeText(getApplicationContext(), "@getPresignedURL - RetrofitClient를 호출합니다.", Toast.LENGTH_SHORT).show();
-//            }
-//        }, 0);
 
         RetrofitClient2 retrofitClient = RetrofitClient2.getInstance();
 
@@ -608,15 +499,6 @@ public class RecordActivity1 extends AppCompatActivity {
                         presignedUrl = String.valueOf(resbody.get("uploadURL"));
 
                         System.out.println("presignedUrl = " + presignedUrl);
-
-//                        Handler handler = new Handler(Looper.getMainLooper());
-//                        handler.postDelayed(new Runnable() {
-//                            @Override
-//                            public void run()
-//                            {
-//                                Toast.makeText(getApplicationContext(), "presignedUrl 받아오는 데 성공했습니다.\npresignedUrl : " + presignedUrl + "\n영상 업로드를 시작합니다.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }, 0);
 
                         try {
                             uploadVideoOkhttp(practice);
@@ -641,15 +523,6 @@ public class RecordActivity1 extends AppCompatActivity {
 
     private void uploadVideoOkhttp(PracticesData practice) throws MalformedURLException {
         System.out.println("uploadVideoOkhttp 시작");
-
-//        AtomicReference<Handler> handler = new AtomicReference<>(new Handler(Looper.getMainLooper()));
-//        handler.get().postDelayed(new Runnable() {
-//            @Override
-//            public void run()
-//            {
-//                Toast.makeText(getApplicationContext(), "@uploadVideoOkhttp - OkHttpClient를 호출합니다.", Toast.LENGTH_SHORT).show();
-//            }
-//        }, 0);
 
         // 임시, 확인용
 //        String testFilename = "";
@@ -693,14 +566,6 @@ public class RecordActivity1 extends AppCompatActivity {
             if (response != null) {
                 if (response.isSuccessful()) {
                     Log.d("PUT", ">>>response.body()=" + response.body());
-//                    handler.set(new Handler(Looper.getMainLooper()));
-//                    handler.get().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run()
-//                        {
-//                            Toast.makeText(getApplicationContext(), "영상 업로드에 성공했습니다.\n분석을 시작합니다.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }, 0);
 
                     askAnalysis(practice);  // 분석 요청하기
                 } else {

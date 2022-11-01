@@ -95,19 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
         // Spinner 설정
         getUserInfo();
 
-//        dbHelper = new DBHelper(this, 4);
-//        db = dbHelper.getWritableDatabase();    // 읽기/쓰기 모드로 데이터베이스를 오픈
-//        cursor = db.rawQuery("SELECT * FROM tableName", null);
-//        startManagingCursor(cursor);    //엑티비티의 생명주기와 커서의 생명주기를 같게 한다.
-//        cursor.moveToFirst();
-//
-//        //String[] items = {};  //연습 제목 리스트
-//        ArrayList<String> itemList = new ArrayList<>();  //연습 제목 리스트
-//        do {
-//            itemList.add(cursor.getString(1));  //연습 제목
-//        } while (cursor.moveToNext());
-
-
 
 // 버튼 이벤트 추가
         reg_button.setOnClickListener(new View.OnClickListener() {

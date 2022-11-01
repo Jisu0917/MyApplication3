@@ -294,52 +294,6 @@ public class DetailActivity extends AppCompatActivity {
         isPlaying = true;
     }
 
-    // 서버로부터 wav 파일 받아오기
-//    private void getWavFile() {
-//        System.out.println("서버로부터 wav 파일 받아오기 시작");
-//
-//        RetrofitClient4 retrofitClient = RetrofitClient4.getInstance();
-//
-//        if (retrofitClient!=null){
-//            retrofitAPI = RetrofitClient4.getRetrofitAPI();
-//            retrofitAPI.getWavFile(userId.intValue(), practiceId.intValue()).enqueue(new Callback<String>() {
-//                @Override
-//                public void onResponse(Call<String> call, Response<String> response) {
-//                    Log.d("GET", "not success yet");
-//                    if (response.isSuccessful()){
-//                        url = response.body();
-//                        if (!url.equals("")) {
-//                            Log.d("GET_WAV_FILE", "GET SUCCESS");
-//                            Log.d("GET_WAV_FILE", url);
-//
-//                            // 미디어플레이어 설정
-//                            mp = MediaPlayer.create(getApplicationContext(), Uri.parse(url));
-//                            mp.setLooping(false);
-//                            mp.start();  //음원 재생 시작
-//
-//                            int duration = mp.getDuration();  //음원의 재생시간(miliSecond)
-//                            sb.setMax(duration);
-//                            new WavPlayThread().start();
-//                            isPlaying = true;
-//                        } else {
-//                            System.out.println("GET_WAV_FILE : url is null...");
-//                        }
-//                    }
-//                    else {
-//                        System.out.println("@@@@ getWavFile : response is not successful...");
-//                        System.out.println("@@@@ getWavFile : response code : " + response.code());  //404
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<String> call, Throwable t) {
-//                    Log.d("GET_WAV_FILE", "GET FAILED");
-//                }
-//            });
-//        }
-//    }
-
-
     private void InitData(){
 
 // 해당 게시물의 데이터를 읽어오는 함수, 파라미터로 보드 번호를 넘김
@@ -455,34 +409,6 @@ public class DetailActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.d(TAG, "LoadBoard : onPostExecute, " + result);
-//            try {
-//// 결과값이 JSONArray 형태로 넘어오기 때문에
-//// JSONArray, JSONObject 를 사용해서 파싱
-//                JSONArray jsonArray = null;
-//                jsonArray = new JSONArray(result);
-//
-//                for(int i=0;i<jsonArray.length();i++){
-//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-//
-//// Database 의 데이터들을 변수로 저장한 후 해당 TextView 에 데이터 입력
-//                    String title = jsonObject.optString("title");
-//                    String content = jsonObject.optString("content");
-//                    String crt_dt = jsonObject.optString("crt_dt");
-//
-//                    title_tv.setText(title);
-//                    content_tv.setText(content);
-//                    date_tv.setText(crt_dt);
-//
-//                }
-//
-//// 해당 게시물에 대한 댓글 불러오는 함수 호출, 파라미터로 게시물 번호 넘김
-//                LoadCmt loadCmt = new LoadCmt();
-////                loadCmt.execute(board_seq);
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-
             // 해당 게시물에 대한 댓글 불러오는 함수 호출, 파라미터로 게시물 번호 넘김
                 LoadCmt loadCmt = new LoadCmt();
                 loadCmt.execute(postId.toString());
@@ -495,51 +421,7 @@ public class DetailActivity extends AppCompatActivity {
 
             String postid = params[0];
 
-// 호출할 php 파일 경로
-            //String server_url = "http://15.164.252.136/load_board_detail.php";
-
-
-            //URL url;
             String response = "";
-//            try {
-//                url = new URL(server_url);
-//
-//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//                conn.setReadTimeout(15000);
-//                conn.setConnectTimeout(15000);
-//                conn.setRequestMethod("POST");
-//                conn.setDoInput(true);
-//                conn.setDoOutput(true);
-//                Uri.Builder builder = new Uri.Builder()
-//                        .appendQueryParameter("board_seq", board_seq);
-//                String query = builder.build().getEncodedQuery();
-//
-//                OutputStream os = conn.getOutputStream();
-//                BufferedWriter writer = new BufferedWriter(
-//                        new OutputStreamWriter(os, "UTF-8"));
-//                writer.write(query);
-//                writer.flush();
-//                writer.close();
-//                os.close();
-//
-//                conn.connect();
-//                int responseCode=conn.getResponseCode();
-//
-//                if (responseCode == HttpsURLConnection.HTTP_OK) {
-//                    String line;
-//                    BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//                    while ((line=br.readLine()) != null) {
-//                        response+=line;
-//                    }
-//                }
-//                else {
-//                    response="";
-//
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-
             return response;
         }
     }
@@ -560,80 +442,6 @@ public class DetailActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.d(TAG, "LoadCmt : onPostExecute, " + result);
-//
-//// 댓글을 뿌릴 LinearLayout 자식뷰 모두 제거
-//            comment_layout.removeAllViews();
-//
-//            //// JSONArray, JSONObject 로 받은 데이터 파싱
-////                JSONArray jsonArray = null;
-////                jsonArray = new JSONArray(result);
-//
-//// custom_comment 를 불러오기 위한 객체
-//            System.out.println("111111111111111");  // 임시, 확인용
-//            LayoutInflater layoutInflater = LayoutInflater.from(DetailActivity.this);
-//            //LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//
-//
-//            if (feedbacksDataList != null) {
-//                System.out.println("2222222222222222");  // 임시, 확인용
-//                System.out.println("feedbacksDataList : " + feedbacksDataList.toString());  // 임시, 확인용
-//                for (int i=0; i<feedbacksDataList.size(); i++) {
-//                    System.out.println("33333333333333333333");  // 임시, 확인용
-//                    View customView = layoutInflater.inflate(R.layout.custom_comment, null);
-//                    System.out.println("4444444444444444444444");  // 임시, 확인용
-//                    FeedbacksData feedback = feedbacksDataList.get(i);
-//
-////                        Long feedbackId = feedback.getId();
-////                        String initiator = feedback.getInitiator(); //USER, FRIEND
-//                    int speed_score = feedback.getSpeed_score();
-//                    String speed_comment = feedback.getSpeed_comment();
-//                    int tone_score = feedback.getTone_score();
-//                    String tone_comment = feedback.getTone_comment();
-//                    int closing_score = feedback.getClosing_score();
-//                    String closing_comment = feedback.getClosing_comment();
-//
-//                    System.out.println("44444444444444444");  // 임시, 확인용
-//
-//                    //임시, 확인용
-//                    System.out.println("speed : "+speed_score + ", " + speed_comment);
-//                    System.out.println("tone : "+tone_score + ", " + tone_comment);
-//                    System.out.println("closing : "+closing_score + ", " + closing_comment);
-//
-//                    ((TextView)customView.findViewById(R.id.cmt_speedscore_tv)).setText(speed_score);
-//                    ((TextView)customView.findViewById(R.id.cmt_speedcmt_tv)).setText(speed_comment);
-//                    ((TextView)customView.findViewById(R.id.cmt_tonescore_tv)).setText(tone_score);
-//                    ((TextView)customView.findViewById(R.id.cmt_tonecmt_tv)).setText(tone_comment);
-//                    ((TextView)customView.findViewById(R.id.cmt_closingscore_tv)).setText(closing_score);
-//                    ((TextView)customView.findViewById(R.id.cmt_closingcmt_tv)).setText(closing_comment);
-//
-//                    // 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
-//                    comment_layout.addView(customView);
-//
-//
-//                }
-//
-//            } else {
-//                System.out.println("LoadCmt : onPostExecute : feedbacksDataList.size is 0...");
-//            }
-
-
-//                for(int i=0;i<jsonArray.length();i++){
-//
-//// custom_comment 의 디자인을 불러와서 사용
-//                    View customView = layoutInflater.inflate(R.layout.custom_comment, null);
-//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-//
-//                    String userid= jsonObject.optString("userid");
-//                    String content = jsonObject.optString("content");
-//                    String crt_dt = jsonObject.optString("crt_dt");
-//
-//                    ((TextView)customView.findViewById(R.id.cmt_userid_tv)).setText(userid);
-//                    ((TextView)customView.findViewById(R.id.cmt_content_tv)).setText(content);
-//                    ((TextView)customView.findViewById(R.id.cmt_date_tv)).setText(crt_dt);
-//
-//// 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
-//                    comment_layout.addView(customView);
-//                }
 
         }
 
@@ -646,51 +454,7 @@ public class DetailActivity extends AppCompatActivity {
             //getFeedbackOfFriends();
             ////
 
-
-//            String board_seq = params[0];
-//            String server_url = "http://15.164.252.136/load_cmt.php";
-
-
-            //URL url;
             String response = "";
-//            try {
-//                url = new URL(server_url);
-//
-//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//                conn.setReadTimeout(15000);
-//                conn.setConnectTimeout(15000);
-//                conn.setRequestMethod("POST");
-//                conn.setDoInput(true);
-//                conn.setDoOutput(true);
-//                Uri.Builder builder = new Uri.Builder()
-//                        .appendQueryParameter("board_seq", board_seq);
-//                String query = builder.build().getEncodedQuery();
-//
-//                OutputStream os = conn.getOutputStream();
-//                BufferedWriter writer = new BufferedWriter(
-//                        new OutputStreamWriter(os, "UTF-8"));
-//                writer.write(query);
-//                writer.flush();
-//                writer.close();
-//                os.close();
-//
-//                conn.connect();
-//                int responseCode=conn.getResponseCode();
-//
-//                if (responseCode == HttpsURLConnection.HTTP_OK) {
-//                    String line;
-//                    BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//                    while ((line=br.readLine()) != null) {
-//                        response+=line;
-//                    }
-//                }
-//                else {
-//                    response="";
-//
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
 
             return response;
         }
@@ -770,10 +534,6 @@ public class DetailActivity extends AppCompatActivity {
     private void setCommentView() {
         comment_layout.removeAllViews();
 
-        //// JSONArray, JSONObject 로 받은 데이터 파싱
-//                JSONArray jsonArray = null;
-//                jsonArray = new JSONArray(result);
-
 // custom_comment 를 불러오기 위한 객체
         LayoutInflater layoutInflater = LayoutInflater.from(DetailActivity.this);
         //LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -834,44 +594,6 @@ public class DetailActivity extends AppCompatActivity {
                     cmt_count++;
                 }
 
-
-//                int cmt_count = 1;
-//                for (int i = 0; i < feedbackOfUsersDataList.size(); i++) {
-//                    View customView = layoutInflater.inflate(R.layout.custom_comment, null);
-//                    FeedbacksData feedback = feedbackOfUsersDataList.get(i);
-//
-////                        Long feedbackId = feedback.getId();
-////                        String initiator = feedback.getInitiator(); //USER, FRIEND
-//                    int speed_score = feedback.getSpeed_score();
-//                    String speed_comment = feedback.getSpeed_comment();
-//                    int tone_score = feedback.getTone_score();
-//                    String tone_comment = feedback.getTone_comment();
-//                    int closing_score = feedback.getClosing_score();
-//                    String closing_comment = feedback.getClosing_comment();
-//                    String initiator = "";
-//                    if (feedback.getInitiator().equals("USER"))
-//                        initiator = "익명";
-//                    else if (feedback.getInitiator().equals("FRIEND"))
-//                        initiator = "친구";
-//
-//                    //임시, 확인용
-//                    System.out.println("speed : " + speed_score + ", " + speed_comment);
-//                    System.out.println("tone : " + tone_score + ", " + tone_comment);
-//                    System.out.println("closing : " + closing_score + ", " + closing_comment);
-//
-//                    ((TextView)customView.findViewById(R.id.cmt_count)).setText(initiator + "의 댓글 " + cmt_count);
-//                    ((TextView) customView.findViewById(R.id.cmt_speedscore_tv)).setText(numberToStars(speed_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_speedcmt_tv)).setText(speed_comment);
-//                    ((TextView) customView.findViewById(R.id.cmt_tonescore_tv)).setText(numberToStars(tone_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_tonecmt_tv)).setText(tone_comment);
-//                    ((TextView) customView.findViewById(R.id.cmt_closingscore_tv)).setText(numberToStars(closing_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_closingcmt_tv)).setText(closing_comment);
-//
-//                    // 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
-//                    comment_layout.addView(customView);
-//
-//                    cmt_count++;
-//                }
             }
 
         } else {
@@ -881,10 +603,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setCommentView1() {
         comment_layout.removeAllViews();
-
-        //// JSONArray, JSONObject 로 받은 데이터 파싱
-//                JSONArray jsonArray = null;
-//                jsonArray = new JSONArray(result);
 
 // custom_comment 를 불러오기 위한 객체
         LayoutInflater layoutInflater = LayoutInflater.from(DetailActivity.this);
@@ -949,44 +667,6 @@ public class DetailActivity extends AppCompatActivity {
                     cmt_count++;
                 }
 
-
-//                int cmt_count = 1;
-//                for (int i = 0; i < feedbackOfUsersDataList.size(); i++) {
-//                    View customView = layoutInflater.inflate(R.layout.custom_comment, null);
-//                    FeedbacksData feedback = feedbackOfUsersDataList.get(i);
-//
-////                        Long feedbackId = feedback.getId();
-////                        String initiator = feedback.getInitiator(); //USER, FRIEND
-//                    int speed_score = feedback.getSpeed_score();
-//                    String speed_comment = feedback.getSpeed_comment();
-//                    int tone_score = feedback.getTone_score();
-//                    String tone_comment = feedback.getTone_comment();
-//                    int closing_score = feedback.getClosing_score();
-//                    String closing_comment = feedback.getClosing_comment();
-//                    String initiator = "";
-//                    if (feedback.getInitiator().equals("USER"))
-//                        initiator = "익명";
-//                    else if (feedback.getInitiator().equals("FRIEND"))
-//                        initiator = "친구";
-//
-//                    //임시, 확인용
-//                    System.out.println("speed : " + speed_score + ", " + speed_comment);
-//                    System.out.println("tone : " + tone_score + ", " + tone_comment);
-//                    System.out.println("closing : " + closing_score + ", " + closing_comment);
-//
-//                    ((TextView)customView.findViewById(R.id.cmt_count)).setText(initiator + "의 댓글 " + cmt_count);
-//                    ((TextView) customView.findViewById(R.id.cmt_speedscore_tv)).setText(numberToStars(speed_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_speedcmt_tv)).setText(speed_comment);
-//                    ((TextView) customView.findViewById(R.id.cmt_tonescore_tv)).setText(numberToStars(tone_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_tonecmt_tv)).setText(tone_comment);
-//                    ((TextView) customView.findViewById(R.id.cmt_closingscore_tv)).setText(numberToStars(closing_score));
-//                    ((TextView) customView.findViewById(R.id.cmt_closingcmt_tv)).setText(closing_comment);
-//
-//                    // 댓글 레이아웃에 custom_comment 의 디자인에 데이터를 담아서 추가
-//                    comment_layout.addView(customView);
-//
-//                    cmt_count++;
-//                }
             }
 
         } else {
@@ -1095,56 +775,9 @@ public class DetailActivity extends AppCompatActivity {
             makeNewFeedback(feedbacksData);
             ////
 
-//            String userid = params[0];
-//            String content = params[1];
-//            String board_seq = params[2];
-
-            //String server_url = "http://15.164.252.136/reg_comment.php";
-
 
             URL url;
             String response = "";
-//            try {
-//                url = new URL(server_url);
-//
-//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//                conn.setReadTimeout(15000);
-//                conn.setConnectTimeout(15000);
-//                conn.setRequestMethod("POST");
-//                conn.setDoInput(true);
-//                conn.setDoOutput(true);
-//                Uri.Builder builder = new Uri.Builder()
-//                        .appendQueryParameter("userid", userid)
-//                        .appendQueryParameter("content", content)
-//                        .appendQueryParameter("board_seq", board_seq);
-//                String query = builder.build().getEncodedQuery();
-//
-//                OutputStream os = conn.getOutputStream();
-//                BufferedWriter writer = new BufferedWriter(
-//                        new OutputStreamWriter(os, "UTF-8"));
-//                writer.write(query);
-//                writer.flush();
-//                writer.close();
-//                os.close();
-//
-//                conn.connect();
-//                int responseCode=conn.getResponseCode();
-//
-//                if (responseCode == HttpsURLConnection.HTTP_OK) {
-//                    String line;
-//                    BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//                    while ((line=br.readLine()) != null) {
-//                        response+=line;
-//                    }
-//                }
-//                else {
-//                    response="";
-//
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-
             return response;
         }
     }
